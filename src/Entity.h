@@ -20,7 +20,6 @@ public:
     unsigned int VBO, VAO, EBO;
     bool isSkybox = false;
     bool isModel = false;
-    bool arrow = false;
     int number;
     unsigned int textures;
     Transform transform;
@@ -182,32 +181,6 @@ public:
         }
     }
 
-    void drawArrow(glm::vec3 dir) {
-        dir = normalize(dir);
-        vertices = { 0.5, 0.0, 0.1,
-                    -0.5, 0.0, 0.1,
-                    0.0,  0.0, -0.3,
-                     dir.x/ 2.0f,dir.y/ 2.0f,dir.z/2.0f };
-        indices = {
-            0,1,2,
-            0,1,3,
-            1,2,3,
-            0,2,3
-        };
-        glBindVertexArray(VAO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float),
-            &vertices[0], GL_DYNAMIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float),
-            &indices[0], GL_DYNAMIC_DRAW);
-
-        // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-    }
 
     //Draw
     void renderEntity() {
