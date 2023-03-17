@@ -9,3 +9,6 @@ compile_commands.json
 CTestTestfile.cmake
 
 [Bb]uild/
+
+cmake-build-debug/
+.idea/
