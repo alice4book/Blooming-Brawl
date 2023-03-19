@@ -279,6 +279,13 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         click = false;
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        double xpos, ypos;
+        //getting cursor position
+        glfwGetCursorPos(window, &xpos, &ypos);
+        cout << "Cursor Position at (" << xpos << " : " << ypos << endl;
+    }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
