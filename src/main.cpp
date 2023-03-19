@@ -242,6 +242,31 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        camera.ProcessKeyboard(FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        camera.ProcessKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        camera.ProcessKeyboard(RIGHT, deltaTime);
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+        cout << "Key pressed: Q" << endl;
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        cout << "Key pressed: E" << endl;
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+        cout << "Key pressed: R" << endl;
+
+    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+        cout << "Key pressed: N" << endl;
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+        cout << "Key pressed: M" << endl;
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        cout << "Key pressed: L" << endl;
+
+
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
