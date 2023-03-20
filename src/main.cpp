@@ -20,7 +20,7 @@ void processInput(GLFWwindow* window);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 // camera
-Camera camera(glm::vec3(0.0f, 1.4f, 0.0f), glm::vec3(0,1,0), 0, -75.0f);
+Camera camera(glm::vec3(0.0f, 16.4f, 0.0f), glm::vec3(0,1,0), 0, -75.0f);
 float lastX;
 float lastY;
 bool firstMouse = true;
@@ -71,15 +71,15 @@ int main()
 
 //    Borderless windowed mode
 //
-//    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-//    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-//    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-//    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-//
-//    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, NULL);
+    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-//    Windowed mode
-    GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, NULL);
+
+    //Windowed mode
+    //GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", NULL, NULL);
 
     if (window == nullptr)
     {
@@ -172,6 +172,8 @@ int main()
     Entity skybox(cube, indicesCube, &skyboxShader);
     skybox.loadCubemap(faces);
     skybox.transform.scaleEntity(glm::vec3(10.0f, 10.0f, 10.0f));
+
+    //Placeholders
 
     Entity grass("res/models/trawa.obj", &modelShader);
     Entity big_flower("res/models/duzy_kwiat.obj", &modelShader);
