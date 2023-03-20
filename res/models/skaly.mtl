@@ -1,7 +1,7 @@
 # Blender 3.4.1 MTL File: 'duzy i mlay kwiatek na trawach.blend'
 # www.blender.org
 
-newmtl Material_#30.011
+newmtl Material_#30.016
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
@@ -13,7 +13,7 @@ map_Ns ../textures/skaly/kamien_Material _30_Roughness.png
 map_refl ../textures/skaly/kamien_Material _30_Metallic.png
 map_Bump -bm 1.000000 ../textures/skaly/kamien_Material _30_Normal.png
 
-newmtl Material_#31.011
+newmtl Material_#31.016
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
@@ -25,7 +25,7 @@ map_Ns ../textures/skaly/kamien_Material _31_Roughness.png
 map_refl ../textures/skaly/kamien_Material _31_Metallic.png
 map_Bump -bm 1.000000 ../textures/skaly/kamien_Material _31_Normal.png
 
-newmtl Material_#32.011
+newmtl Material_#32.016
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
@@ -37,7 +37,7 @@ map_Ns ../textures/skaly/kamien_Material _32_Roughness.png
 map_refl ../textures/skaly/kamien_Material _32_Metallic.png
 map_Bump -bm 1.000000 ../textures/skaly/kamien_Material _32_Normal.png
 
-newmtl podstawa.055
+newmtl podstawa.081
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
