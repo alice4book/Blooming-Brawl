@@ -1,0 +1,35 @@
+# Blender 3.4.1 MTL File: 'duzy i mlay kwiatek na trawach.blend'
+# www.blender.org
+
+newmtl lsicie_lodyga.002
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd ../textures/duzy_kwiatek/kwio_lsicie lodyga_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/kwio_lsicie lodyga_Roughness.png
+map_refl ../textures/duzy_kwiatek/kwio_lsicie lodyga_Metallic.png
+
+newmtl platki.002
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd ../textures/duzy_kwiatek/kwio_platki_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/kwio_platki_Roughness.png
+map_refl ../textures/duzy_kwiatek/kwio_platki_Metallic.png
+
+newmtl podstawa.028
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd ../textures/duzy_kwiatek/kwio_podstawa_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/kwio_podstawa_Roughness.png
+map_refl ../textures/duzy_kwiatek/kwio_podstawa_Metallic.png

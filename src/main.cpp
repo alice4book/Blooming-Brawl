@@ -167,12 +167,30 @@ int main()
         "res/textures/skybox/back.jpg"
     };
 
+    float TILE_SIZE = 0.254;
+
     Entity skybox(cube, indicesCube, &skyboxShader);
     skybox.loadCubemap(faces);
     skybox.transform.scaleEntity(glm::vec3(10.0f, 10.0f, 10.0f));
     Entity robot("res/models/player.obj", &modelShader);
 
-    skybox.addChild(&robot);
+    Entity grass("res/models/trawa.obj", &modelShader);
+    Entity big_flower("res/models/kwiatek_duzy.obj", &modelShader);
+    Entity small_flower("res/models/maly_kwiatek.obj", &modelShader);
+    Entity burnt_flower("res/models/spalony.obj", &modelShader);
+    Entity rock("res/models/skaly.obj", &modelShader);
+
+    big_flower.transform.setLocalPosition({ TILE_SIZE, 0, 0 });
+    small_flower.transform.setLocalPosition({ 0.508 , 0, 0 });
+    burnt_flower.transform.setLocalPosition({ TILE_SIZE * 3, 0, 0 });
+    rock.transform.setLocalPosition({ TILE_SIZE * 4, 0, 0 });
+
+    skybox.addChild(&grass);
+    skybox.addChild(&big_flower);
+    skybox.addChild(&small_flower);
+    skybox.addChild(&burnt_flower);
+    skybox.addChild(&rock);
+
 #pragma endregion
 
     // render loop
