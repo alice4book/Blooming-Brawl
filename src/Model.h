@@ -23,13 +23,12 @@ using namespace std;
 
 unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
-class Model
+class Model : public Component
 {
 public:
     // model data 
     vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
     vector<Mesh>    meshes;
-
 
     string directory;
     string pathString;
@@ -40,6 +39,7 @@ public:
     {
         pathString = path;
         loadModel(path);
+        this->compType = "Model";
     }
 
     // draws the model, and thus all its meshes

@@ -1,9 +1,6 @@
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <vector>
-#include <glad/glad.h>
+
 #include <Shader.h>
+#include <Component.h>
 #include <Model.h>
 #include <Transform.h>
 
@@ -11,10 +8,11 @@ class Entity
 {
 public:
     //Scene graph
+    std::vector<Component*> components;
     std::vector<Entity*> children;
     Entity* parent = nullptr;
-    Model* model = nullptr;
     Shader* shader = nullptr;
+    Transform transform;
     std::vector <float> vertices;
     std::vector <int> indices;
     unsigned int VBO, VAO, EBO;
@@ -22,7 +20,6 @@ public:
     bool isModel = false;
     int number;
     unsigned int textures;
-    Transform transform;
 
     // constructor, expects a filepath to a 3D model.
     Entity(std::vector <float> Vertices, std::vector <int> Indices, Shader* s, int nr = 1, bool isItSkybox = false){
@@ -86,9 +83,23 @@ public:
     };
 
     Entity(std::string path, Shader* s, bool gamma = false) {
-        model = new Model(path, gamma);
+        components.push_back(new Model(path, gamma));
         shader = s;
         isModel = true;
+    }
+
+    //add new component 
+    void addComponent(Component* comp) {
+        components.push_back(comp);
+    }
+
+    //get component from vector by type
+    Component* getComponentByType(string checkType) {
+        for (Component* comp : components) {
+            if (comp->isComponentType(checkType)) {
+                return comp;
+            }
+        }
     }
 
     void loadCubemap(std::vector<std::string> faces)
@@ -181,9 +192,10 @@ public:
         }
     }
 
-
     //Draw
     void renderEntity() {
+        Model* model = (Model*)getComponentByType("Model");
+
         this->updateSelfAndChild();
 
         if (isSkybox) {
@@ -210,5 +222,4 @@ public:
             children[i]->renderEntity();
         }
     }
-
 };

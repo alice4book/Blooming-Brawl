@@ -8,6 +8,7 @@
 class Transform
 {
 protected:
+ 
     //Local space information
     glm::vec3 m_pos = { 0.0f, 0.0f, 0.0f };
     glm::vec3 m_eulerRot = { 0.0f, 0.0f, 0.0f }; //In degrees
