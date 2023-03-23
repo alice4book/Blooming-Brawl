@@ -1,18 +1,17 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <stb_image.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include "stb_image.h"
 #include <iostream>
 #include "imgui.h"
 #include "imgui_impl/imgui_impl_glfw.h"
 #include "imgui_impl/imgui_impl_opengl3.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
-#include <Shader.h>
-#include <Camera.h>
-#include <Entity.h>
+#include "Shader.h"
+#include "Camera.h"
+#include "Entity.h"
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -272,18 +271,18 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        cout << "Key pressed: Q" << endl;
+        std::cout << "Key pressed: Q" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        cout << "Key pressed: E" << endl;
+        std::cout << "Key pressed: E" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        cout << "Key pressed: R" << endl;
+        std::cout << "Key pressed: R" << std::endl;
 
     if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-        cout << "Key pressed: N" << endl;
+        std::cout << "Key pressed: N" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-        cout << "Key pressed: M" << endl;
+        std::cout << "Key pressed: M" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-        cout << "Key pressed: L" << endl;
+        std::cout << "Key pressed: L" << std::endl;
 
 
 }
@@ -328,7 +327,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         double xpos, ypos;
         //getting cursor position
         glfwGetCursorPos(window, &xpos, &ypos);
-        cout << "Cursor Position at (" << xpos << " : " << ypos << endl;
+        std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
     }
 }
 

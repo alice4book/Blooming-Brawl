@@ -9,12 +9,12 @@ file(GLOB_RECURSE HEADER_FILES
 	 *.hpp)
 
 # Define the executable
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} StaticColliderComponent.h DynamicColliderComponent.h)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} include/StaticColliderComponent.h include/DynamicColliderComponent.h src/Camera.cpp src/Component.cpp src/DynamicColliderComponent.cpp src/Entity.cpp src/Model.cpp src/Mesh.cpp src/Shader.cpp src/Transform.cpp src/StaticColliderComponent.cpp)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 target_compile_definitions(${PROJECT_NAME} PRIVATE LIBRARY_SUFFIX="")
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 												  ${glad_SOURCE_DIR}
 												  ${stb_image_SOURCE_DIR}
 												  ${imgui_SOURCE_DIR})
