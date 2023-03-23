@@ -100,6 +100,7 @@ public:
                 return comp;
             }
         }
+        return nullptr;
     }
 
     void loadCubemap(std::vector<std::string> faces)
@@ -221,5 +222,13 @@ public:
         for (int i = 0; i < children.size(); i++) {
             children[i]->renderEntity();
         }
+    }
+
+    [[nodiscard]] Entity *getParent() const {
+        return parent;
+    }
+
+    [[nodiscard]] const vector<Entity *> &getChildren() const {
+        return children;
     }
 };
