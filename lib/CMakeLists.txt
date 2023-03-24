@@ -9,7 +9,7 @@ file(GLOB_RECURSE HEADER_FILES
 	 *.hpp)
 
 # Define the executable
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} include/StaticColliderComponent.h include/DynamicColliderComponent.h src/Camera.cpp src/Component.cpp src/DynamicColliderComponent.cpp src/Entity.cpp src/Model.cpp src/Mesh.cpp src/Shader.cpp src/Transform.cpp src/StaticColliderComponent.cpp)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} include/StaticColliderComponent.h include/DynamicColliderComponent.h src/Camera.cpp src/Component.cpp src/DynamicColliderComponent.cpp src/Entity.cpp src/Model.cpp src/Mesh.cpp src/Shader.cpp src/Transform.cpp src/StaticColliderComponent.cpp include/ComponentType.h)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 target_compile_definitions(${PROJECT_NAME} PRIVATE LIBRARY_SUFFIX="")

@@ -1,8 +1,6 @@
-#pragma once
+#include "Component.h"
 
-#include "glad/glad.h"
-
-class Transform
+class Transform : Component
 {
 protected:
  
@@ -20,6 +18,8 @@ protected:
     glm::mat4 getLocalModelMatrix();
 
 public:
+    explicit Transform(Entity *parent);
+
     void computeModelMatrix();
 
     void computeModelMatrix(const glm::mat4& parentGlobalModelMatrix);

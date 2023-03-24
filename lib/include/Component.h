@@ -1,9 +1,4 @@
-enum ComponentType{
-    eNone,
-    eModel,
-    eCollisionStatic,
-    eCollisionDynamic
-};
+#include "ComponentType.h"
 
 class Entity;
 class Component

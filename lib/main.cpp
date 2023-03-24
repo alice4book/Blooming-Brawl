@@ -9,6 +9,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "Transform.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "Entity.h"
@@ -70,15 +71,15 @@ int main()
 
 //    Borderless windowed mode
 //
-    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-
-    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, NULL);
+//    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+//    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+//    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+//    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+//
+//    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, NULL);
 
     //Windowed mode
-    //GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", NULL, NULL);
 
     if (window == nullptr)
     {
@@ -125,54 +126,53 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     std::vector <float> cube;
     cube.insert(cube.end(), {
-        -1.0, 1.0, 1.0,    -1, 1, 1,    0.0, 1.0, //0
-        1.0, 1.0, 1.0,     1, 1, 1,     1.0, 1.0, //1
-        1.0, -1.0, 1.0,    1, -1, 1,    1.0, 0.0, //2
-        -1.0, -1.0, 1.0,   -1, -1, 1,   0.0, 0.0, //3
+            -1.0, 1.0, 1.0,    -1, 1, 1,    0.0, 1.0, //0
+            1.0, 1.0, 1.0,     1, 1, 1,     1.0, 1.0, //1
+            1.0, -1.0, 1.0,    1, -1, 1,    1.0, 0.0, //2
+            -1.0, -1.0, 1.0,   -1, -1, 1,   0.0, 0.0, //3
 
-        -1.0, 1.0, -1.0,   -1, 1, -1,   1.0, 1.0, //4
-        1.0, 1.0, -1.0,    1, 1, -1,    0.0, 1.0, //5
-        1.0, -1.0, -1.0,   1, -1, -1,   0.0, 0.0, //6
-        -1.0, -1.0, -1.0,  -1, -1, -1,  1.0, 0.0  //7
-        });
+            -1.0, 1.0, -1.0,   -1, 1, -1,   1.0, 1.0, //4
+            1.0, 1.0, -1.0,    1, 1, -1,    0.0, 1.0, //5
+            1.0, -1.0, -1.0,   1, -1, -1,   0.0, 0.0, //6
+            -1.0, -1.0, -1.0,  -1, -1, -1,  1.0, 0.0  //7
+    });
 
     std::vector <int> indicesCube;
     indicesCube.insert(indicesCube.end(), {
-        0, 1, 2,
-        0, 3, 2,
+            0, 1, 2,
+            0, 3, 2,
 
-        1, 2, 6,
-        1, 5, 6,
+            1, 2, 6,
+            1, 5, 6,
 
-        0, 1, 5,
-        0, 4, 5,
+            0, 1, 5,
+            0, 4, 5,
 
-        0, 4, 7,
-        0, 3, 7,
+            0, 4, 7,
+            0, 3, 7,
 
-        4, 5, 6,
-        4, 7, 6,
+            4, 5, 6,
+            4, 7, 6,
 
-        7, 6, 2,
-        7, 3, 2
-        });
+            7, 6, 2,
+            7, 3, 2
+    });
     std::vector<std::string> faces
-    {
-        "res/textures/skybox/right.jpg",
-        "res/textures/skybox/left.jpg",
-        "res/textures/skybox/top.jpg",
-        "res/textures/skybox/bottom.jpg",
-        "res/textures/skybox/front.jpg",
-        "res/textures/skybox/back.jpg"
-    };
+            {
+                    "res/textures/skybox/right.jpg",
+                    "res/textures/skybox/left.jpg",
+                    "res/textures/skybox/top.jpg",
+                    "res/textures/skybox/bottom.jpg",
+                    "res/textures/skybox/front.jpg",
+                    "res/textures/skybox/back.jpg"
+            };
+#pragma endregion
 
     float TILE_SIZE = 0.254;
 
-    Entity skybox(cube, indicesCube, &skyboxShader);
+    Entity skybox = Entity(cube, indicesCube, &skyboxShader);
     skybox.loadCubemap(faces);
-    skybox.transform.scaleEntity(glm::vec3(10.0f, 10.0f, 10.0f));
-
-    //Placeholders
+    skybox.transform->scaleEntity(glm::vec3(10.0f, 10.0f, 10.0f));
 
     Entity grass("res/models/trawa.obj", &modelShader);
     Entity big_flower("res/models/duzy_kwiat.obj", &modelShader);
@@ -180,10 +180,10 @@ int main()
     Entity burnt_flower("res/models/spalony.obj", &modelShader);
     Entity rock("res/models/skaly.obj", &modelShader);
 
-    big_flower.transform.setLocalPosition({ TILE_SIZE, 0, 0 });
-    small_flower.transform.setLocalPosition({ TILE_SIZE * 2, 0, 0 });
-    burnt_flower.transform.setLocalPosition({ TILE_SIZE * 3, 0, 0 });
-    rock.transform.setLocalPosition({ TILE_SIZE * 4, 0, 0 });
+    big_flower.transform->setLocalPosition({ TILE_SIZE, 0, 0 });
+    small_flower.transform->setLocalPosition({ TILE_SIZE * 2, 0, 0 });
+    burnt_flower.transform->setLocalPosition({ TILE_SIZE * 3, 0, 0 });
+    rock.transform->setLocalPosition({ TILE_SIZE * 4, 0, 0 });
 
     skybox.addChild(&grass);
     skybox.addChild(&big_flower);
@@ -191,7 +191,6 @@ int main()
     skybox.addChild(&burnt_flower);
     skybox.addChild(&rock);
 
-#pragma endregion
 
     // render loop
     while (!glfwWindowShouldClose(window))

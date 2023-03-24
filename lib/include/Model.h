@@ -3,7 +3,7 @@
 
 #include "assimp/scene.h"
 #include "Mesh.h"
-#include "Component.h"
+#include "Transform.h"
 
 unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 

@@ -1,10 +1,17 @@
+#include "glad/glad.h"
 #include "Shader.h"
+#include "Model.h"
 #include "Entity.h"
 
-// constructor, expects a filepath to a 3D model.
-Entity::Entity(std::vector <float> Vertices, std::vector <int> Indices, Shader* s, int nr, bool isItSkybox){
-    vertices = Vertices;
-    indices = Indices;
+Entity::Entity(Shader* s){
+    transform = new Transform(this);
+    shader = s;
+}
+
+Entity::Entity(std::vector<float> Vertices, std::vector<int> Indices, Shader *s, int nr, bool isItSkybox) {
+    transform = new Transform(this);
+    vertices = std::move(Vertices);
+    indices = std::move(Indices);
     number = nr;
     shader = s;
     isSkybox = isItSkybox;
@@ -39,11 +46,11 @@ Entity::Entity(std::vector <float> Vertices, std::vector <int> Indices, Shader* 
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float),
-    &vertices[0], GL_DYNAMIC_DRAW);
+                 &vertices[0], GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float),
-    &indices[0], GL_DYNAMIC_DRAW);
+                 &indices[0], GL_DYNAMIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -62,29 +69,7 @@ Entity::Entity(std::vector <float> Vertices, std::vector <int> Indices, Shader* 
     glVertexAttribDivisor(3, 1); // tell OpenGL this is an instanced vertex attribute.
 }
 
-Entity::Entity(std::string path, Shader* s, bool gamma) {
-    components.push_back(new Model(nullptr, path, gamma));
-    shader = s;
-    isModel = true;
-}
-
-//add new component
-void Entity::addComponent(Component* comp) {
-    components.push_back(comp);
-}
-
-//get component from vector by type
-Component* Entity::getComponentByType(ComponentType checkType) {
-    for (Component* comp : components) {
-        if (comp->isComponentType(checkType)) {
-            return comp;
-        }
-    }
-    return nullptr;
-}
-
-void Entity::loadCubemap(std::vector<std::string> faces)
-{
+void Entity::loadCubemap(std::vector<std::string> faces) {
     glGenTextures(1, &textures);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textures);
 
@@ -117,31 +102,26 @@ void Entity::loadCubemap(std::vector<std::string> faces)
     shader->setInt("skybox", 0);
 }
 
-void Entity::addTexture(Shader* shader, const char* path) {
-    glGenTextures(1, &textures);
-    glBindTexture(GL_TEXTURE_2D, textures);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+Entity::Entity(const std::string& path, Shader* s){
+    transform = new Transform(this);
+    model = new Model(this, path);
+    shader = s;
+    isModel = true;
+}
+
+//add new component
+void Entity::addComponent(Component* comp) {
+    components.push_back(comp);
+}
+
+//get component from vector by type
+Component* Entity::getComponentByType(ComponentType checkType) {
+    for (Component* comp : components) {
+        if (comp->isComponentType(checkType)) {
+            return comp;
+        }
     }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
-    shader->use();
-    shader->setInt("ourTexture", 0);
+    return nullptr;
 }
 
 void Entity::addChild(Entity* arg)
@@ -154,7 +134,7 @@ void Entity::addChild(Entity* arg)
 //Update transform if it was changed
 void Entity::updateSelfAndChild()
 {
-    if (!transform.isDirty())
+    if (!transform->isDirty())
         return;
 
     forceUpdateSelfAndChild();
@@ -164,9 +144,9 @@ void Entity::updateSelfAndChild()
 void Entity::forceUpdateSelfAndChild()
 {
     if (parent)
-        transform.computeModelMatrix(parent->transform.getModelMatrix());
+        transform->computeModelMatrix(parent->transform->getModelMatrix());
     else
-        transform.computeModelMatrix();
+        transform->computeModelMatrix();
 
     for (auto&& child : children)
     {
@@ -176,8 +156,6 @@ void Entity::forceUpdateSelfAndChild()
 
 //Draw
 void Entity::renderEntity() {
-    Model* model = (Model*)getComponentByType(eModel);
-
     this->updateSelfAndChild();
 
     if (isSkybox) {
@@ -187,7 +165,7 @@ void Entity::renderEntity() {
     }
     else if (isModel) {
         shader->use();
-        shader->setMat4("model", transform.getModelMatrix());
+        shader->setMat4("model", transform->getModelMatrix());
         model->Draw(*shader);
     }
     else {
@@ -196,12 +174,12 @@ void Entity::renderEntity() {
         glBindVertexArray(VAO);
 
         shader->use();
-        shader->setMat4("model", transform.getModelMatrix());
+        shader->setMat4("model", transform->getModelMatrix());
         glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, number);
     }
 
-    for (int i = 0; i < children.size(); i++) {
-        children[i]->renderEntity();
+    for (auto & i : children) {
+        i->renderEntity();
     }
 }
 
