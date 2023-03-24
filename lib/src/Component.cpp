@@ -1,15 +1,15 @@
 #include "Component.h"
 
-Component::Component() {
-    compType = eNone;
+Component::Component(Entity* parent) : parent(parent) {
+
 }
 
-ComponentType Component::getComponentType() {
+ComponentType Component::getComponentType() const {
     return compType;
 }
 
-bool Component::isComponentType(ComponentType compType) {
-    if (this->compType == compType) {
+bool Component::isComponentType(ComponentType componentType) {
+    if (compType == componentType) {
         return true;
     }
     return false;

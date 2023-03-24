@@ -10,7 +10,7 @@ private:
     glm::vec2 size;
     bool isPassable;
 public:
-    StaticColliderComponent(glm::vec2 center, glm::vec2 size, bool isPassable);
+    StaticColliderComponent(Entity *parent, glm::vec2 center, glm::vec2 size, bool isPassable);
 };
 
 #endif //OPENGLGP_STATICCOLLIDERCOMPONENT_H

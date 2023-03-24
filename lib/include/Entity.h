@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Transform.h"
 
+//class Component;
 class Entity
 {
 public:

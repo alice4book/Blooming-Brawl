@@ -63,7 +63,7 @@ Entity::Entity(std::vector <float> Vertices, std::vector <int> Indices, Shader* 
 }
 
 Entity::Entity(std::string path, Shader* s, bool gamma) {
-    components.push_back(new Model(path, gamma));
+    components.push_back(new Model(nullptr, path, gamma));
     shader = s;
     isModel = true;
 }

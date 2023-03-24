@@ -1,8 +1,9 @@
 #include "DynamicColliderComponent.h"
 
-DynamicColliderComponent::DynamicColliderComponent(glm::vec2 center, float radius)
-: center(center), radius(radius){
+DynamicColliderComponent::DynamicColliderComponent(Entity *parent, glm::vec2 center, float radius)
+: Component(parent), center(center), radius(radius) {
     compType = eCollisionDynamic;
+//    parent->addChild();
 }
 
 void DynamicColliderComponent::CollisionCheck(){

@@ -5,15 +5,18 @@ enum ComponentType{
     eCollisionDynamic
 };
 
+class Entity;
 class Component
 {
+private:
+    Entity* parent;
 public:
 	//Tells what kind of component
-    ComponentType compType;
+    ComponentType compType = eNone;
 
-	Component();
+	explicit Component(Entity* parent);
 
-	virtual ComponentType getComponentType();
+	[[nodiscard]] ComponentType getComponentType() const;
 
-	virtual bool isComponentType(ComponentType compType);
+	virtual bool isComponentType(ComponentType componentType);
 };

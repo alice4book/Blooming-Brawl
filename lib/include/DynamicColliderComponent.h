@@ -13,7 +13,7 @@ private:
     std::vector<StaticColliderComponent*> staticColliders;
 
 public:
-    DynamicColliderComponent(glm::vec2 center, float radius);
+    DynamicColliderComponent(Entity *parent, glm::vec2 center, float radius);
 
     void CollisionCheck();
 };

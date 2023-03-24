@@ -16,10 +16,9 @@ public:
     std::string directory;
     std::string pathString;
     bool gammaCorrection;
-    ComponentType qpa;
 
     // constructor, expects a filepath to a 3D model.
-    Model(std::string const &path, bool gamma = false);
+    Model(Entity *parent, std::string const &path, bool gamma = false);
 
     // draws the model, and thus all its meshes
     void Draw(Shader &shader);
@@ -35,8 +34,6 @@ private:
 
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
     // the required info is returned as a Texture struct.
-    std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+    std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string& typeName);
 };
-
-unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma);
 #endif
