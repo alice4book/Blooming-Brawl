@@ -2,20 +2,24 @@
 #define OPENGLGP_DYNAMICCOLLIDERCOMPONENT_H
 
 #include <vector>
-#include "glm/vec2.hpp"
 #include "Component.h"
 
 class StaticColliderComponent;
 class DynamicColliderComponent : Component {
 private:
-    glm::vec2 center;
     float radius;
     std::vector<StaticColliderComponent*> staticColliders;
 
 public:
-    DynamicColliderComponent(Entity *parent, glm::vec2 center, float radius);
+    DynamicColliderComponent(Entity *parent, float radius);
 
-    void CollisionCheck();
+    void update() override;
+
+    void updateCollidersList();
+
+    void checkAllCollisions();
+
+    [[nodiscard]] glm::vec2 checkCollisionDirection(glm::vec2 squareSize, glm::vec2 squarePosition, glm::vec2 circlePosition);
 };
 
 #endif //OPENGLGP_DYNAMICCOLLIDERCOMPONENT_H

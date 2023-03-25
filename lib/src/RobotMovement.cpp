@@ -1,9 +1,9 @@
 #include "RobotMovement.h"
 #include "Transform.h"
 
-RobotMovement::RobotMovement(Entity* parent, Transform* transform, float speed) 
+RobotMovement::RobotMovement(Entity* parent, Transform* transform, float speed, glm::vec3 forward)
 	: Component(parent),
-	forward(glm::vec3(1.0f, 0.0f, 0.0f)), 
+	forward(forward),
 	speed(speed),
 	transform(transform) {}
 

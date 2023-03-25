@@ -1,4 +1,6 @@
 #include "Component.h"
+#include "glm/vec3.hpp"
+#include "glm/ext/matrix_float4x4.hpp"
 
 class Transform : Component
 {
@@ -26,7 +28,7 @@ public:
 
     void setLocalPosition(const glm::vec3& newPosition);
 
-    void addToLocalPosition(const glm::vec3& newPosition);
+    void addToLocalPosition(const glm::vec3& addPosition);
 
     void setLocalRotation(const glm::vec3& newEulerRot);
 

@@ -1,8 +1,6 @@
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
-
 #include "Transform.h"
+#include "glm/trigonometric.hpp"
+#include "glm/ext/matrix_transform.hpp"
 
 Transform::Transform(Entity *parent) : Component(parent) {
     compType = eTransform;
@@ -45,9 +43,9 @@ void Transform::setLocalPosition(const glm::vec3& newPosition)
     m_isDirty = true;
 }
 
-void Transform::addToLocalPosition(const glm::vec3& newPosition)
+void Transform::addToLocalPosition(const glm::vec3& addPosition)
 {
-    m_pos += newPosition;
+    m_pos += addPosition;
     m_isDirty = true;
 }
 

@@ -3,10 +3,15 @@
 
 class StaticColliderComponent : Component {
 private:
-    glm::vec2 center;
     glm::vec2 size;
     bool isPassable;
 public:
-    StaticColliderComponent(Entity *parent, glm::vec2 center, glm::vec2 size, bool isPassable);
+    StaticColliderComponent(Entity *parent, glm::vec2 size, bool isPassable);
+
+    [[nodiscard]] const glm::vec2 &getSize() const;
+
+    [[nodiscard]] bool getIsPassable() const;
+
+    glm::vec2 getCenter();
 };
 

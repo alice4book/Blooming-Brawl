@@ -1,6 +1,8 @@
 #include <vector>
 #include <string>
 
+#include "ComponentType.h"
+
 class Model;
 class Shader;
 class Transform;

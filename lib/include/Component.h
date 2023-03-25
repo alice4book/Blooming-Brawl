@@ -6,7 +6,7 @@
 class Entity;
 class Component
 {
-private:
+protected:
     Entity* parent;
 public:
 	//Tells what kind of component

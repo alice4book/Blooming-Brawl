@@ -13,7 +13,7 @@ private:
 	Transform* transform;
 	
 public:
-	RobotMovement(Entity* parent, Transform* transform, float speed);
+	RobotMovement(Entity* parent, Transform* transform, float speed, glm::vec3 forward = {1, 0, 0});
 	void update() override;
 
 };
