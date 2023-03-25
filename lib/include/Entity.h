@@ -37,6 +37,9 @@ public:
     //get component from vector by type
     Component* getComponentByType(ComponentType checkType);
 
+    //update all components
+    void updateComponents();
+
     void addChild(Entity* arg);
 
     //Update transform if it was changed

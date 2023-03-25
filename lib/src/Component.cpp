@@ -14,3 +14,8 @@ bool Component::isComponentType(ComponentType componentType) {
     }
     return false;
 }
+
+void Component::update()
+{
+    
+}

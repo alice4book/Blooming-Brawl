@@ -124,6 +124,14 @@ Component* Entity::getComponentByType(ComponentType checkType) {
     return nullptr;
 }
 
+
+void Entity::updateComponents()
+{
+    for (Component* comp : components) {
+        comp->update();
+    }
+}
+
 void Entity::addChild(Entity* arg)
 {
     children.push_back(arg);
@@ -156,6 +164,7 @@ void Entity::forceUpdateSelfAndChild()
 
 //Draw
 void Entity::renderEntity() {
+    this->updateComponents();
     this->updateSelfAndChild();
 
     if (isSkybox) {

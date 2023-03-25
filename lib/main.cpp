@@ -13,6 +13,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Entity.h"
+#include "RobotMovement.h"
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -179,6 +180,7 @@ int main()
     Entity small_flower("res/models/maly_kwiat.obj", &modelShader);
     Entity burnt_flower("res/models/spalony.obj", &modelShader);
     Entity rock("res/models/skaly.obj", &modelShader);
+    Entity robot("res/models/robot.obj", &modelShader);
 
     big_flower.transform->setLocalPosition({ TILE_SIZE, 0, 0 });
     small_flower.transform->setLocalPosition({ TILE_SIZE * 2, 0, 0 });
@@ -191,6 +193,9 @@ int main()
     skybox.addChild(&burnt_flower);
     skybox.addChild(&rock);
 
+    //add and move robot
+    //skybox.addChild(&robot);
+    //robot.addComponent(new RobotMovement(robot.getParent(), robot.transform, 0.01f));
 
     // render loop
     while (!glfwWindowShouldClose(window))

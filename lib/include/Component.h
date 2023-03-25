@@ -1,3 +1,6 @@
+#ifndef COMPONENT_H
+#define COMPONENT_H
+
 #include "ComponentType.h"
 
 class Entity;
@@ -14,4 +17,7 @@ public:
 	[[nodiscard]] ComponentType getComponentType() const;
 
 	virtual bool isComponentType(ComponentType componentType);
+
+	virtual void update();
 };
+#endif
