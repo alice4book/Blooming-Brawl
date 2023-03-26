@@ -25,7 +25,7 @@ void processInput(GLFWwindow* window);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 // camera
-Camera camera(glm::vec3(-1.0f, 1.f, 0.0f), glm::vec3(0,1,0), 0, 0.0f);
+Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, -89.0f);
 float lastX;
 float lastY;
 bool firstMouse = true;
@@ -180,45 +180,68 @@ int main()
     Entity big_flower("res/models/duzy_kwiat.obj", &modelShader);
     Entity small_flower("res/models/maly_kwiat.obj", &modelShader);
     Entity burnt_flower("res/models/spalony.obj", &modelShader);
-    Entity rock("res/models/skaly.obj", &modelShader);
+    Entity rock1("res/models/skaly.obj", &modelShader);
+    Entity rock2("res/models/skaly.obj", &modelShader);
+    Entity rock3("res/models/skaly.obj", &modelShader);
+    Entity rock4("res/models/skaly.obj", &modelShader);
+    Entity rock5("res/models/skaly.obj", &modelShader);
 
-    rock.transform->setLocalPosition({ 0, 0, 0 });
     big_flower.transform->setLocalPosition({ TILE_SIZE, 0, 0 });
     grass.transform->setLocalPosition({ TILE_SIZE * 2, 0, 0 });
     small_flower.transform->setLocalPosition({ TILE_SIZE * 3, 0, 0 });
     burnt_flower.transform->setLocalPosition({ TILE_SIZE * 4, 0, 0 });
 
-    skybox.addChild(&rock);
+    rock1.transform->setLocalPosition({ 0, 0, 0 });
+    rock2.transform->setLocalPosition({ TILE_SIZE, 0, TILE_SIZE });
+    rock3.transform->setLocalPosition({ 0, 0, 2 * TILE_SIZE });
+    rock4.transform->setLocalPosition({ -4 * TILE_SIZE, 0, TILE_SIZE });
+    rock5.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 0 });
+
     skybox.addChild(&grass);
     skybox.addChild(&big_flower);
     skybox.addChild(&small_flower);
     skybox.addChild(&burnt_flower);
+    
+    skybox.addChild(&rock1);
+    skybox.addChild(&rock2);
+    skybox.addChild(&rock3);
+    skybox.addChild(&rock4);
+    skybox.addChild(&rock5);
 
 #pragma region Collision & Robot test
-    StaticColliderComponent rockCollider(&rock, {TILE_SIZE,TILE_SIZE}, false);
-    rock.addComponent((Component*)&rockCollider);
+    StaticColliderComponent rockCollider1(&rock1, {TILE_SIZE,TILE_SIZE}, false);
+    rock1.addComponent((Component*)&rockCollider1);
+    StaticColliderComponent rockCollider2(&rock2, {TILE_SIZE,TILE_SIZE}, false);
+    rock2.addComponent((Component*)&rockCollider2);
+    StaticColliderComponent rockCollider3(&rock3, {TILE_SIZE,TILE_SIZE}, false);
+    rock3.addComponent((Component*)&rockCollider3);
+    StaticColliderComponent rockCollider4(&rock4, {TILE_SIZE,TILE_SIZE}, false);
+    rock4.addComponent((Component*)&rockCollider4);
+    StaticColliderComponent rockCollider5(&rock5, {TILE_SIZE,TILE_SIZE}, false);
+    rock5.addComponent((Component*)&rockCollider5);
 
-    //add and move robot1
+    //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &modelShader);
     skybox.addChild(&robot1);
-    robot1.transform->setLocalPosition({0, 0, 5});
-    robot1.addComponent(new RobotMovement(&robot1, robot1.transform, 0.001f, {0,0,-1}));
+    robot1.transform->setLocalPosition({0, 0, 0.25});
     DynamicColliderComponent robotCollider1(&robot1, 0.1f);
     robot1.addComponent((Component*)&robotCollider1);
-    //add and move robot2
-    Entity robot2("res/models/robot.obj", &modelShader);
-    skybox.addChild(&robot2);
-    robot2.transform->setLocalPosition({5, 0, 0});
-    robot2.addComponent(new RobotMovement(&robot2, robot2.transform, 0.001f, {-1,0,0}));
-    DynamicColliderComponent robotCollider2(&robot2, 0.1f);
-    robot2.addComponent((Component*)&robotCollider2);
-    //add and move robot3
-    Entity robot3("res/models/robot.obj", &modelShader);
-    skybox.addChild(&robot3);
-    robot3.transform->setLocalPosition({-5, 0, -5});
-    robot3.addComponent(new RobotMovement(&robot3, robot3.transform, 0.001f, {1,0,1}));
-    DynamicColliderComponent robotCollider3(&robot3, 0.1f);
-    robot3.addComponent((Component*)&robotCollider3);
+    RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1,0.02f, {0,0,-1});
+    robot1.addComponent((Component*)&robotmovement);
+    ////add and move robot2
+    //Entity robot2("res/models/robot.obj", &modelShader);
+    //skybox.addChild(&robot2);
+    //robot2.transform->setLocalPosition({5, 0, 0});
+    //robot2.addComponent(new RobotMovement(&robot2, robot2.transform, 0.001f, {-1,0,0}));
+    //DynamicColliderComponent robotCollider2(&robot2, 0.1f);
+    //robot2.addComponent((Component*)&robotCollider2);
+    ////add and move robot3
+    //Entity robot3("res/models/robot.obj", &modelShader);
+    //skybox.addChild(&robot3);
+    //robot3.transform->setLocalPosition({-5, 0, -5});
+    //robot3.addComponent(new RobotMovement(&robot3, robot3.transform, 0.001f, {1,0,1}));
+    //DynamicColliderComponent robotCollider3(&robot3, 0.1f);
+    //robot3.addComponent((Component*)&robotCollider3);
 #pragma endregion
 
     // render loop

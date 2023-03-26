@@ -4,14 +4,13 @@
 #include "DynamicColliderComponent.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius)
-: Component(parent), radius(radius) {
+: Component(parent), radius(radius), bColliderFlag(false) {
     compType = eCollisionDynamic;
     updateCollidersList();
 }
 
 void DynamicColliderComponent::update() {
     Component::update();
-
     checkAllCollisions();
 }
 
@@ -28,12 +27,13 @@ void DynamicColliderComponent::updateCollidersList() {
 void DynamicColliderComponent::checkAllCollisions(){
     glm::vec3 circlePosition3d = parent->transform->getLocalPosition();
     glm::vec2 circlePosition = {circlePosition3d.x, circlePosition3d.z};
-
+    bColliderFlag = false;
     for(StaticColliderComponent* statComp : staticColliders){
          //check if two colliders fade over
          glm::vec2 collisionDirection = checkCollisionDirection(statComp->getSize(), statComp->getCenter(), circlePosition);
         if(collisionDirection.x + collisionDirection.y != 0){
             if(!statComp->getIsPassable()){
+                bColliderFlag = true;
                 parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
             }
         }
@@ -74,6 +74,9 @@ glm::vec2 DynamicColliderComponent::checkCollisionDirection(glm::vec2 squareSize
         return {0, 0};
 }
 
-
+bool DynamicColliderComponent::getColliderFlag()
+{
+    return bColliderFlag;
+}
 
 

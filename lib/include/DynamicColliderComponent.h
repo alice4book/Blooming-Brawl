@@ -9,6 +9,7 @@ class DynamicColliderComponent : Component {
 private:
     float radius;
     std::vector<StaticColliderComponent*> staticColliders;
+    bool bColliderFlag;
 
 public:
     DynamicColliderComponent(Entity *parent, float radius);
@@ -20,6 +21,8 @@ public:
     void checkAllCollisions();
 
     [[nodiscard]] glm::vec2 checkCollisionDirection(glm::vec2 squareSize, glm::vec2 squarePosition, glm::vec2 circlePosition);
+
+    bool getColliderFlag();
 };
 
 #endif //OPENGLGP_DYNAMICCOLLIDERCOMPONENT_H
