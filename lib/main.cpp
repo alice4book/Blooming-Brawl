@@ -8,7 +8,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-
+#include "Audio.h"
 #include "Transform.h"
 #include "Shader.h"
 #include "Camera.h"
@@ -242,6 +242,9 @@ int main()
     //robot3.addComponent(new RobotMovement(&robot3, robot3.transform, 0.001f, {1,0,1}));
     //DynamicColliderComponent robotCollider3(&robot3, 0.1f);
     //robot3.addComponent((Component*)&robotCollider3);
+    Audio audio1(&robot1);
+    audio1.playAudio("res/audio/powerup.wav");
+    int b = 0;
 #pragma endregion
 
     // render loop
