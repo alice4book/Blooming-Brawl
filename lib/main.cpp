@@ -16,6 +16,12 @@
 #include "RobotMovement.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
+#include "PlayerMovement.h"
+
+#define GLFW_GAMEPAD_BUTTON_A 0
+#define GLFW_GAMEPAD_BUTTON_B 1
+#define GLFW_GAMEPAD_BUTTON_X 2
+#define GLFW_GAMEPAD_BUTTON_Y 3
 
 #define TILE_SIZE 0.254f
 
@@ -34,6 +40,9 @@ bool firstMouse = true;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 bool click = false;
+
+//joysick
+int count;
 
 struct Direction {
     glm::vec3 direction;
@@ -242,6 +251,7 @@ int main()
     //robot3.addComponent(new RobotMovement(&robot3, robot3.transform, 0.001f, {1,0,1}));
     //DynamicColliderComponent robotCollider3(&robot3, 0.1f);
     //robot3.addComponent((Component*)&robotCollider3);
+
 #pragma endregion
 
     // render loop
@@ -335,6 +345,35 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         std::cout << "Key pressed: L" << std::endl;
 
+    if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
+        //std::cout << "Joystick" << std::endl;
+        const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
+        //std::cout << "Left Stick X: " << axes[0]  <<" Y: " << axes[1]<< std::endl;
+        //std::cout << "Right Stick X: " << axes[2] << " Y: " << axes[3] << std::endl;
+
+        GLFWgamepadstate state;
+
+        if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+        {
+            if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
+            {
+                std::cout << "3" << std::endl;
+            }
+            if (state.buttons[GLFW_GAMEPAD_BUTTON_B])
+            {
+                std::cout << "4" << std::endl;
+            }
+            if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
+            {
+                std::cout << "1" << std::endl;
+            }
+            if (state.buttons[GLFW_GAMEPAD_BUTTON_Y])
+            {
+                std::cout << "2" << std::endl;
+            }
+        }
+        
+    }
 
 }
 
