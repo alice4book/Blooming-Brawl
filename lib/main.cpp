@@ -12,10 +12,12 @@
 #include "Transform.h"
 #include "Shader.h"
 #include "Camera.h"
-#include "Entity.h"
+//#include "Entity.h"
 #include "RobotMovement.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
+
+#include "Player.h"
 #include "PlayerMovement.h"
 
 #define GLFW_GAMEPAD_BUTTON_A 0
@@ -41,8 +43,8 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 bool click = false;
 
-//joysick
-int count;
+//gamepad
+int axisCount;
 
 struct Direction {
     glm::vec3 direction;
@@ -254,7 +256,26 @@ int main()
     Audio audio1(&robot1);
     audio1.playAudio("res/audio/powerup.wav");
     int b = 0;
+
+
+    Player player("res/models/robot.obj", &modelShader, 0);
+    skybox.addChild(&player);
+    player.transform->setLocalPosition({ 0,0,0.25 });
+    DynamicColliderComponent playerCollider1(&player, 0.1f);
+    player.addComponent((Component*)&playerCollider1);
+    PlayerMovement playerMovement(&player, player.transform, &playerCollider1, player.getSpeed(), player.getID(), {0,0,-1});
+    player.addComponent((Component*)&playerMovement);
+
+    Player player2("res/models/robot.obj", &modelShader, 1);
+    skybox.addChild(&player2);
+    player2.transform->setLocalPosition({ 0,0,0.5 });
+    DynamicColliderComponent playerCollider2(&player2, 0.1f);
+    player2.addComponent((Component*)&playerCollider2);
+    PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, player2.getSpeed(), player2.getID(), {0,0,-1});
+    player2.addComponent((Component*)&playerMovement2);
+
 #pragma endregion
+
 
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -262,6 +283,9 @@ int main()
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        playerMovement.move(window);
+        playerMovement2.move(window);
 
         glfwPollEvents();        
         // Start the Dear ImGui frame
@@ -315,6 +339,7 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    /*
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -323,33 +348,33 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    */
+    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
         camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
         camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        std::cout << "Key pressed: Q" << std::endl;
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        std::cout << "Key pressed: E" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        std::cout << "Key pressed: R" << std::endl;
+        std::cout << "Key pressed: R    Player1 plant" << std::endl;
+    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+        std::cout << "Key pressed: T    Player1 hit" << std::endl;
+    if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+        std::cout << "Key pressed: Y    Player1 time" << std::endl;
 
-    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-        std::cout << "Key pressed: N" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-        std::cout << "Key pressed: M" << std::endl;
-    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-        std::cout << "Key pressed: L" << std::endl;
+        std::cout << "Key pressed: M    Player2 time" << std::endl;
+    if (glfwGetKey(window, GLFW_KEY_COMMA) == GLFW_PRESS)
+        std::cout << "Key pressed: ,    Player2 hit" << std::endl;
+    if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS)
+        std::cout << "Key pressed: .    Player2 plant" << std::endl;
 
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
         //std::cout << "Joystick" << std::endl;
-        const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
+        const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axisCount);
         //std::cout << "Left Stick X: " << axes[0]  <<" Y: " << axes[1]<< std::endl;
         //std::cout << "Right Stick X: " << axes[2] << " Y: " << axes[3] << std::endl;
 
