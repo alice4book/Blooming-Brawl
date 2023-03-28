@@ -258,7 +258,7 @@ int main()
     int b = 0;
 
 
-    Player player("res/models/robot.obj", &modelShader, 0);
+    Player player("res/models/robot.obj", &modelShader, Player1);
     skybox.addChild(&player);
     player.transform->setLocalPosition({ 0,0,0.25 });
     DynamicColliderComponent playerCollider1(&player, 0.1f);
@@ -266,7 +266,7 @@ int main()
     PlayerMovement playerMovement(&player, player.transform, &playerCollider1, player.getSpeed(), player.getID(), {0,0,-1});
     player.addComponent((Component*)&playerMovement);
 
-    Player player2("res/models/robot.obj", &modelShader, 1);
+    Player player2("res/models/robot.obj", &modelShader, Player2);
     skybox.addChild(&player2);
     player2.transform->setLocalPosition({ 0,0,0.5 });
     DynamicColliderComponent playerCollider2(&player2, 0.1f);

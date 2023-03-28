@@ -5,7 +5,7 @@
 #include "Transform.h"
 #include "../imgui_impl/imgui_impl_opengl3_loader.h"
 
-PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColliderComponent* collider, float speed, int ID, glm::vec3 forward)
+PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward)
 	: Component(parent)
 	, forward(forward)
 	, speed(speed)
@@ -17,7 +17,7 @@ PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColl
 
 void PlayerMovement::move(GLFWwindow* window)
 {
-    if (ID == 0) {
+    if (ID == Player1) {
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             //std::cout << "W" << std::endl;
             forward = glm::vec3{ 1,0,0 };
@@ -40,7 +40,7 @@ void PlayerMovement::move(GLFWwindow* window)
         }
     }
 
-    if (ID == 1) {
+    if (ID == Player2) {
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             //std::cout << "W" << std::endl;
             forward = glm::vec3{ 1,0,0 };

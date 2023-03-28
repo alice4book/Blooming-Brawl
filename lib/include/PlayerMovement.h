@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "Enums.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <GLFW/glfw3.h>
@@ -16,10 +17,10 @@ private:
 	float speed;
 	Transform* transform;
 	DynamicColliderComponent* collider;
-	int ID;
+	EPlayerID ID;
 
 public:
-	PlayerMovement(Entity* parent, Transform* transform, DynamicColliderComponent* collider, float speed, int ID, glm::vec3 forward = { 1, 0, 0 });
+	PlayerMovement(Entity* parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
 	void move(GLFWwindow* window);
 
 };

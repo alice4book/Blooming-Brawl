@@ -1,12 +1,12 @@
 #include "Player.h"
 
-Player::Player(const std::string& path, Shader* s, int playerID)
+Player::Player(const std::string& path, Shader* s, EPlayerID playerID)
 	: Entity(path, s)
 {
 	ID = playerID;
 }
 
-int Player::getID()
+EPlayerID Player::getID()
 {
 	return ID;
 }
