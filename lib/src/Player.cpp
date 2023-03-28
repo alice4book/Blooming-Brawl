@@ -15,3 +15,8 @@ float Player::getSpeed()
 {
 	return speed;
 }
+
+void Player::setSpeed(int newSpeed)
+{
+	speed = newSpeed;
+}
