@@ -12,7 +12,7 @@
 #include "Transform.h"
 #include "Shader.h"
 #include "Camera.h"
-//#include "Entity.h"
+#include "Entity.h"
 #include "RobotMovement.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
@@ -258,22 +258,28 @@ int main()
     int b = 0;
 
 
-    Player player("res/models/robot.obj", &modelShader, Player1);
-    skybox.addChild(&player);
-    player.transform->setLocalPosition({ 0,0,0.25 });
-    DynamicColliderComponent playerCollider1(&player, 0.1f);
-    player.addComponent((Component*)&playerCollider1);
-    PlayerMovement playerMovement(&player, player.transform, &playerCollider1, player.getSpeed(), player.getID(), {0,0,-1});
-    player.addComponent((Component*)&playerMovement);
+    Entity player1("res/models/player.obj", &modelShader);
+    skybox.addChild(&player1);
+    player1.transform->setLocalPosition({ 0,0,0.25 });
+    player1.transform->scaleEntity({0.1,0.1,0.1});
+    Player playerP1(&player1, Player1);
+    player1.addComponent((Component*)&playerP1);
+    DynamicColliderComponent playerCollider1(&player1, 0.1f);
+    player1.addComponent((Component*)&playerCollider1);
+    PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {0,0,-1});
+    player1.addComponent((Component*)&playerMovement);
 
-    Player player2("res/models/robot.obj", &modelShader, Player2);
+    
+    Entity player2("res/models/robot.obj", &modelShader);
     skybox.addChild(&player2);
     player2.transform->setLocalPosition({ 0,0,0.5 });
+    Player playerP2(&player2, Player2);
+    player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent playerCollider2(&player2, 0.1f);
     player2.addComponent((Component*)&playerCollider2);
-    PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, player2.getSpeed(), player2.getID(), {0,0,-1});
+    PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {0,0,-1});
     player2.addComponent((Component*)&playerMovement2);
-
+    
 #pragma endregion
 
 

@@ -1,14 +1,16 @@
 #pragma once
-#include "Entity.h"
 #include "Enums.h"
+#include "Component.h"
 
-class Player : public Entity {
+class Entity;
+
+class Player : Component {
 
 private:
 	EPlayerID ID;
 	float speed = 0.005;
 public:
-	Player(const std::string& path, Shader* s, EPlayerID playerID);
+	Player(Entity* parent, EPlayerID playerID);
 
 	EPlayerID getID();
 	float getSpeed();

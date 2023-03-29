@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(const std::string& path, Shader* s, EPlayerID playerID)
-	: Entity(path, s)
+Player::Player(Entity* parent, EPlayerID playerID)
+	: Component(parent)
 {
 	ID = playerID;
 }
