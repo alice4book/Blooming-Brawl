@@ -1,5 +1,7 @@
 #include "RobotMovement.h"
 
+#include <iostream>   // std::cout
+#include <string> 
 #include <imgui_internal.h>
 
 #include "DynamicColliderComponent.h"
@@ -25,26 +27,31 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform, DynamicCollid
 	if(forward.x == 0.0f && forward.z == -1.0f){
 		side = 270.0;
 	}
-	
 }
 
-void RobotMovement::update() {
-	transform->addToLocalPosition(forward * speed);
+void RobotMovement::update() {	
+	currentFrame = static_cast<float>(glfwGetTime());
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	printf("%f \n", (speed * deltaTime));
+	transform->addToLocalPosition(forward * (speed * deltaTime));
 	if(collider->getColliderFlag())
 	{
-		turnRight();
+		turnRight(deltaTime);
 	}
 }
+
 // turns robot left (only with right angle)
-void RobotMovement::turnRight() {
+void RobotMovement::turnRight(float dTime) {
 	side += 90.f;
 	if(side > 270.f)
 		side = 0.0f;
-	transform->addToLocalPosition(forward * -speed);
-	transform->rotateLocal(glm::vec3(0.0f,0.0f,0.0f));
+	transform->addToLocalPosition(forward * -(speed * dTime));
+	transform->rotateLocal(glm::vec3(0.0f, -90.0f, 0.0f));
 	glm::vec3 front;
 	front.x = cos(glm::radians(side)) * cos(glm::radians(0.f));
 	front.y = sin(glm::radians(0.f));
 	front.z = sin(glm::radians(side)) * cos(glm::radians(0.f));
 	forward = glm::normalize(front);
 }
+

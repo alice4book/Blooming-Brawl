@@ -173,6 +173,7 @@ int main()
             7, 6, 2,
             7, 3, 2
     });
+
     std::vector<std::string> faces
             {
                     "res/textures/skybox/right.jpg",
@@ -204,8 +205,8 @@ int main()
 
     rock1.transform->setLocalPosition({ 0, 0, 0 });
     rock2.transform->setLocalPosition({ TILE_SIZE, 0, TILE_SIZE });
-    rock3.transform->setLocalPosition({ 0, 0, 2 * TILE_SIZE });
-    rock4.transform->setLocalPosition({ -4 * TILE_SIZE, 0, TILE_SIZE });
+    rock3.transform->setLocalPosition({ 0, 0, 5 * TILE_SIZE });
+    rock4.transform->setLocalPosition({ -4 * TILE_SIZE, 0, 4 * TILE_SIZE });
     rock5.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 0 });
 
     skybox.addChild(&grass);
@@ -234,10 +235,11 @@ int main()
     //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &modelShader);
     skybox.addChild(&robot1);
-    robot1.transform->setLocalPosition({0, 0, 0.25});
+    robot1.transform->setLocalPosition({0.0f, 0.0f, 0.0f});
+    robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     DynamicColliderComponent robotCollider1(&robot1, 0.1f);
     robot1.addComponent((Component*)&robotCollider1);
-    RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1,0.02f, {0,0,-1});
+    RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 1.0f, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
     ////add and move robot2
     //Entity robot2("res/models/robot.obj", &modelShader);
@@ -257,28 +259,26 @@ int main()
     audio1.playAudio("res/audio/powerup.wav");
     int b = 0;
 
-
-    Entity player1("res/models/player.obj", &modelShader);
-    skybox.addChild(&player1);
-    player1.transform->setLocalPosition({ 0,0,0.25 });
-    player1.transform->scaleEntity({0.1,0.1,0.1});
-    Player playerP1(&player1, Player1);
-    player1.addComponent((Component*)&playerP1);
-    DynamicColliderComponent playerCollider1(&player1, 0.1f);
-    player1.addComponent((Component*)&playerCollider1);
-    PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {0,0,-1});
-    player1.addComponent((Component*)&playerMovement);
-
+    //Entity player1("res/models/player.obj", &modelShader);
+    //skybox.addChild(&player1);
+    //player1.transform->setLocalPosition({ 0,0,0.25 });
+    //player1.transform->scaleEntity({0.1,0.1,0.1});
+    //Player playerP1(&player1, Player1);
+    //player1.addComponent((Component*)&playerP1);
+    //DynamicColliderComponent playerCollider1(&player1, 0.1f);
+    //player1.addComponent((Component*)&playerCollider1);
+    //PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {0,0,-1});
+    //player1.addComponent((Component*)&playerMovement);
     
-    Entity player2("res/models/robot.obj", &modelShader);
-    skybox.addChild(&player2);
-    player2.transform->setLocalPosition({ 0,0,0.5 });
-    Player playerP2(&player2, Player2);
-    player2.addComponent((Component*)&playerP2);
-    DynamicColliderComponent playerCollider2(&player2, 0.1f);
-    player2.addComponent((Component*)&playerCollider2);
-    PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {0,0,-1});
-    player2.addComponent((Component*)&playerMovement2);
+    //Entity player2("res/models/robot.obj", &modelShader);
+    //skybox.addChild(&player2);
+    //player2.transform->setLocalPosition({ 0,0,0.5 });
+    //Player playerP2(&player2, Player2);
+    //player2.addComponent((Component*)&playerP2);
+    //DynamicColliderComponent playerCollider2(&player2, 0.1f);
+    //player2.addComponent((Component*)&playerCollider2);
+    //PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {0,0,-1});
+    //player2.addComponent((Component*)&playerMovement2);
     
 #pragma endregion
 
@@ -290,8 +290,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        playerMovement.move(window);
-        playerMovement2.move(window);
+        //playerMovement.move(window);
+        //playerMovement2.move(window);
 
         glfwPollEvents();        
         // Start the Dear ImGui frame
