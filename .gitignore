@@ -12,3 +12,4 @@ CTestTestfile.cmake
 
 cmake-build-debug/
 .idea/
+/cmake-build-debug-mingw/

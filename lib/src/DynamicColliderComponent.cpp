@@ -3,80 +3,138 @@
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
 
-DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius)
-: Component(parent), radius(radius), bColliderFlag(false) {
+DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
+: Component(parent), radius(radius), centerOffset(centerOffset), bColliderFlag(false) {
     compType = eCollisionDynamic;
-    updateCollidersList();
 }
 
 void DynamicColliderComponent::update() {
     Component::update();
+    updateCollidersList();
     checkAllCollisions();
 }
 
 void DynamicColliderComponent::updateCollidersList() {
     // parent has to be a skybox Entity
+    staticColliders.clear();
+    dynamicColliders.clear();
+
     for(Entity* child : parent->getParent()->getChildren()){
         auto* statComp = (StaticColliderComponent*)child->getComponentByType(eCollisionStatic);
+        auto* dynamicComp = (DynamicColliderComponent*)child->getComponentByType(eCollisionDynamic);
         if(statComp != nullptr){
             staticColliders.push_back(statComp);
+        }
+        if(dynamicComp != nullptr){
+            dynamicColliders.push_back(dynamicComp);
         }
     }
 }
 
 void DynamicColliderComponent::checkAllCollisions(){
-    glm::vec3 circlePosition3d = parent->transform->getLocalPosition();
-    glm::vec2 circlePosition = {circlePosition3d.x, circlePosition3d.z};
+    glm::vec2 circlePosition = getCenter();
+    touchingComponents.clear();
     bColliderFlag = false;
+
+    // Tools, map tiles
     for(StaticColliderComponent* statComp : staticColliders){
          //check if two colliders fade over
-         glm::vec2 collisionDirection = checkCollisionDirection(statComp->getSize(), statComp->getCenter(), circlePosition);
-        if(collisionDirection.x + collisionDirection.y != 0){
-            if(!statComp->getIsPassable()){
+          glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
+        if(collisionDirection.x + collisionDirection.y != 0) {
+            if (!statComp->getIsPassable()) {
                 bColliderFlag = true;
                 parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
+            } else {
+                touchingComponents.push_back((Component *) statComp);
             }
         }
     }
+    // Robot, enemy player
+    for(DynamicColliderComponent* dynamicComp : dynamicColliders){
+        if(this != dynamicComp){
+            glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
+            parent->transform->addToLocalPosition({colDir.x, 0, colDir.y});
+            touchingComponents.push_back((Component*)dynamicComp);
+        }
+    }
 }
 
-glm::vec2 DynamicColliderComponent::checkCollisionDirection(glm::vec2 squareSize, glm::vec2 squarePosition, glm::vec2 circlePosition) {
-    glm::vec2 distance;
+glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticColliderComponent* statComp, glm::vec2 circlePosition) {
+    glm::vec2 squarePosition = statComp->getCenter();
+    glm::vec2 squareSize = statComp->getSize();
 
+    glm::vec2 distance;
     distance.x = circlePosition.x - squarePosition.x;
     distance.y = circlePosition.y - squarePosition.y;
 
-    if (abs(distance.x) > (squareSize.x/2 + radius))
+    glm::vec2 absDistance;
+    absDistance.x = abs(distance.x);
+    absDistance.y = abs(distance.y);
+
+    squareSize = squareSize * 0.5f;
+
+    glm::vec2 sqrAndRad;
+    sqrAndRad.x = squareSize.x + radius;
+    sqrAndRad.y = squareSize.y + radius;
+
+    if (absDistance.x > sqrAndRad.x)
         return {0,0};
-    if (abs(distance.y) > (squareSize.y/2 + radius))
+    if (absDistance.y > sqrAndRad.y)
         return {0, 0};
 
-    if (abs(distance.x) <= (squareSize.x/2)) {
-        if (distance.y >= 0) {
-            return {0, (squareSize.y / 2 + radius) - distance.y};
-        } else {
-            return {0, -((squareSize.y / 2 + radius) + distance.y)};
-        }
+    if (absDistance.x <= squareSize.x) {
+        return {0, (float)signbit(distance.y) * -2 * sqrAndRad.y + sqrAndRad.y - distance.y};
     }
-    if (abs(distance.y) <= (squareSize.y/2)) {
-        if (distance.x >= 0) {
-            return { (squareSize.x / 2 + radius) - distance.x, 0};
-        } else {
-            return {-((squareSize.x / 2 + radius) + distance.x), 0};
-        }
+    if (absDistance.y <= squareSize.y) {
+        return {(float)signbit(distance.x) * -2 * sqrAndRad.x + sqrAndRad.x - distance.x, 0};
     }
 
-    float cornerDistance = (distance.x - squareSize.x / 2) + (distance.y - squareSize.y/2);
-
-    if(cornerDistance * cornerDistance <= (radius * radius))
-        return {distance.x - squareSize.x/2 + radius,distance.y - squareSize.y/2 + radius};
-    else
-        return {0, 0};
+    return {0, 0};
 }
 
-bool DynamicColliderComponent::getColliderFlag()
-{
+glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos) {
+    // Distance after which circles will touch
+    float circlesLimit = radius + dynamicComp->getRadius();
+    glm::vec2 compPos = dynamicComp->getCenter();
+
+    if(powf(myPos.x - compPos.x, 2) + powf(myPos.y - compPos.y, 2) >= circlesLimit * circlesLimit){
+        return {0 ,0};
+    }
+
+    glm::vec2 norVec = myPos - compPos;
+    glm::normalize(norVec);
+
+    // Normalised distance vector * (float) distance between circles
+    return norVec * (circlesLimit - sqrtf(powf(myPos.x - compPos.x, 2) + powf(myPos.y - compPos.y, 2)));
+}
+
+bool DynamicColliderComponent::getColliderFlag() {
     return bColliderFlag;
 }
+
+void DynamicColliderComponent::setCenterOffset(glm::vec2 newCenterOffset) {
+    centerOffset = newCenterOffset;
+}
+
+glm::vec2 DynamicColliderComponent::getCenter(){
+    glm::vec3 circlePosition3d = parent->transform->getLocalPosition();
+    glm::vec2 circlePosition = {circlePosition3d.x, circlePosition3d.z};
+    circlePosition += centerOffset;
+    return circlePosition;
+}
+
+float DynamicColliderComponent::getRadius(){
+    return radius;
+}
+
+void DynamicColliderComponent::setRadius(float newRadius){
+    radius = newRadius;
+}
+
+glm::vec2 DynamicColliderComponent::getCenterOffset() {
+    return centerOffset;
+}
+
+
 
 
