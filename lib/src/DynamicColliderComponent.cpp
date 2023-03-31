@@ -1,4 +1,4 @@
-#include "Entity.h"
+#include "World.h"
 #include "Transform.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
@@ -6,29 +6,12 @@
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
 : Component(parent), radius(radius), centerOffset(centerOffset), bColliderFlag(false) {
     compType = eCollisionDynamic;
+    world = World::getInstance();
 }
 
 void DynamicColliderComponent::update() {
     Component::update();
-    updateCollidersList();
     checkAllCollisions();
-}
-
-void DynamicColliderComponent::updateCollidersList() {
-    // parent has to be a skybox Entity
-    staticColliders.clear();
-    dynamicColliders.clear();
-
-    for(Entity* child : parent->getParent()->getChildren()){
-        auto* statComp = (StaticColliderComponent*)child->getComponentByType(eCollisionStatic);
-        auto* dynamicComp = (DynamicColliderComponent*)child->getComponentByType(eCollisionDynamic);
-        if(statComp != nullptr){
-            staticColliders.push_back(statComp);
-        }
-        if(dynamicComp != nullptr){
-            dynamicColliders.push_back(dynamicComp);
-        }
-    }
 }
 
 void DynamicColliderComponent::checkAllCollisions(){
@@ -37,7 +20,7 @@ void DynamicColliderComponent::checkAllCollisions(){
     bColliderFlag = false;
 
     // Tools, map tiles
-    for(StaticColliderComponent* statComp : staticColliders){
+    for(StaticColliderComponent* statComp : world->getStaticColliders()){
          //check if two colliders fade over
           glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
         if(collisionDirection.x + collisionDirection.y != 0) {
@@ -50,7 +33,7 @@ void DynamicColliderComponent::checkAllCollisions(){
         }
     }
     // Robot, enemy player
-    for(DynamicColliderComponent* dynamicComp : dynamicColliders){
+    for(DynamicColliderComponent* dynamicComp : world->getDynamicColliders()){
         if(this != dynamicComp){
             glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
             parent->transform->addToLocalPosition({colDir.x, 0, colDir.y});
@@ -83,10 +66,12 @@ glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticCollider
         return {0, 0};
 
     if (absDistance.x <= squareSize.x) {
-        return {0, (float)signbit(distance.y) * -2 * sqrAndRad.y + sqrAndRad.y - distance.y};
+        // (depending on distance sign change sign of sqrAndRad) - distance.y
+        return {0, ((float)signbit(distance.y) * -2 * sqrAndRad.y + sqrAndRad.y) - distance.y};
     }
     if (absDistance.y <= squareSize.y) {
-        return {(float)signbit(distance.x) * -2 * sqrAndRad.x + sqrAndRad.x - distance.x, 0};
+        // (depending on distance sign change sign of sqrAndRad) - distance.x
+        return {((float)signbit(distance.x) * -2 * sqrAndRad.x + sqrAndRad.x) - distance.x, 0};
     }
 
     return {0, 0};

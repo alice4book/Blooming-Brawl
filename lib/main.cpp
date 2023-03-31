@@ -12,7 +12,7 @@
 #include "Transform.h"
 #include "Shader.h"
 #include "Camera.h"
-#include "Entity.h"
+#include "World.h"
 #include "RobotMovement.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
@@ -85,17 +85,11 @@ int main()
     lastX = (float)mode->width / 2;
     lastY = (float)mode->height / 2;
 
-//    Borderless windowed mode
-//
-//    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-//    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-//    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-//    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-//
-//    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, NULL);
+//    Fullscreen
+//    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
 
-    //Windowed mode
-    GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", NULL, NULL);
+//    Windowed mode
+    GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", nullptr, nullptr);
 
     if (window == nullptr)
     {
@@ -138,55 +132,9 @@ int main()
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
 
-#pragma region skybox
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    std::vector <float> cube;
-    cube.insert(cube.end(), {
-            -1.0, 1.0, 1.0,    -1, 1, 1,    0.0, 1.0, //0
-            1.0, 1.0, 1.0,     1, 1, 1,     1.0, 1.0, //1
-            1.0, -1.0, 1.0,    1, -1, 1,    1.0, 0.0, //2
-            -1.0, -1.0, 1.0,   -1, -1, 1,   0.0, 0.0, //3
 
-            -1.0, 1.0, -1.0,   -1, 1, -1,   1.0, 1.0, //4
-            1.0, 1.0, -1.0,    1, 1, -1,    0.0, 1.0, //5
-            1.0, -1.0, -1.0,   1, -1, -1,   0.0, 0.0, //6
-            -1.0, -1.0, -1.0,  -1, -1, -1,  1.0, 0.0  //7
-    });
-
-    std::vector <int> indicesCube;
-    indicesCube.insert(indicesCube.end(), {
-            0, 1, 2,
-            0, 3, 2,
-
-            1, 2, 6,
-            1, 5, 6,
-
-            0, 1, 5,
-            0, 4, 5,
-
-            0, 4, 7,
-            0, 3, 7,
-
-            4, 5, 6,
-            4, 7, 6,
-
-            7, 6, 2,
-            7, 3, 2
-    });
-
-    std::vector<std::string> faces
-            {
-                    "res/textures/skybox/right.jpg",
-                    "res/textures/skybox/left.jpg",
-                    "res/textures/skybox/top.jpg",
-                    "res/textures/skybox/bottom.jpg",
-                    "res/textures/skybox/front.jpg",
-                    "res/textures/skybox/back.jpg"
-            };
-#pragma endregion
-
-    Entity skybox = Entity(cube, indicesCube, &skyboxShader);
-    skybox.loadCubemap(faces);
+    World* skybox = World::getInstance();
+    skybox->setShader(&skyboxShader);
 
     Entity grass("res/models/trawa.obj", &modelShader);
     Entity big_flower("res/models/duzy_kwiat.obj", &modelShader);
@@ -209,16 +157,16 @@ int main()
     rock4.transform->setLocalPosition({ -4 * TILE_SIZE, 0, 4 * TILE_SIZE });
     rock5.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 0 });
 
-    skybox.addChild(&grass);
-    skybox.addChild(&big_flower);
-    skybox.addChild(&small_flower);
-    skybox.addChild(&burnt_flower);
+    skybox->addChild(&grass);
+    skybox->addChild(&big_flower);
+    skybox->addChild(&small_flower);
+    skybox->addChild(&burnt_flower);
     
-    skybox.addChild(&rock1);
-    skybox.addChild(&rock2);
-    skybox.addChild(&rock3);
-    skybox.addChild(&rock4);
-    skybox.addChild(&rock5);
+    skybox->addChild(&rock1);
+    skybox->addChild(&rock2);
+    skybox->addChild(&rock3);
+    skybox->addChild(&rock4);
+    skybox->addChild(&rock5);
 
 #pragma region Collision & Robot test
     StaticColliderComponent rockCollider1(&rock1, {TILE_SIZE,TILE_SIZE}, false);
@@ -234,7 +182,7 @@ int main()
 
     //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &modelShader);
-    skybox.addChild(&robot1);
+    skybox->addChild(&robot1);
     robot1.transform->setLocalPosition({0.0f, 0.0f, 0.0f});
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     DynamicColliderComponent robotCollider1(&robot1, 0.1f);
@@ -259,27 +207,25 @@ int main()
     audio1.playAudio("res/audio/powerup.wav");
     int b = 0;
 
-    //Entity player1("res/models/player.obj", &modelShader);
-    //skybox.addChild(&player1);
-    //player1.transform->setLocalPosition({ 0,0,0.25 });
-    //player1.transform->scaleEntity({0.1,0.1,0.1});
-    //Player playerP1(&player1, Player1);
-    //player1.addComponent((Component*)&playerP1);
-    //DynamicColliderComponent playerCollider1(&player1, 0.1f);
-    //player1.addComponent((Component*)&playerCollider1);
-    //PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {0,0,-1});
-    //player1.addComponent((Component*)&playerMovement);
+    Entity player1("res/models/robot.obj", &modelShader);
+    skybox->addChild(&player1);
+    player1.transform->setLocalPosition({ 0,0,0 });
+    Player playerP1(&player1, Player1);
+    player1.addComponent((Component*)&playerP1);
+    DynamicColliderComponent playerCollider1(&player1, 0.1f);
+    player1.addComponent((Component*)&playerCollider1);
+    PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {0,0,-1});
+    player1.addComponent((Component*)&playerMovement);
     
-    //Entity player2("res/models/robot.obj", &modelShader);
-    //skybox.addChild(&player2);
-    //player2.transform->setLocalPosition({ 0,0,0.5 });
-    //Player playerP2(&player2, Player2);
-    //player2.addComponent((Component*)&playerP2);
-    //DynamicColliderComponent playerCollider2(&player2, 0.1f);
-    //player2.addComponent((Component*)&playerCollider2);
-    //PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {0,0,-1});
-    //player2.addComponent((Component*)&playerMovement2);
-    
+    Entity player2("res/models/robot.obj", &modelShader);
+    skybox->addChild(&player2);
+    player2.transform->setLocalPosition({ 0,0,0.5 });
+    Player playerP2(&player2, Player2);
+    player2.addComponent((Component*)&playerP2);
+    DynamicColliderComponent playerCollider2(&player2, 0.1f);
+    player2.addComponent((Component*)&playerCollider2);
+    PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {0,0,-1});
+    player2.addComponent((Component*)&playerMovement2);
 #pragma endregion
 
 
@@ -290,8 +236,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        //playerMovement.move(window);
-        //playerMovement2.move(window);
+        playerMovement.move(window);
+        playerMovement2.move(window);
 
         glfwPollEvents();        
         // Start the Dear ImGui frame
@@ -323,7 +269,7 @@ int main()
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projection);
-        skybox.renderEntity();
+        skybox->renderEntity();
         glDepthFunc(GL_LESS);
 
         ImGui::Render();

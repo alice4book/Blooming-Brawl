@@ -4,13 +4,13 @@
 #include <vector>
 #include "Component.h"
 
+class World;
 class StaticColliderComponent;
 class DynamicColliderComponent : Component {
 private:
+    World* world;
     float radius;
     glm::vec2 centerOffset;
-    std::vector<StaticColliderComponent*> staticColliders;
-    std::vector<DynamicColliderComponent*> dynamicColliders;
     bool bColliderFlag;
 
 public:
@@ -19,8 +19,6 @@ public:
     DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset = {0, 0});
 
     void update() override;
-
-    void updateCollidersList();
 
     void checkAllCollisions();
 

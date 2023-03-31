@@ -33,7 +33,7 @@ void RobotMovement::update() {
 	currentFrame = static_cast<float>(glfwGetTime());
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-	printf("%f \n", (speed * deltaTime));
+//	printf("%f \n", (speed * deltaTime));
 	transform->addToLocalPosition(forward * (speed * deltaTime));
 	if(collider->getColliderFlag())
 	{
