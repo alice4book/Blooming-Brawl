@@ -8,7 +8,7 @@ class Player : Component {
 
 private:
 	EPlayerID ID;
-	float speed = 0.005;
+	float speed = 1.0f;
 public:
 	Player(Entity* parent, EPlayerID playerID);
 
