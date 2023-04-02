@@ -7,15 +7,17 @@
 #include "DynamicColliderComponent.h"
 #include "Transform.h"
 
-RobotMovement::RobotMovement(Entity* parent, Transform* transform, 
-	DynamicColliderComponent* collider, float speed, RobotMovementType type, 
-	glm::vec3 forward)
+RobotMovement::RobotMovement(Entity* parent, Transform* transform,
+	DynamicColliderComponent* colliderBody, DynamicColliderComponent* colliderFront,
+	float speed, RobotMovementType type, glm::vec3 forward, float offset)
 	: Component(parent)
-	,forward(forward)
-	,speed(speed)
-	,transform(transform)
-	,collider(collider)
-	,deltaTime(0.f)
+	, forward(forward)
+	, speed(speed)
+	, transform(transform)
+	, colliderBody(colliderBody)
+	, colliderFront(colliderFront)
+	, deltaTime(0.f)
+	, offset(offset)
 {
 	if(forward.x == 1.0f && forward.z == 0.0f){
 		side = 0.0;
@@ -32,6 +34,9 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	else {
 		side = 0.0;
 	}
+
+	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
+
 	switch (type) {
 	case eLeft:
 		moveRob = &RobotMovement::turnLeft;
@@ -54,7 +59,7 @@ void RobotMovement::update() {
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 	transform->addToLocalPosition(forward * (speed * deltaTime));
-	if(collider->getColliderFlag())
+	if(colliderFront->getColliderFlag())
 	{
 		(this->*moveRob)(deltaTime);
 	}
@@ -72,6 +77,7 @@ void RobotMovement::turnRight(float dTime) {
 	front.y = sin(glm::radians(0.f));
 	front.z = sin(glm::radians(side)) * cos(glm::radians(0.f));
 	forward = glm::normalize(front);
+	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
 }
 
 // turns robot left (only with right angle)
@@ -86,6 +92,7 @@ void RobotMovement::turnLeft(float dTime) {
 	front.y = sin(glm::radians(0.f));
 	front.z = sin(glm::radians(side)) * cos(glm::radians(0.f));
 	forward = glm::normalize(front);
+	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
 }
 
 void RobotMovement::noMove(float dTime) {

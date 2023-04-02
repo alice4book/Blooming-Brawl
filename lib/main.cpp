@@ -202,8 +202,10 @@ int main()
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     DynamicColliderComponent robotCollider1(&robot1, 0.1f);
     robot1.addComponent((Component*)&robotCollider1);
+    DynamicColliderComponent robotColliderFront1(&robot1, 0.1f, glm::vec2(0.01f, 0.0f));
+    robot1.addComponent((Component*)&robotColliderFront1);
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
-        1.0f, eLeft, {0,0,-1});
+        &robotColliderFront1, 1.0f, eRight, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
     ////add and move robot2
     //Entity robot2("res/models/robot.obj", &modelShader);
