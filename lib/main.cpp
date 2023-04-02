@@ -145,6 +145,9 @@ int main()
     Entity rock3("res/models/skaly.obj", &modelShader);
     Entity rock4("res/models/skaly.obj", &modelShader);
     Entity rock5("res/models/skaly.obj", &modelShader);
+    Entity rock6("res/models/skaly.obj", &modelShader);
+    Entity rock7("res/models/skaly.obj", &modelShader);
+    Entity rock8("res/models/skaly.obj", &modelShader);
 
     big_flower.transform->setLocalPosition({ TILE_SIZE, 0, 0 });
     grass.transform->setLocalPosition({ TILE_SIZE * 2, 0, 0 });
@@ -156,6 +159,9 @@ int main()
     rock3.transform->setLocalPosition({ 0, 0, 5 * TILE_SIZE });
     rock4.transform->setLocalPosition({ -4 * TILE_SIZE, 0, 4 * TILE_SIZE });
     rock5.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 0 });
+    rock6.transform->setLocalPosition({ -4 * TILE_SIZE, 0, TILE_SIZE });
+    rock7.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 5 * TILE_SIZE });
+    rock8.transform->setLocalPosition({ TILE_SIZE, 0, 4 * TILE_SIZE});
 
     skybox->addChild(&grass);
     skybox->addChild(&big_flower);
@@ -167,6 +173,9 @@ int main()
     skybox->addChild(&rock3);
     skybox->addChild(&rock4);
     skybox->addChild(&rock5);
+    skybox->addChild(&rock6);
+    skybox->addChild(&rock7);
+    skybox->addChild(&rock8);
 
 #pragma region Collision & Robot test
     StaticColliderComponent rockCollider1(&rock1, {TILE_SIZE,TILE_SIZE}, false);
@@ -179,15 +188,22 @@ int main()
     rock4.addComponent((Component*)&rockCollider4);
     StaticColliderComponent rockCollider5(&rock5, {TILE_SIZE,TILE_SIZE}, false);
     rock5.addComponent((Component*)&rockCollider5);
+    StaticColliderComponent rockCollider6(&rock6, {TILE_SIZE,TILE_SIZE}, false);
+    rock6.addComponent((Component*)&rockCollider6);
+    StaticColliderComponent rockCollider7(&rock7, {TILE_SIZE,TILE_SIZE}, false);
+    rock7.addComponent((Component*)&rockCollider7);
+    StaticColliderComponent rockCollider8(&rock8, {TILE_SIZE,TILE_SIZE}, false);
+    rock8.addComponent((Component*)&rockCollider8);
 
     //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &modelShader);
     skybox->addChild(&robot1);
-    robot1.transform->setLocalPosition({0.0f, 0.0f, 0.0f});
+    robot1.transform->setLocalPosition({ 0.0f, 0.0f, TILE_SIZE * 3});
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     DynamicColliderComponent robotCollider1(&robot1, 0.1f);
     robot1.addComponent((Component*)&robotCollider1);
-    RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 1.0f, {0,0,-1});
+    RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
+        1.0f, eLeft, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
     ////add and move robot2
     //Entity robot2("res/models/robot.obj", &modelShader);
@@ -209,7 +225,7 @@ int main()
     int b = 0;
 
     Entity player1("res/models/robot.obj", &modelShader);
-    skybox->addChild(&player1);
+    //skybox->addChild(&player1);
     player1.transform->setLocalPosition({ 0,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
@@ -219,7 +235,7 @@ int main()
     player1.addComponent((Component*)&playerMovement);
     
     Entity player2("res/models/robot.obj", &modelShader);
-    skybox->addChild(&player2);
+    //skybox->addChild(&player2);
     player2.transform->setLocalPosition({ 0,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
@@ -228,7 +244,6 @@ int main()
     PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {0,0,-1});
     player2.addComponent((Component*)&playerMovement2);
 #pragma endregion
-
 
     // render loop
     while (!glfwWindowShouldClose(window))

@@ -6,7 +6,8 @@ enum ComponentType{
     eModel,
     eTransform,
     eCollisionStatic,
-    eCollisionDynamic
+    eCollisionDynamic,
+    eAudio
 };
 
 #endif //OPENGLGP_COMPONENTTYPE_H
