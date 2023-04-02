@@ -204,7 +204,8 @@ int main()
     //DynamicColliderComponent robotCollider3(&robot3, 0.1f);
     //robot3.addComponent((Component*)&robotCollider3);
     Audio audio1(&robot1);
-    audio1.playAudio("res/audio/powerup.wav");
+    audio1.openAudio("res/audio/powerup.wav","mp3");
+    audio1.playLoop("mp3");
     int b = 0;
 
     Entity player1("res/models/robot.obj", &modelShader);
@@ -232,6 +233,19 @@ int main()
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        b++;
+        if (b == 500) {
+            audio1.pauseAudio("mp3");
+        }
+        if (b == 1000) {
+            audio1.resumeAudio("mp3");
+        }
+        if (b == 1500) {
+            audio1.stopAudio("mp3");
+        }
+        if (b == 2000) {
+            audio1.resumeAudio("mp3");
+        }
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
