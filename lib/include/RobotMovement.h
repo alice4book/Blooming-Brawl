@@ -9,7 +9,7 @@
 class Transform;
 class DynamicColliderComponent;
 
-class RobotMovement : Component{
+class RobotMovement : public Component{
 private:
 	glm::vec3 forward;
 	float side;

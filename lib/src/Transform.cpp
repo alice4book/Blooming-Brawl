@@ -3,7 +3,6 @@
 #include "glm/ext/matrix_transform.hpp"
 
 Transform::Transform(Entity *parent) : Component(parent) {
-    compType = eTransform;
 }
 
 glm::mat4 Transform::getLocalModelMatrix()

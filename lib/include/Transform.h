@@ -2,10 +2,9 @@
 #include "glm/vec3.hpp"
 #include "glm/ext/matrix_float4x4.hpp"
 
-class Transform : Component
+class Transform : public Component
 {
 protected:
- 
     //Local space information
     glm::vec3 m_pos = { 0.0f, 0.0f, 0.0f };
     glm::vec3 m_eulerRot = { 0.0f, 0.0f, 0.0f }; //In degrees

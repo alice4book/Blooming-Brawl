@@ -4,7 +4,7 @@
 
 class Entity;
 
-class Player : Component {
+class Player : public Component {
 
 private:
 	EPlayerID ID;

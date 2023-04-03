@@ -67,7 +67,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
 Shader::Shader() {
     ID = 0;
-    ourTexture = 0;
 }
 // activate the shader
 // ------------------------------------------------------------------------

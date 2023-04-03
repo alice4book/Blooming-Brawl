@@ -5,7 +5,6 @@
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
 : Component(parent), radius(radius), centerOffset(centerOffset), bColliderFlag(false) {
-    compType = eCollisionDynamic;
     world = World::getInstance();
 }
 

@@ -4,7 +4,6 @@
 
 StaticColliderComponent::StaticColliderComponent(Entity *parent, glm::vec2 size, bool isPassable)
 : Component(parent), size(size), isPassable(isPassable) {
-    compType = eCollisionStatic;
 }
 
 const glm::vec2 &StaticColliderComponent::getSize() const {

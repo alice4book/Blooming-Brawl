@@ -17,7 +17,6 @@ Model::Model(Entity *parent, std::string const &path, bool gamma) : Component(pa
 {
     pathString = path;
     loadModel(path);
-    compType = eModel;
 }
 
 // draws the model, and thus all its meshes
