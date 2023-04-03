@@ -25,7 +25,7 @@ public:
 
     //get component from vector by type
     template<typename T>
-    void getComponentsByType(std::vector<T*>& compType);
+    bool getComponentsByType(std::vector<T*>* compType = nullptr);
 
     //update all components
     void updateComponents();
@@ -45,10 +45,17 @@ public:
 };
 
 template<typename T>
-void Entity::getComponentsByType(std::vector<T*>& compType) {
+bool Entity::getComponentsByType(std::vector<T*>* compType) {
+    bool isEmpty = false;
     for (Component* comp : components) {
         if (dynamic_cast<T*>(comp) != nullptr) {
-            compType.push_back((T*) comp);
+            isEmpty = true;
+
+            if (compType == nullptr)
+                break;
+
+            compType->push_back((T*) comp);
         }
     }
+    return isEmpty;
 }

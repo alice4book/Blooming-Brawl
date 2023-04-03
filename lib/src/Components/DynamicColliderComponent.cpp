@@ -1,7 +1,8 @@
 #include "World.h"
-#include "Components/Transform.h"
-#include "Components/StaticColliderComponent.h"
+#include "Transform.h"
+#include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
+#include "Player.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
 : Component(parent), radius(radius), centerOffset(centerOffset), bColliderFlag(false) {
@@ -32,6 +33,7 @@ void DynamicColliderComponent::checkAllCollisions(){
         }
     }
     // Robot, enemy player
+    if(parent->getComponentsByType<Player>())
     for(DynamicColliderComponent* dynamicComp : world->getDynamicColliders()){
         if(this != dynamicComp){
             glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
@@ -41,7 +43,7 @@ void DynamicColliderComponent::checkAllCollisions(){
     }
 }
 
-glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticColliderComponent* statComp, glm::vec2 circlePosition) {
+glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticColliderComponent* statComp, glm::vec2 circlePosition) const {
     glm::vec2 squarePosition = statComp->getCenter();
     glm::vec2 squareSize = statComp->getSize();
 
@@ -76,7 +78,7 @@ glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticCollider
     return {0, 0};
 }
 
-glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos) {
+glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos) const {
     // Distance after which circles will touch
     float circlesLimit = radius + dynamicComp->getRadius();
     glm::vec2 compPos = dynamicComp->getCenter();
@@ -92,7 +94,7 @@ glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicCollid
     return norVec * (circlesLimit - sqrtf(powf(myPos.x - compPos.x, 2) + powf(myPos.y - compPos.y, 2)));
 }
 
-bool DynamicColliderComponent::getColliderFlag() {
+bool DynamicColliderComponent::getColliderFlag() const {
     return bColliderFlag;
 }
 
@@ -107,7 +109,7 @@ glm::vec2 DynamicColliderComponent::getCenter(){
     return circlePosition;
 }
 
-float DynamicColliderComponent::getRadius(){
+float DynamicColliderComponent::getRadius() const{
     return radius;
 }
 

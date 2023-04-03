@@ -145,7 +145,7 @@ void World::renderEntity() {
 
     glBindVertexArray(VAO);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textures);
-    glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, 1);
+    glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr, 1);
 
     for (auto & i : children) {
         i->renderEntity();
@@ -166,7 +166,7 @@ std::vector<DynamicColliderComponent*> World::getDynamicColliders(){
 
 void World::reloadLists(){
     for(auto* child : children){
-        child->getComponentsByType<StaticColliderComponent>(staticColComp);
-        child->getComponentsByType<DynamicColliderComponent>(dynamicColComp);
+        child->getComponentsByType<StaticColliderComponent>(&staticColComp);
+        child->getComponentsByType<DynamicColliderComponent>(&dynamicColComp);
     }
 }

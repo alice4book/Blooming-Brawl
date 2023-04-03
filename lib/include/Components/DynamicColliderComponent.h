@@ -22,11 +22,11 @@ public:
 
     void checkAllCollisions();
 
-    glm::vec2 checkStaticCollisionDirection(StaticColliderComponent* statComp, glm::vec2 circlePosition);
+    glm::vec2 checkStaticCollisionDirection(StaticColliderComponent* statComp, glm::vec2 circlePosition) const;
 
-    glm::vec2 checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos);
+    glm::vec2 checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos) const;
 
-    bool getColliderFlag();
+    [[nodiscard]] bool getColliderFlag() const;
 
     void setCenterOffset(glm::vec2 newCenterOffset);
 
@@ -34,7 +34,7 @@ public:
 
     glm::vec2 getCenter();
 
-    float getRadius();
+    [[nodiscard]] float getRadius() const;
 
     void setRadius(float newRadius);
 };

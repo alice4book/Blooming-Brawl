@@ -20,10 +20,10 @@ public:
     void reloadLists();
 
 private:
-    unsigned int textures;
+    unsigned int textures{};
     std::vector <float> vertices;
     std::vector <int> indices;
-    unsigned int VAO;
+    unsigned int VAO{};
     std::vector<StaticColliderComponent*> staticColComp;
     std::vector<DynamicColliderComponent*> dynamicColComp;
 
