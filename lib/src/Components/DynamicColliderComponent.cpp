@@ -2,7 +2,7 @@
 #include "Transform.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
-#include "Player.h"
+#include "RobotMovement.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
 : Component(parent), radius(radius), centerOffset(centerOffset), bColliderFlag(false) {
@@ -33,7 +33,7 @@ void DynamicColliderComponent::checkAllCollisions(){
         }
     }
     // Robot, enemy player
-    if(parent->getComponentsByType<Player>())
+    if(!parent->getComponentsByType<RobotMovement>())
     for(DynamicColliderComponent* dynamicComp : world->getDynamicColliders()){
         if(this != dynamicComp){
             glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
