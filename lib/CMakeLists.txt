@@ -9,13 +9,18 @@ file(GLOB_RECURSE HEADER_FILES
 	 *.hpp)
 
 # Define the executable
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES} src/World.cpp include/World.h)
+add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 target_compile_definitions(${PROJECT_NAME} PRIVATE LIBRARY_SUFFIX="")
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/
+												  ${CMAKE_CURRENT_SOURCE_DIR}/include/Backend/
+												  ${CMAKE_CURRENT_SOURCE_DIR}/include/Components/
+												  ${CMAKE_CURRENT_SOURCE_DIR}/include/Enums/
 												  ${CMAKE_CURRENT_SOURCE_DIR}/src/
+												  ${CMAKE_CURRENT_SOURCE_DIR}/src/Backend/
+												  ${CMAKE_CURRENT_SOURCE_DIR}/src/Components/
 												  ${glad_SOURCE_DIR}
 												  ${stb_image_SOURCE_DIR}
 												  ${imgui_SOURCE_DIR})

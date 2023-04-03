@@ -1,5 +1,5 @@
 #pragma once
-#include "Enums.h"
+#include "PlayerIDType.h"
 #include "Component.h"
 
 class Entity;

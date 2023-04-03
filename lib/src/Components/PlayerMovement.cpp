@@ -1,6 +1,4 @@
 #include "PlayerMovement.h"
-#include <iostream>
-#include "../imgui_impl/imgui_impl_opengl3_loader.h"
 #include "Transform.h"
 
 PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward)

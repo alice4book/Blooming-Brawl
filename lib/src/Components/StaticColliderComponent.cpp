@@ -1,5 +1,5 @@
 #include "Entity.h"
-#include "Transform.h"
+#include "Components/Transform.h"
 #include "StaticColliderComponent.h"
 
 StaticColliderComponent::StaticColliderComponent(Entity *parent, glm::vec2 size, bool isPassable)

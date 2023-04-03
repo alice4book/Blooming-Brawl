@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Component.h"
-#include "Enums.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include <GLFW/glfw3.h>
+#include "PlayerIDType.h"
+#include "GLFW/glfw3.h"
+#include "glm/vec3.hpp"
 
 class Entity;
 class Transform;

@@ -1,6 +1,6 @@
 #include "World.h"
-#include "Transform.h"
-#include "StaticColliderComponent.h"
+#include "Components/Transform.h"
+#include "Components/StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
