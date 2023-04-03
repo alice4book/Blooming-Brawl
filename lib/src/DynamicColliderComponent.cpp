@@ -51,8 +51,8 @@ glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticCollider
     distance.y = circlePosition.y - squarePosition.y;
 
     glm::vec2 absDistance;
-    absDistance.x = abs(distance.x);
-    absDistance.y = abs(distance.y);
+    absDistance.x = fabs(distance.x);
+    absDistance.y = fabs(distance.y);
 
     squareSize = squareSize * 0.5f;
 

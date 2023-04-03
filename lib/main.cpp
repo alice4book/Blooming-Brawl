@@ -227,7 +227,7 @@ int main()
     int b = 0;
 
     Entity player1("res/models/robot.obj", &modelShader);
-    //skybox->addChild(&player1);
+    skybox->addChild(&player1);
     player1.transform->setLocalPosition({ 0,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
@@ -237,7 +237,7 @@ int main()
     player1.addComponent((Component*)&playerMovement);
     
     Entity player2("res/models/robot.obj", &modelShader);
-    //skybox->addChild(&player2);
+    skybox->addChild(&player2);
     player2.transform->setLocalPosition({ 0,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);

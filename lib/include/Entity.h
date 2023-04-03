@@ -1,8 +1,6 @@
 #include <vector>
 #include <string>
 
-#include "ComponentType.h"
-
 class Model;
 class Shader;
 class Transform;
@@ -26,7 +24,8 @@ public:
     void addComponent(Component* comp);
 
     //get component from vector by type
-    std::vector<Component*> getComponentsByType(ComponentType checkType);
+    template<typename T>
+    void getComponentsByType(std::vector<T*>& compType);
 
     //update all components
     void updateComponents();
@@ -44,3 +43,12 @@ public:
 
     [[nodiscard]] const std::vector<Entity *> &getChildren() const;
 };
+
+template<typename T>
+void Entity::getComponentsByType(std::vector<T*>& compType) {
+    for (Component* comp : components) {
+        if (dynamic_cast<T*>(comp) != nullptr) {
+            compType.push_back((T*) comp);
+        }
+    }
+}

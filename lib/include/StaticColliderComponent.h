@@ -1,7 +1,7 @@
 #include "Component.h"
 #include "glm/vec2.hpp"
 
-class StaticColliderComponent : Component {
+class StaticColliderComponent : public Component {
 private:
     glm::vec2 size;
     bool isPassable;

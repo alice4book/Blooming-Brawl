@@ -6,7 +6,7 @@
 
 class World;
 class StaticColliderComponent;
-class DynamicColliderComponent : Component {
+class DynamicColliderComponent : public Component {
 private:
     World* world;
     float radius;

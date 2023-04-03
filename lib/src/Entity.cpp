@@ -18,17 +18,6 @@ void Entity::addComponent(Component* comp) {
     components.push_back(comp);
 }
 
-//get component from vector by type
-std::vector<Component*> Entity::getComponentsByType(ComponentType checkType) {
-    std::vector<Component*> compList;
-    for (Component* comp : components) {
-        if (comp->isComponentType(checkType)) {
-            compList.push_back(comp);
-        }
-    }
-    return compList;
-}
-
 void Entity::updateComponents()
 {
     for (Component* comp : components) {

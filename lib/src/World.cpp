@@ -2,6 +2,8 @@
 #include "Transform.h"
 #include "glad/glad.h"
 #include "Shader.h"
+#include "StaticColliderComponent.h"
+#include "DynamicColliderComponent.h"
 
 // set up vertex data (and buffer(s)) and configure vertex attributes
 std::vector <float> vertices;
@@ -164,10 +166,7 @@ std::vector<DynamicColliderComponent*> World::getDynamicColliders(){
 
 void World::reloadLists(){
     for(auto* child : children){
-        for(auto* comp : child->getComponentsByType(eCollisionStatic))
-            staticColComp.push_back((StaticColliderComponent*)comp);
-
-        for(auto* comp : child->getComponentsByType(eCollisionDynamic))
-            dynamicColComp.push_back((DynamicColliderComponent*)comp);
+        child->getComponentsByType<StaticColliderComponent>(staticColComp);
+        child->getComponentsByType<DynamicColliderComponent>(dynamicColComp);
     }
 }
