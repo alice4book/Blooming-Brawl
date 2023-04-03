@@ -54,6 +54,10 @@ struct Direction {
     glm::vec3 color;
 };
 
+struct WindowData {
+    int resolutionX, resolutionY;
+} windowData{1280, 720};
+
 int main()
 {
     // Setup window
@@ -90,6 +94,15 @@ int main()
 
 //    Windowed mode
     GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", nullptr, nullptr);
+
+    glfwSetWindowUserPointer(window, (void* ) &windowData);
+
+    glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int x, int y){
+        auto* localWindowData = (WindowData*) glfwGetWindowUserPointer(window);
+        localWindowData->resolutionX = x;
+        localWindowData->resolutionY = y;
+        glViewport(0, 0, x, y);
+    });
 
     if (window == nullptr)
     {
@@ -207,20 +220,7 @@ int main()
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
         &robotColliderFront1, 1.0f, eRight, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
-    ////add and move robot2
-    //Entity robot2("res/models/robot.obj", &modelShader);
-    //skybox.addChild(&robot2);
-    //robot2.transform->setLocalPosition({5, 0, 0});
-    //robot2.addComponent(new RobotMovement(&robot2, robot2.transform, 0.001f, {-1,0,0}));
-    //DynamicColliderComponent robotCollider2(&robot2, 0.1f);
-    //robot2.addComponent((Component*)&robotCollider2);
-    ////add and move robot3
-    //Entity robot3("res/models/robot.obj", &modelShader);
-    //skybox.addChild(&robot3);
-    //robot3.transform->setLocalPosition({-5, 0, -5});
-    //robot3.addComponent(new RobotMovement(&robot3, robot3.transform, 0.001f, {1,0,1}));
-    //DynamicColliderComponent robotCollider3(&robot3, 0.1f);
-    //robot3.addComponent((Component*)&robotCollider3);
+
     Audio audio1(&robot1);
     audio1.openAudio("res/audio/powerup.wav","mp3");
     audio1.playLoop("mp3");
@@ -228,7 +228,7 @@ int main()
 
     Entity player1("res/models/robot.obj", &modelShader);
     skybox->addChild(&player1);
-    player1.transform->setLocalPosition({ 0,0,0 });
+    player1.transform->setLocalPosition({ 1,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent playerCollider1(&player1, 0.1f);
@@ -238,7 +238,7 @@ int main()
     
     Entity player2("res/models/robot.obj", &modelShader);
     skybox->addChild(&player2);
-    player2.transform->setLocalPosition({ 0,0,0.5 });
+    player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent playerCollider2(&player2, 0.1f);
@@ -263,7 +263,7 @@ int main()
         if (b == 2000) {
             audio1.resumeAudio("mp3");
         }
-        float currentFrame = static_cast<float>(glfwGetTime());
+        auto currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -283,10 +283,13 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // pass projection matrix to shader (note that in this case it could change every frame)
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)mode->width / (float)mode->height, 0.1f, 100.0f);
+        // ortografia
+//        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
+//        constexpr float size = 2.f;
+//        float aspectRatio = (float) windowData.resolutionX / (float) windowData.resolutionY;
+//        glm::mat4 projection = glm::ortho(aspectRatio * -size, aspectRatio * size,  -size,  size, 0.1f, 100.f);
 
-        // camera/view transformation
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
@@ -427,7 +430,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         double xpos, ypos;
         //getting cursor position
         glfwGetCursorPos(window, &xpos, &ypos);
-        std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
+//        std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
     }
 }
 

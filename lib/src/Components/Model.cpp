@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Backend/Shader.h"
+#include "Shader.h"
 
 #include "Model.h"
 
