@@ -27,19 +27,23 @@ void DynamicColliderComponent::checkAllCollisions(){
             if (!statComp->getIsPassable()) {
                 bColliderFlag = true;
                 parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
-            } else {
-                touchingComponents.push_back((Component *) statComp);
             }
+            touchingComponents.push_back((Component *) statComp);
         }
     }
     // Robot, enemy player
-    if(!parent->getComponentsByType<RobotMovement>())
     for(DynamicColliderComponent* dynamicComp : world->getDynamicColliders()){
-        if(this != dynamicComp){
-            glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
+        if(this == dynamicComp || this->parent == dynamicComp->parent)
+            continue;
+
+        glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
+        if(colDir.x + colDir.y == 0)
+            continue;
+
+        if(!parent->getComponentsByType<RobotMovement>())
             parent->transform->addToLocalPosition({colDir.x, 0, colDir.y});
-            touchingComponents.push_back((Component*)dynamicComp);
-        }
+
+        touchingComponents.push_back((Component*)dynamicComp);
     }
 }
 

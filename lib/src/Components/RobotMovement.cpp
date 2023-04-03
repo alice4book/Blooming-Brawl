@@ -3,6 +3,7 @@
 #include "imgui_internal.h"
 
 #include "DynamicColliderComponent.h"
+#include "StaticColliderComponent.h"
 #include "Transform.h"
 
 RobotMovement::RobotMovement(Entity* parent, Transform* transform,
@@ -57,10 +58,17 @@ void RobotMovement::update() {
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 	transform->addToLocalPosition(forward * (speed * deltaTime));
-	if(colliderFront->getColliderFlag())
-	{
-		(this->*moveRob)(deltaTime);
-	}
+
+    if (colliderFront->touchingComponents.empty())
+        return;
+
+    for (auto comp : colliderFront->touchingComponents){
+        if(dynamic_cast<StaticColliderComponent*>(comp) != nullptr
+        || dynamic_cast<DynamicColliderComponent*>(comp) != nullptr){
+            (this->*moveRob)(deltaTime);
+            break;
+        }
+    }
 }
 
 // turns robot right (only with right angle)

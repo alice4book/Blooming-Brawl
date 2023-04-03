@@ -11,9 +11,9 @@ public:
     //Scene graph
     std::vector<Component*> components;
     std::vector<Entity*> children;
-    Shader* shader;
+    Shader* shader{};
     Transform* transform;
-    Model* model;
+    Model* model{};
     bool isModel;
 
     Entity();
