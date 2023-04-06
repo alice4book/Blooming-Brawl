@@ -9,7 +9,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Audio.h"
-#include "Transform.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "World.h"
@@ -19,6 +18,10 @@
 
 #include "Player.h"
 #include "PlayerMovement.h"
+
+#include "Model.h"
+#include "Map.h"
+#include <time.h>
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -149,6 +152,33 @@ int main()
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
 
+    srand(time(NULL));
+    Model tileModels[8] = {
+        Model("res/models/trawa.obj"),
+        Model("res/models/maly_kwiat.obj"),
+        Model("res/models/maly_kwiat2.obj"),
+        Model("res/models/duzy_kwiat.obj"),
+        Model("res/models/duzy_kwiat2.obj"),
+        Model("res/models/skaly.obj"),
+        Model("res/models/skaly.obj"),
+        Model("res/models/trawa.obj")
+    };
+
+    std::string mapFiles[3] = {
+        "res/maps/map1.txt",
+        "res/maps/map2.txt",
+        "res/maps/map3.txt"
+    };
+
+    //Entity grass(tileModels, &modelShader);
+    //skybox.addChild(&grass);
+
+    Entity mapManager(&modelShader);
+    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, 0);
+    mapManager.addComponent(&map);
+    skybox->addChild(&mapManager);
+
+    /*
     Entity grass("res/models/trawa.obj", &modelShader);
     Entity big_flower("res/models/duzy_kwiat.obj", &modelShader);
     Entity small_flower("res/models/maly_kwiat.obj", &modelShader);
@@ -161,6 +191,7 @@ int main()
     Entity rock6("res/models/skaly.obj", &modelShader);
     Entity rock7("res/models/skaly.obj", &modelShader);
     Entity rock8("res/models/skaly.obj", &modelShader);
+    
 
     big_flower.transform->setLocalPosition({ TILE_SIZE, 0, 0 });
     grass.transform->setLocalPosition({ TILE_SIZE * 2, 0, 0 });
@@ -189,8 +220,9 @@ int main()
     skybox->addChild(&rock6);
     skybox->addChild(&rock7);
     skybox->addChild(&rock8);
-
+    */
 #pragma region Collision & Robot test
+    /*
     StaticColliderComponent rockCollider1(&rock1, {TILE_SIZE,TILE_SIZE}, false);
     rock1.addComponent((Component*)&rockCollider1);
     StaticColliderComponent rockCollider2(&rock2, {TILE_SIZE,TILE_SIZE}, false);
@@ -207,11 +239,11 @@ int main()
     rock7.addComponent((Component*)&rockCollider7);
     StaticColliderComponent rockCollider8(&rock8, {TILE_SIZE,TILE_SIZE}, false);
     rock8.addComponent((Component*)&rockCollider8);
-
+    */
     //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &modelShader);
     skybox->addChild(&robot1);
-    robot1.transform->setLocalPosition({ 0.0f, 0.0f, TILE_SIZE * 3});
+    robot1.transform->setLocalPosition({ TILE_SIZE * 5, 0.1, TILE_SIZE * 5});
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     DynamicColliderComponent robotCollider1(&robot1, 0.1f);
     robot1.addComponent((Component*)&robotCollider1);
@@ -228,7 +260,7 @@ int main()
 
     Entity player1("res/models/robot.obj", &modelShader);
     skybox->addChild(&player1);
-    player1.transform->setLocalPosition({ 1,0,0 });
+    player1.transform->setLocalPosition({ 1,0.1,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent playerCollider1(&player1, 0.1f);
@@ -238,7 +270,7 @@ int main()
     
     Entity player2("res/models/robot.obj", &modelShader);
     skybox->addChild(&player2);
-    player2.transform->setLocalPosition({ 1,0,0.5 });
+    player2.transform->setLocalPosition({ 1,0.1,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent playerCollider2(&player2, 0.1f);
@@ -266,7 +298,7 @@ int main()
         auto currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
+        
         playerMovement.move(window);
         playerMovement2.move(window);
 

@@ -7,7 +7,7 @@
 
 unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
-class Model : public Component {
+class Model {//: public Component {
 public:
     // model data 
     std::vector<Texture> textures_loaded;    // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
@@ -18,7 +18,9 @@ public:
     bool gammaCorrection;
 
     // constructor, expects a filepath to a 3D model.
-    Model(Entity *parent, std::string const &path, bool gamma = false);
+    //Model(Entity *parent, std::string const &path, bool gamma = false);
+
+    Model(std::string const& path, bool gamma = false);
 
     // draws the model, and thus all its meshes
     void Draw(Shader &shader);

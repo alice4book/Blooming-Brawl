@@ -1,0 +1,9 @@
+<liczba wierszy max 10> 
+<liczba kamieni>
+<liczba krzewów>
+. - puste
+x - skała
+o - krzew
+? - losowo
+Ilość '?' musi być >= liczbie kamieni + krzewów
+Ilość znaków w wierszu - max 20

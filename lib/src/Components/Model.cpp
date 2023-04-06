@@ -13,7 +13,15 @@
 
 #include "Model.h"
 
+/*
 Model::Model(Entity *parent, std::string const &path, bool gamma) : Component(parent), gammaCorrection(gamma)
+{
+    pathString = path;
+    loadModel(path);
+}
+*/
+
+Model::Model(std::string const& path, bool gamma) : gammaCorrection(gamma)
 {
     pathString = path;
     loadModel(path);

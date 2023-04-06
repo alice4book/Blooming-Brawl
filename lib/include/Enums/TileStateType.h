@@ -5,7 +5,9 @@ enum EState
 {
     Empty,
     Growing,
+    Growing2,
     Grown,
+    Grown2,
     Impassable,
     Overgrown,
     Burned

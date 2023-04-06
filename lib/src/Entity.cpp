@@ -6,9 +6,23 @@ Entity::Entity() : isModel(false) {
     transform = new Transform(this);
 }
 
+Entity::Entity(Model* model, Shader* s): model(model)
+{
+    transform = new Transform(this);
+    shader = s;
+    isModel = true;
+}
+
+Entity::Entity(Shader* s)
+{
+    transform = new Transform(this);
+    shader = s;
+    isModel = false;
+}
+
 Entity::Entity(const std::string& path, Shader* s){
     transform = new Transform(this);
-    model = new Model(this, path);
+    model = new Model(path);//this, path);
     shader = s;
     isModel = true;
 }

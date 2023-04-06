@@ -17,7 +17,7 @@ public:
     std::vector<StaticColliderComponent*> getStaticColliders();
     std::vector<DynamicColliderComponent*> getDynamicColliders();
 
-    void reloadLists();
+    void reloadLists(Entity* e = nullptr);
 
 private:
     unsigned int textures{};

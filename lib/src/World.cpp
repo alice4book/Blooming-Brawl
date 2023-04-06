@@ -164,9 +164,13 @@ std::vector<DynamicColliderComponent*> World::getDynamicColliders(){
     return dynamicColComp;
 }
 
-void World::reloadLists(){
-    for(auto* child : children){
-        child->getComponentsByType<StaticColliderComponent>(&staticColComp);
-        child->getComponentsByType<DynamicColliderComponent>(&dynamicColComp);
+void World::reloadLists(Entity* e){
+    if (e)
+    {
+        e->getComponentsByType<StaticColliderComponent>(&staticColComp);
+        e->getComponentsByType<DynamicColliderComponent>(&dynamicColComp);
+    } else e = this;
+    for (auto* child : e->children) {
+        reloadLists(child);
     }
 }

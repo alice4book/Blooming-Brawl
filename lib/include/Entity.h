@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <string>
 
@@ -17,6 +18,10 @@ public:
     bool isModel;
 
     Entity();
+
+    Entity(Model* model, Shader* s);
+
+    Entity(Shader* s);
 
     Entity(const std::string& path, Shader* s);
 
