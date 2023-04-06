@@ -57,14 +57,21 @@ void RobotMovement::update() {
 	currentFrame = static_cast<float>(glfwGetTime());
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
+    if(deltaTime > 0.1f)
+        deltaTime = 0.1f;
 	transform->addToLocalPosition(forward * (speed * deltaTime));
 
     if (colliderFront->touchingComponents.empty())
         return;
 
     for (auto comp : colliderFront->touchingComponents){
-        if(dynamic_cast<StaticColliderComponent*>(comp) != nullptr
-        || dynamic_cast<DynamicColliderComponent*>(comp) != nullptr){
+        auto staticComp = dynamic_cast<StaticColliderComponent*>(comp);
+        if(staticComp != nullptr && !staticComp->getIsPassable()){
+            (this->*moveRob)(deltaTime);
+            break;
+        }
+
+        if(dynamic_cast<DynamicColliderComponent*>(comp) != nullptr){
             (this->*moveRob)(deltaTime);
             break;
         }
