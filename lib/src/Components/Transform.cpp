@@ -66,6 +66,11 @@ void Transform::scaleEntity(const glm::vec3& newScale)
     m_isDirty = true;
 }
 
+void Transform::addToScaleEntity(const glm::vec3& addScale) {
+    m_scale += addScale;
+    m_isDirty = true;
+}
+
 const glm::vec3& Transform::getLocalPosition()
 {
     return m_pos;

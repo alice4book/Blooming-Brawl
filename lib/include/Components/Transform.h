@@ -35,6 +35,8 @@ public:
 
     void scaleEntity(const glm::vec3& newScale);
 
+    void addToScaleEntity(const glm::vec3& addScale);
+
     const glm::vec3& getLocalPosition();
 
     const glm::mat4& getModelMatrix();

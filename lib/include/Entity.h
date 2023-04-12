@@ -14,6 +14,7 @@ public:
     std::vector<Entity*> children;
     Shader* shader{};
     Transform* transform;
+    Transform* parentTranform;
     Model* model{};
     bool isModel;
 

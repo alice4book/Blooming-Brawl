@@ -2,11 +2,16 @@
 #include "Model.h"
 #include "Entity.h"
 
-Entity::Entity() : isModel(false) {
+Entity::Entity() 
+    : isModel(false)
+    , parentTranform(nullptr) 
+{
     transform = new Transform(this);
 }
 
-Entity::Entity(Model* model, Shader* s): model(model)
+Entity::Entity(Model* model, Shader* s)
+    : model(model)
+    , parentTranform(nullptr)
 {
     transform = new Transform(this);
     shader = s;
@@ -14,13 +19,16 @@ Entity::Entity(Model* model, Shader* s): model(model)
 }
 
 Entity::Entity(Shader* s)
+    : parentTranform(nullptr)
 {
     transform = new Transform(this);
     shader = s;
     isModel = false;
 }
 
-Entity::Entity(const std::string& path, Shader* s){
+Entity::Entity(const std::string& path, Shader* s)
+    : parentTranform(nullptr) 
+{
     transform = new Transform(this);
     model = new Model(path);//this, path);
     shader = s;
@@ -42,6 +50,7 @@ void Entity::updateComponents()
 void Entity::addChild(Entity* arg)
 {
     children.push_back(arg);
+    arg->parentTranform = this->transform;
 }
 
 
@@ -57,7 +66,10 @@ void Entity::updateSelfAndChild()
 //Force update of transform even if local space don't change
 void Entity::forceUpdateSelfAndChild()
 {
-    transform->computeModelMatrix();
+    if (parentTranform)
+        transform->computeModelMatrix(parentTranform->getModelMatrix());
+    else
+        transform->computeModelMatrix();
 
     for (auto&& child : children)
     {
@@ -75,7 +87,6 @@ void Entity::renderEntity() {
         shader->setMat4("model", transform->getModelMatrix());
         model->Draw(*shader);
     }
-
     for (auto & i : children) {
         i->renderEntity();
     }
