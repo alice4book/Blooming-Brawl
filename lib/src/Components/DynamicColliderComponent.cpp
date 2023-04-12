@@ -5,7 +5,7 @@
 #include "RobotMovement.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
-: Component(parent), radius(radius), centerOffset(centerOffset), bColliderFlag(false) {
+: Component(parent), radius(radius), centerOffset(centerOffset) {
     world = World::getInstance();
 }
 
@@ -17,7 +17,6 @@ void DynamicColliderComponent::update() {
 void DynamicColliderComponent::checkAllCollisions(){
     glm::vec2 circlePosition = getCenter();
     touchingComponents.clear();
-    bColliderFlag = false;
 
     // Tools, map tiles
     for(StaticColliderComponent* statComp : world->getStaticColliders()){
@@ -25,7 +24,6 @@ void DynamicColliderComponent::checkAllCollisions(){
           glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
         if(collisionDirection.x + collisionDirection.y != 0) {
             if (!statComp->getIsPassable()) {
-                bColliderFlag = true;
                 parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
             }
             touchingComponents.push_back((Component *) statComp);
@@ -96,10 +94,6 @@ glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicCollid
 
     // Normalised distance vector * (float) distance between circles
     return norVec * (circlesLimit - sqrtf(powf(myPos.x - compPos.x, 2) + powf(myPos.y - compPos.y, 2)));
-}
-
-bool DynamicColliderComponent::getColliderFlag() const {
-    return bColliderFlag;
 }
 
 void DynamicColliderComponent::setCenterOffset(glm::vec2 newCenterOffset) {

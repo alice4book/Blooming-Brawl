@@ -11,7 +11,6 @@ private:
     World* world;
     float radius;
     glm::vec2 centerOffset;
-    bool bColliderFlag;
 
 public:
     std::vector<Component*> touchingComponents;
@@ -25,8 +24,6 @@ public:
     glm::vec2 checkStaticCollisionDirection(StaticColliderComponent* statComp, glm::vec2 circlePosition) const;
 
     glm::vec2 checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos) const;
-
-    [[nodiscard]] bool getColliderFlag() const;
 
     void setCenterOffset(glm::vec2 newCenterOffset);
 
