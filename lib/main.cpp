@@ -265,7 +265,7 @@ int main()
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent playerCollider1(&player1, 0.1f);
     player1.addComponent((Component*)&playerCollider1);
-    PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {0,0,-1});
+    PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
     Entity player2("res/models/robot.obj", &modelShader);

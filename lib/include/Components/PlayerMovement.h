@@ -12,6 +12,8 @@ class DynamicColliderComponent;
 class PlayerMovement : public Component {
 private:
 	glm::vec3 forward;
+	glm::vec3 previousForward;
+	glm::vec3 setForward;
 	float side;
 	float speed;
 	Transform* transform;
