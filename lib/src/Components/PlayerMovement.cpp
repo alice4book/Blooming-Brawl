@@ -73,25 +73,41 @@ void PlayerMovement::move(GLFWwindow* window)
     }
 
     if (ID == Player2) {
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            //std::cout << "W" << std::endl;
-            forward = glm::vec3{ 1,0,0 };
+        previousForward = forward;
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS
+            || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            
+            if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+                forward.x = 1;
+            }
+            else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                forward.x = -1;
+            }
+            else {
+                forward.x = 0;
+            }
+            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                forward.z = -1;
+            }
+            else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                forward.z = 1;
+            }
+            else {
+                forward.z = 0;
+            }
+
+            forward = glm::vec3{ forward.x,0,forward.z };
+            forward = glm::normalize(forward);
             transform->addToLocalPosition(forward * (speed * deltaTime));
+            if (previousForward != forward) {
+                float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
+                if (angle == 0 || angle == -0) { angle = 180; }
+                if (setForward == forward) { angle = 0; }
+                if (angle < 0 && angle > -180) { angle = -180 - angle; }
+                transform->setLocalRotation({ 0,-angle,0 });
+            }
+
         }
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            //std::cout << "S" << std::endl;
-            forward = glm::vec3{ -1,0,0 };
-            transform->addToLocalPosition(forward * (speed * deltaTime));
-        }
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            //std::cout << "A" << std::endl;
-            forward = glm::vec3{ 0,0,-1 };
-            transform->addToLocalPosition(forward * (speed * deltaTime));
-        }
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            //std::cout << "D" << std::endl;
-            forward = glm::vec3{ 0,0,1 };
-            transform->addToLocalPosition(forward * (speed * deltaTime));
-        }
+
     }
 }
