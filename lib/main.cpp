@@ -49,6 +49,7 @@ bool click = false;
 //gamepad
 int axisCount;
 
+#pragma region Light settings
 struct Direction {
     glm::vec3 direction;
     glm::vec3 ambient;
@@ -57,6 +58,9 @@ struct Direction {
     glm::vec3 color;
 };
 
+int rimLight = 1.5;
+
+#pragma endregion
 struct WindowData {
     int resolutionX, resolutionY;
 } windowData{1280, 720};
@@ -147,7 +151,7 @@ int main()
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
-
+    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
@@ -170,76 +174,13 @@ int main()
         "res/maps/map3.txt"
     };
 
-    //Entity grass(tileModels, &modelShader);
-    //skybox.addChild(&grass);
-
     Entity mapManager(&modelShader);
     Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, 0);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
-    /*
-    Entity grass("res/models/trawa.obj", &modelShader);
-    Entity big_flower("res/models/duzy_kwiat.obj", &modelShader);
-    Entity small_flower("res/models/maly_kwiat.obj", &modelShader);
-    Entity burnt_flower("res/models/spalony.obj", &modelShader);
-    Entity rock1("res/models/skaly.obj", &modelShader);
-    Entity rock2("res/models/skaly.obj", &modelShader);
-    Entity rock3("res/models/skaly.obj", &modelShader);
-    Entity rock4("res/models/skaly.obj", &modelShader);
-    Entity rock5("res/models/skaly.obj", &modelShader);
-    Entity rock6("res/models/skaly.obj", &modelShader);
-    Entity rock7("res/models/skaly.obj", &modelShader);
-    Entity rock8("res/models/skaly.obj", &modelShader);
-    
-
-    big_flower.transform->setLocalPosition({ TILE_SIZE, 0, 0 });
-    grass.transform->setLocalPosition({ TILE_SIZE * 2, 0, 0 });
-    small_flower.transform->setLocalPosition({ TILE_SIZE * 3, 0, 0 });
-    burnt_flower.transform->setLocalPosition({ TILE_SIZE * 4, 0, 0 });
-
-    rock1.transform->setLocalPosition({ 0, 0, 0 });
-    rock2.transform->setLocalPosition({ TILE_SIZE, 0, TILE_SIZE });
-    rock3.transform->setLocalPosition({ 0, 0, 5 * TILE_SIZE });
-    rock4.transform->setLocalPosition({ -4 * TILE_SIZE, 0, 4 * TILE_SIZE });
-    rock5.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 0 });
-    rock6.transform->setLocalPosition({ -4 * TILE_SIZE, 0, TILE_SIZE });
-    rock7.transform->setLocalPosition({ -3 * TILE_SIZE, 0, 5 * TILE_SIZE });
-    rock8.transform->setLocalPosition({ TILE_SIZE, 0, 4 * TILE_SIZE});
-
-    skybox->addChild(&grass);
-    skybox->addChild(&big_flower);
-    skybox->addChild(&small_flower);
-    skybox->addChild(&burnt_flower);
-    
-    skybox->addChild(&rock1);
-    skybox->addChild(&rock2);
-    skybox->addChild(&rock3);
-    skybox->addChild(&rock4);
-    skybox->addChild(&rock5);
-    skybox->addChild(&rock6);
-    skybox->addChild(&rock7);
-    skybox->addChild(&rock8);
-    */
 #pragma region Collision & Robot test
-    /*
-    StaticColliderComponent rockCollider1(&rock1, {TILE_SIZE,TILE_SIZE}, false);
-    rock1.addComponent((Component*)&rockCollider1);
-    StaticColliderComponent rockCollider2(&rock2, {TILE_SIZE,TILE_SIZE}, false);
-    rock2.addComponent((Component*)&rockCollider2);
-    StaticColliderComponent rockCollider3(&rock3, {TILE_SIZE,TILE_SIZE}, false);
-    rock3.addComponent((Component*)&rockCollider3);
-    StaticColliderComponent rockCollider4(&rock4, {TILE_SIZE,TILE_SIZE}, false);
-    rock4.addComponent((Component*)&rockCollider4);
-    StaticColliderComponent rockCollider5(&rock5, {TILE_SIZE,TILE_SIZE}, false);
-    rock5.addComponent((Component*)&rockCollider5);
-    StaticColliderComponent rockCollider6(&rock6, {TILE_SIZE,TILE_SIZE}, false);
-    rock6.addComponent((Component*)&rockCollider6);
-    StaticColliderComponent rockCollider7(&rock7, {TILE_SIZE,TILE_SIZE}, false);
-    rock7.addComponent((Component*)&rockCollider7);
-    StaticColliderComponent rockCollider8(&rock8, {TILE_SIZE,TILE_SIZE}, false);
-    rock8.addComponent((Component*)&rockCollider8);
-    */
+    
     //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &modelShader);
     skybox->addChild(&robot1);
@@ -252,11 +193,6 @@ int main()
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
         &robotColliderFront1, 1.0f, eRight, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
-
-    Audio audio1(&robot1);
-    audio1.openAudio("res/audio/powerup.wav","mp3");
-    audio1.playLoop("mp3");
-    int b = 0;
 
     Entity player1("res/models/robot.obj", &modelShader);
     skybox->addChild(&player1);
@@ -279,9 +215,17 @@ int main()
     player2.addComponent((Component*)&playerMovement2);
 #pragma endregion
 
+#pragma region Audio   
+    Audio audio1(&robot1);
+    audio1.openAudio("res/audio/powerup.wav", "mp3");
+    //audio1.playLoop("mp3");
+    int b = 0;
+#pragma endregion
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        /*
         b++;
         if (b == 500) {
             audio1.pauseAudio("mp3");
@@ -295,6 +239,7 @@ int main()
         if (b == 2000) {
             audio1.resumeAudio("mp3");
         }
+        */
         auto currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -316,10 +261,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // ortografia
-//        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
-//        constexpr float size = 2.f;
-//        float aspectRatio = (float) windowData.resolutionX / (float) windowData.resolutionY;
-//        glm::mat4 projection = glm::ortho(aspectRatio * -size, aspectRatio * size,  -size,  size, 0.1f, 100.f);
+        // glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
+        // constexpr float size = 2.f;
+        // float aspectRatio = (float) windowData.resolutionX / (float) windowData.resolutionY;
+        // glm::mat4 projection = glm::ortho(aspectRatio * -size, aspectRatio * size,  -size,  size, 0.1f, 100.f);
 
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
@@ -329,6 +274,12 @@ int main()
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
+
+        rimShader.use();
+        rimShader.setMat4("projection", projection);
+        rimShader.setMat4("view", view);
+        rimShader.setVec3("viewPos", camera.Position);
+        rimShader.setFloat("n_r", rimLight);
        
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
@@ -357,7 +308,6 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    /*
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -366,7 +316,7 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    */
+    /*
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
@@ -419,6 +369,7 @@ void processInput(GLFWwindow* window)
         }
         
     }
+    */
 
 }
 
