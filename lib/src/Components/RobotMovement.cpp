@@ -65,9 +65,10 @@ void RobotMovement::update() {
         return;
 
     for (auto comp : colliderFront->touchingComponents){
+		
         auto staticComp = dynamic_cast<StaticColliderComponent*>(comp);
         if(staticComp != nullptr && !staticComp->getIsPassable()){
-            (this->*moveRob)(deltaTime);
+			(this->*moveRob)(deltaTime);
             break;
         }
 
@@ -83,12 +84,12 @@ void RobotMovement::turnRight(float dTime) {
 	side += 90.f;
 	if(side > 270.f)
 		side = 0.0f;
-	transform->addToLocalPosition(forward * -(speed * dTime));
+	//transform->addToLocalPosition(forward * -(speed * dTime));
 	transform->rotateLocal(glm::vec3(0.0f, -90.0f, 0.0f));
 	glm::vec3 front;
-	front.x = cos(glm::radians(side)) * cos(glm::radians(0.f));
-	front.y = sin(glm::radians(0.f));
-	front.z = sin(glm::radians(side)) * cos(glm::radians(0.f));
+	front.x = cos(glm::radians(side));
+	front.y = 0.f;
+	front.z = sin(glm::radians(side));
 	forward = glm::normalize(front);
 	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
 }
@@ -98,12 +99,12 @@ void RobotMovement::turnLeft(float dTime) {
 	side -= 90.f;
 	if (side < 0.f)
 		side = 270.0f;
-	transform->addToLocalPosition(forward * -(speed * dTime));
+	//transform->addToLocalPosition(forward * -(speed * dTime));
 	transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
 	glm::vec3 front;
-	front.x = cos(glm::radians(side)) * cos(glm::radians(0.f));
-	front.y = sin(glm::radians(0.f));
-	front.z = sin(glm::radians(side)) * cos(glm::radians(0.f));
+	front.x = cos(glm::radians(side));
+	front.y = 0.f;
+	front.z = sin(glm::radians(side));
 	forward = glm::normalize(front);
 	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
 }
