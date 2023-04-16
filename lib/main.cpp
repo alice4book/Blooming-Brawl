@@ -217,8 +217,8 @@ int main()
 
 #pragma region Audio   
     Audio audio1(&robot1);
-    audio1.openAudio("res/audio/powerup.wav", "mp3");
-    //audio1.playLoop("mp3");
+    audio1.openAudio("res/audio/background.mp3", "mp3");
+    audio1.playLoop("mp3");
     int b = 0;
 #pragma endregion
 
