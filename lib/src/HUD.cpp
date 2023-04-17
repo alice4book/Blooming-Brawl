@@ -3,7 +3,9 @@
 
 HUD::HUD(Shader* shader) 
 	: hudShader(shader)
-	, tilesCount(10)
+	, tilesCount(0)
+	, player1Tiles(0)
+	, player2Tiles(0)
 {
 	this->transform->setLocalPosition({ 0,0,-2.4 });
 	this->transform->setLocalRotation({ 90,0,0 });
@@ -11,22 +13,21 @@ HUD::HUD(Shader* shader)
 	hudIcon1 = new Entity("res/models/HUD/player1_icon.obj", hudShader);
 	hudIcon1->transform->setLocalPosition({ -1.4, 0, -0.7 });
 
-	hudIcon2 = new Entity("res/models/HUD/player1_icon.obj", shader);
+	hudIcon2 = new Entity("res/models/HUD/player1_icon.obj", hudShader);
 	hudIcon2->transform->setLocalPosition({ 1.4, 0, -0.7 });
 
-	barBack = new Entity("res/models/HUD/barBack.obj", shader);
+	barBack = new Entity("res/models/HUD/barBack.obj", hudShader);
 	barBack->transform->setLocalRotation({ 0, 90, 0 });
 	barBack->transform->setLocalPosition({ 0, 0, -0.84 });
-	//barBack->transform->scaleEntity({ 2, 2, 2 });
+	barBack->transform->scaleEntity({ 1, 1, 2050 });
 
-	bar1 = new Entity("res/models/HUD/bar.obj", shader);
+	bar1 = new Entity("res/models/HUD/bar1.obj", hudShader);
 	bar1->transform->setLocalRotation({ 0, -90, 0 });
 	bar1->transform->setLocalPosition({ -1.1, 0, -0.84 });
 
-	bar2 = new Entity("res/models/HUD/bar.obj", shader);
+	bar2 = new Entity("res/models/HUD/bar2.obj", hudShader);
 	bar2->transform->setLocalRotation({ 0, 90, 0 });
 	bar2->transform->setLocalPosition({ 1.1, 0, -0.84 });
-
 
 	this->addChild(hudIcon1);
 	this->addChild(hudIcon2);
@@ -35,17 +36,12 @@ HUD::HUD(Shader* shader)
 	this->addChild(bar2);
 }
 
-void HUD::barScale(int bar) 
+void HUD::barSize(int player1, int player2)
 {
-	if (tilesCount != 0) {
-		if(bar == 1){
-			bar1->transform->addToScaleEntity({ 0, 0, 2.2f / tilesCount });
-		}
-		else if (bar == 2) {
-			bar2->transform->addToScaleEntity({ 0, 0, 2.2f / tilesCount });
-		}
+	if (tilesCount > 0) {
+		bar1->transform->scaleEntity({ 1, 1, player1 * (BAR_SIZE / tilesCount) });
+		bar2->transform->scaleEntity({ 1, 1, player2 * (BAR_SIZE / tilesCount) });
 	}
-
 }
 
 void HUD::setTilesCount(int newTilesCount) 

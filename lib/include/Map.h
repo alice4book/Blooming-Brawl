@@ -49,5 +49,6 @@ private:
 public:
     Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, int firstMap = -1);
     void ChangeMap(int mapIndex);
+    int getTilesCount();
 };
 

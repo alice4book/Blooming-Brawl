@@ -5,6 +5,9 @@ class Shader;
 class HUD : public Entity{
 
 private:
+	int BACKBAR_SIZE = 2050;
+	int BAR_SIZE = 2200;
+
 	Entity* hudIcon1;
 	Entity* hudIcon2;
 
@@ -14,14 +17,14 @@ private:
 
 	Shader* hudShader;
 	int tilesCount;
+	int player1Tiles;
+	int player2Tiles;
 
 public:
 	HUD(Shader* shader);
 
-	void barScale(int bar);
+	//Size bars acording to score
+	void barSize(int player1, int player2);
 
-	//For first player`s bar type 1, for second player`s bar type 2
 	void setTilesCount(int newTilesCount);
-
-
 };

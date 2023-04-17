@@ -136,6 +136,12 @@ void Map::ChangeMap(int mapIndex)
 	//...
 }
 
+int Map::getTilesCount()
+{
+	return MAX_TILES;
+}
+
+
 void Map::LoadMapsFromFiles(std::string* files)
 {
 	for (int i = 0; i < NR_OF_MAPS; i++)
