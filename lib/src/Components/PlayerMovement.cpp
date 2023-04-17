@@ -16,6 +16,16 @@ PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColl
     , ID(ID)
 {
     setForward = forward;
+    if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
+        //std::cout << "Joystick" << std::endl;
+        const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axisCount);
+    }
+    /*
+    if (glfwJoystickPresent(GLFW_JOYSTICK_2)) {
+        //std::cout << "Joystick" << std::endl;
+        const float* axes2 = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &axisCount2);
+    }
+    */
 }
 
 void PlayerMovement::move(GLFWwindow* window)
@@ -70,6 +80,61 @@ void PlayerMovement::move(GLFWwindow* window)
                 //std::cout << forward.x << " " << forward.y << " " << forward.z << std::endl;
             }
 
+            if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
+                //std::cout << "Joystick" << std::endl;
+                axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axisCount);
+                //std::cout << "Left Stick X: " << axes[0] << " Y: " << axes[1] << std::endl;
+                //std::cout << "Right Stick X: " << axes[2] << " Y: " << axes[3] << std::endl;
+
+                if (abs(axes[0]) > 0 && abs(axes[0]) < 0.1 && abs(axes[1]) > 0 && abs(axes[1]) < 0.1) {
+                    forward = glm::vec3{ 0,0,0 };
+                    //std::cout << forward.x << " " << forward.z << std::endl;
+                }else {
+                    forward.x = -axes[1];
+                    forward.z = axes[0];
+
+                    forward = glm::vec3{ forward.x,0,forward.z };
+                    forward = glm::normalize(forward);
+                    transform->addToLocalPosition(forward * (speed * deltaTime));
+                    //std::cout << forward.x << " " << forward.z << std::endl;
+                    if (previousForward != forward) {
+                        //std::cout << "inny" << std::endl;
+                        float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
+                        //std::cout << -angle << std::endl;
+                        //std::cout << forward.x << " " << forward.z << std::endl;
+                        //if (angle == 0 || angle == -0) { angle = 180; }
+                        //if (setForward == forward) { angle = 0; }
+                        if (angle < 0 && angle > -180) { angle = -180 - angle; }
+                        //angle = (angle > 0 ? angle : (2 * M_PI + angle)) * 360 / (2 * M_PI);
+                        
+                        transform->setLocalRotation({ 0,-angle,0 });
+                    }
+
+                }
+                GLFWgamepadstate state;
+
+                if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+                {
+                    if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
+                    {
+                        std::cout << "DOWN" << std::endl;
+                    }
+                    if (state.buttons[GLFW_GAMEPAD_BUTTON_B])
+                    {
+                        std::cout << "RIGHT" << std::endl;
+                    }
+                    if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
+                    {
+                        std::cout << "LEFT" << std::endl;
+                    }
+                    if (state.buttons[GLFW_GAMEPAD_BUTTON_Y])
+                    {
+                        std::cout << "UP" << std::endl;
+                    }
+                }
+
+            }
+
     }
 
     if (ID == Player2) {
@@ -108,6 +173,63 @@ void PlayerMovement::move(GLFWwindow* window)
             }
 
         }
+        /*
+        if (glfwJoystickPresent(GLFW_JOYSTICK_2)) {
+            //std::cout << "Joystick" << std::endl;
+            axes2 = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &axisCount2);
+            //std::cout << "Left Stick X: " << axes2[0] << " Y: " << axes2[1] << std::endl;
+            //std::cout << "Right Stick X: " << axes2[2] << " Y: " << axes2[3] << std::endl;
+
+            if (abs(axes2[0]) > 0 && abs(axes2[0]) < 0.1 && abs(axes2[1]) > 0 && abs(axes2[1]) < 0.1) {
+                forward = glm::vec3{ 0,0,0 };
+                //std::cout << forward.x << " " << forward.z << std::endl;
+            }
+            else {
+                forward.x = -axes2[1];
+                forward.z = axes2[0];
+
+                forward = glm::vec3{ forward.x,0,forward.z };
+                forward = glm::normalize(forward);
+                transform->addToLocalPosition(forward * (speed * deltaTime));
+                //std::cout << forward.x << " " << forward.z << std::endl;
+                if (previousForward != forward) {
+                    //std::cout << "inny" << std::endl;
+                    float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
+                    //std::cout << -angle << std::endl;
+                    //std::cout << forward.x << " " << forward.z << std::endl;
+                    //if (angle == 0 || angle == -0) { angle = 180; }
+                    //if (setForward == forward) { angle = 0; }
+                    if (angle < 0 && angle > -180) { angle = -180 - angle; }
+                    //angle = (angle > 0 ? angle : (2 * M_PI + angle)) * 360 / (2 * M_PI);
+
+                    transform->setLocalRotation({ 0,-angle,0 });
+                }
+
+            }
+            GLFWgamepadstate state;
+
+            if (glfwGetGamepadState(GLFW_JOYSTICK_2, &state))
+            {
+                if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
+                {
+                    std::cout << "DOWN" << std::endl;
+                }
+                if (state.buttons[GLFW_GAMEPAD_BUTTON_B])
+                {
+                    std::cout << "RIGHT" << std::endl;
+                }
+                if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
+                {
+                    std::cout << "LEFT" << std::endl;
+                }
+                if (state.buttons[GLFW_GAMEPAD_BUTTON_Y])
+                {
+                    std::cout << "UP" << std::endl;
+                }
+            }
+
+        }
+        */
 
     }
 }

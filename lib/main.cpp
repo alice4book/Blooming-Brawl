@@ -349,6 +349,7 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS)
         std::cout << "Key pressed: .    Player2 plant" << std::endl;
 
+    /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
         //std::cout << "Joystick" << std::endl;
         const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axisCount);
@@ -378,6 +379,7 @@ void processInput(GLFWwindow* window)
         }
         
     }
+    */
 
 }
 
