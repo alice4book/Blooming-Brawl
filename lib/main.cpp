@@ -152,6 +152,7 @@ int main()
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
     Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
@@ -275,12 +276,6 @@ int main()
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
 
-        rimShader.use();
-        rimShader.setMat4("projection", projection);
-        rimShader.setMat4("view", view);
-        rimShader.setVec3("viewPos", camera.Position);
-        rimShader.setFloat("n_r", rimLight);
-       
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
