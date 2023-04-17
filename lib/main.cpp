@@ -21,6 +21,7 @@
 
 #include "Model.h"
 #include "Map.h"
+#include "HUD.h"
 #include <time.h>
 
 #define GLFW_GAMEPAD_BUTTON_A 0
@@ -147,7 +148,7 @@ int main()
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
 #pragma endregion
-
+#pragma region setup
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
@@ -180,6 +181,7 @@ int main()
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
+#pragma endregion
 #pragma region Collision & Robot test
     
     //add and move robot1 (version robot turns only right)
@@ -221,6 +223,14 @@ int main()
     audio1.openAudio("res/audio/background.mp3", "mp3");
     audio1.playLoop("mp3");
     int b = 0;
+#pragma endregion
+
+#pragma region HUD
+    Shader hudShader("res/shaders/HUD.vert", "res/shaders/fragment.frag");
+    HUD hud(&hudShader);
+    mapManager.addChild(&hud);
+    hud.setTilesCount(100);//map.getTilesCount()
+    hud.barSize(50, 50);
 #pragma endregion
 
     // render loop
@@ -276,6 +286,9 @@ int main()
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
 
+        hudShader.use();
+        hudShader.setMat4("projection", projection);
+
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
@@ -302,7 +315,7 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
+    /*
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -310,8 +323,9 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-    /*
+        camera.ProcessKeyboard(RIGHT, deltaTime
+    */
+    
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
@@ -364,7 +378,6 @@ void processInput(GLFWwindow* window)
         }
         
     }
-    */
 
 }
 
