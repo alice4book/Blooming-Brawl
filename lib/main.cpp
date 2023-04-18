@@ -155,6 +155,8 @@ int main()
     Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
     Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
     Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
+    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
+
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
@@ -294,6 +296,16 @@ int main()
         reflectShader.setVec3("viewPos", camera.Position);
         reflectShader.setInt("skybox",0);
         */
+
+        /*
+        phongBlinnShader.use();
+        modelShader.setMat4("projection", projection);
+        modelShader.setMat4("view", view);
+        phongBlinnShader.setVec3("viewPos", camera.Position);
+        phongBlinnShader.setVec3("lightPos", { TILE_SIZE * 5, TILE_SIZE * 5, TILE_SIZE * 5 });
+        */
+
+
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
