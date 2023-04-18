@@ -154,6 +154,7 @@ int main()
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
     Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
     Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
+    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
@@ -285,6 +286,14 @@ int main()
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
+        
+        /*
+        reflectShader.use();
+        reflectShader.setMat4("projection", projection);
+        reflectShader.setMat4("view", view);
+        reflectShader.setVec3("viewPos", camera.Position);
+        reflectShader.setInt("skybox",0);
+        */
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
