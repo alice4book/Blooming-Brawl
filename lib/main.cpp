@@ -167,8 +167,8 @@ int main()
         Model("res/models/duzy_kwiat.obj"),
         Model("res/models/duzy_kwiat2.obj"),
         Model("res/models/skaly.obj"),
-        Model("res/models/skaly.obj"),
-        Model("res/models/trawa.obj")
+        Model("res/models/krzak.obj"),
+        Model("res/models/spalony.obj")
     };
 
     std::string mapFiles[3] = {
