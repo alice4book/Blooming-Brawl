@@ -35,7 +35,7 @@ void DynamicColliderComponent::checkAllCollisions(){
             continue;
 
         glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
-        if(colDir.x + colDir.y == 0)
+        if(fabs(colDir.x) + fabs(colDir.y) == 0)
             continue;
 
         if(!parent->getComponentsByType<RobotMovement>())

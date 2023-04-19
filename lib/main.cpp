@@ -148,6 +148,7 @@ int main()
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
 #pragma endregion
+
 #pragma region setup
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
@@ -156,6 +157,7 @@ int main()
     Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
     Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
     Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
+    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
 
 
     World* skybox = World::getInstance();
@@ -185,6 +187,7 @@ int main()
     skybox->addChild(&mapManager);
 
 #pragma endregion
+
 #pragma region Collision & Robot test
     
     //add and move robot1 (version robot turns only right)
@@ -305,7 +308,12 @@ int main()
         phongBlinnShader.setVec3("lightPos", { TILE_SIZE * 5, TILE_SIZE * 5, TILE_SIZE * 5 });
         */
 
-
+//        glassShader.use();
+//        glassShader.setInt("skybox", 0);
+//        glm::mat4 model = glm::mat4(1.0f);
+//        glassShader.setMat4("view", view);
+//        glassShader.setMat4("projection", projection);
+//        glassShader.setVec3("cameraPos", camera.Position);
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
