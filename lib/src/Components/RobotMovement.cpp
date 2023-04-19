@@ -57,8 +57,8 @@ void RobotMovement::update() {
 	currentFrame = static_cast<float>(glfwGetTime());
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-    if(deltaTime > 0.1f)
-        deltaTime = 0.1f;
+    if(deltaTime > 0.016f)
+        deltaTime = 0.016f;
 	transform->addToLocalPosition(forward * (speed * deltaTime));
 
     if (colliderFront->touchingComponents.empty())

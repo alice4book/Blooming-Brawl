@@ -277,13 +277,14 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // ortografia
-        // glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
-        // constexpr float size = 2.f;
-        // float aspectRatio = (float) windowData.resolutionX / (float) windowData.resolutionY;
-        // glm::mat4 projection = glm::ortho(aspectRatio * -size, aspectRatio * size,  -size,  size, 0.1f, 100.f);
+        // orthographic
+//         constexpr float size = 2.f;
+//         float aspectRatio = (float) windowData.resolutionX / (float) windowData.resolutionY;
+//         glm::mat4 projection = glm::ortho(aspectRatio * -size, aspectRatio * size,  -size,  size, 0.1f, 100.f);
 
+        // perspective
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
+
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader

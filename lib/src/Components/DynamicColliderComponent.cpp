@@ -77,7 +77,20 @@ glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticCollider
         return {((float)signbit(distance.x) * -2 * sqrAndRad.x + sqrAndRad.x) - distance.x, 0};
     }
 
-    return {0, 0};
+    // Distance between circle and square, at which there is collision, when at corner
+    // multiplied by 110% for smoother collider
+    float maxCornerDistance = (radius + std::max(squareSize.x, squareSize.y)) * 1.1f;
+
+    // A^2 + B^2 == C^2 -> if at range of collider
+    if((distance.x * distance.x) + (distance.y * distance.y) < maxCornerDistance * maxCornerDistance){
+        glm::vec2 norVec = circlePosition - squarePosition;
+        norVec = glm::normalize(norVec);
+
+        // Normalised distance vector * (float) distance between circles
+        return norVec * (maxCornerDistance - sqrtf(distance.x * distance.x + distance.y * distance.y));
+    }
+
+    return {0 ,0};
 }
 
 glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicColliderComponent *dynamicComp, glm::vec2 myPos) const {
@@ -90,7 +103,7 @@ glm::vec2 DynamicColliderComponent::checkDynamicCollisionDirection(DynamicCollid
     }
 
     glm::vec2 norVec = myPos - compPos;
-    glm::normalize(norVec);
+    norVec = glm::normalize(norVec);
 
     // Normalised distance vector * (float) distance between circles
     return norVec * (circlesLimit - sqrtf(powf(myPos.x - compPos.x, 2) + powf(myPos.y - compPos.y, 2)));
