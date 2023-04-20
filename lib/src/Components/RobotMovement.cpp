@@ -5,6 +5,7 @@
 #include "DynamicColliderComponent.h"
 #include "StaticColliderComponent.h"
 #include "Transform.h"
+#include "TimeManager.h"
 
 RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	DynamicColliderComponent* colliderBody, DynamicColliderComponent* colliderFront,
@@ -15,9 +16,11 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	, transform(transform)
 	, colliderBody(colliderBody)
 	, colliderFront(colliderFront)
-	, deltaTime(0.f)
 	, offset(offset)
 {
+    timeManager = TimeManager::getInstance();
+    timeManager->attach120FPS(this);
+
 	if(forward.x == 1.0f && forward.z == 0.0f){
 		side = 0.0;
 	}else
@@ -49,17 +52,10 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	default:
 		moveRob = &RobotMovement::noMove;
 	}
-	currentFrame = static_cast<float>(glfwGetTime());
-	lastFrame = currentFrame;
 }
 
-void RobotMovement::update() {	
-	currentFrame = static_cast<float>(glfwGetTime());
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-    if(deltaTime > 0.016f)
-        deltaTime = 0.016f;
-	transform->addToLocalPosition(forward * (speed * deltaTime));
+void RobotMovement::update() {
+	transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
 
     if (colliderFront->touchingComponents.empty())
         return;
@@ -68,12 +64,12 @@ void RobotMovement::update() {
 		
         auto staticComp = dynamic_cast<StaticColliderComponent*>(comp);
         if(staticComp != nullptr && !staticComp->getIsPassable()){
-			(this->*moveRob)(deltaTime);
+			(this->*moveRob)(timeManager->getDeltaTime120FPS());
             break;
         }
 
         if(dynamic_cast<DynamicColliderComponent*>(comp) != nullptr){
-            (this->*moveRob)(deltaTime);
+            (this->*moveRob)(timeManager->getDeltaTime120FPS());
             break;
         }
     }

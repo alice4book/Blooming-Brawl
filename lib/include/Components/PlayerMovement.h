@@ -7,6 +7,7 @@
 
 class Entity;
 class Transform;
+class TimeManager;
 class DynamicColliderComponent;
 
 class PlayerMovement : public Component {
@@ -19,17 +20,19 @@ private:
 	Transform* transform;
 	DynamicColliderComponent* collider;
 	EPlayerID ID;
-	float currentFrame;
-	float deltaTime;
-	float lastFrame;
 
 	int axisCount;
 	const float* axes;
 
+    GLFWwindow* window;
+    TimeManager* timeManager;
+
 	//int axisCount2;
 	//const float* axes2;
 
+    void move();
+
 public:
-	PlayerMovement(Entity* parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
-	void move(GLFWwindow* window);
+	PlayerMovement(GLFWwindow* window, Entity* parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
+    void update() override;
 };

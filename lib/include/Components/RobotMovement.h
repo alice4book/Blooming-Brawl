@@ -8,6 +8,7 @@
 
 class Transform;
 class DynamicColliderComponent;
+class TimeManager;
 
 class RobotMovement : public Component{
 private:
@@ -17,13 +18,11 @@ private:
 	Transform* transform;
 	DynamicColliderComponent* colliderBody;
 	DynamicColliderComponent* colliderFront;
-	float currentFrame;
-	float deltaTime;
-	float lastFrame;
 	float offset;
 	//Tells what kind of movement
 	RobotMovementType moveType = eStop;
 	void (RobotMovement::*moveRob)(float);
+    TimeManager* timeManager;
 	
 public:
 	RobotMovement(Entity* parent, Transform* transform, DynamicColliderComponent* colliderBody,

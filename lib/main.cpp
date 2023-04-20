@@ -22,7 +22,8 @@
 #include "Model.h"
 #include "Map.h"
 #include "HUD.h"
-#include <time.h>
+
+#include "TimeManager.h"
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -43,8 +44,7 @@ float lastY;
 bool firstMouse = true;
 
 // timing
-float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
+TimeManager* timeManager = TimeManager::getInstance();
 bool click = false;
 
 //gamepad
@@ -59,9 +59,9 @@ struct Direction {
     glm::vec3 color;
 };
 
-int rimLight = 1.5;
-
+float rimLight = 1.5;
 #pragma endregion
+
 struct WindowData {
     int resolutionX, resolutionY;
 } windowData{1280, 720};
@@ -153,17 +153,15 @@ int main()
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
-    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
-    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
-    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
-    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
-    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
-
+//    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+//    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
+//    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
+//    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
+//    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
 
-    srand(time(NULL));
     Model tileModels[8] = {
         Model("res/models/trawa.obj"),
         Model("res/models/maly_kwiat.obj"),
@@ -210,7 +208,7 @@ int main()
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent playerCollider1(&player1, 0.1f);
     player1.addComponent((Component*)&playerCollider1);
-    PlayerMovement playerMovement(&player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
+    PlayerMovement playerMovement(window, &player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
     Entity player2("res/models/robot.obj", &modelShader);
@@ -220,14 +218,14 @@ int main()
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent playerCollider2(&player2, 0.1f);
     player2.addComponent((Component*)&playerCollider2);
-    PlayerMovement playerMovement2(&player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
+    PlayerMovement playerMovement2(window, &player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
 #pragma endregion
 
 #pragma region Audio   
-    Audio audio1(&robot1);
-    audio1.openAudio("res/audio/background.mp3", "mp3");
-    audio1.playLoop("mp3");
+//    Audio audio1(&robot1);
+//    audio1.openAudio("res/audio/background.mp3", "mp3");
+//    audio1.playLoop("mp3");
     int b = 0;
 #pragma endregion
 
@@ -242,33 +240,9 @@ int main()
     // render loop
     while (!glfwWindowShouldClose(window))
     {
-        /*
-        b++;
-        if (b == 500) {
-            audio1.pauseAudio("mp3");
-        }
-        if (b == 1000) {
-            audio1.resumeAudio("mp3");
-        }
-        if (b == 1500) {
-            audio1.stopAudio("mp3");
-        }
-        if (b == 2000) {
-            audio1.resumeAudio("mp3");
-        }
-        */
-        auto currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-        
-        playerMovement.move(window);
-        playerMovement2.move(window);
+        timeManager->updateTime();
 
-        glfwPollEvents();        
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        glfwPollEvents();
 
         // input
         processInput(window);
@@ -292,29 +266,6 @@ int main()
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
-        
-        /*
-        reflectShader.use();
-        reflectShader.setMat4("projection", projection);
-        reflectShader.setMat4("view", view);
-        reflectShader.setVec3("viewPos", camera.Position);
-        reflectShader.setInt("skybox",0);
-        */
-
-        /*
-        phongBlinnShader.use();
-        modelShader.setMat4("projection", projection);
-        modelShader.setMat4("view", view);
-        phongBlinnShader.setVec3("viewPos", camera.Position);
-        phongBlinnShader.setVec3("lightPos", { TILE_SIZE * 5, TILE_SIZE * 5, TILE_SIZE * 5 });
-        */
-
-//        glassShader.use();
-//        glassShader.setInt("skybox", 0);
-//        glm::mat4 model = glm::mat4(1.0f);
-//        glassShader.setMat4("view", view);
-//        glassShader.setMat4("projection", projection);
-//        glassShader.setVec3("cameraPos", camera.Position);
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
@@ -327,15 +278,8 @@ int main()
         skybox->renderEntity();
         glDepthFunc(GL_LESS);
 
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window);
     }
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
 
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -345,25 +289,15 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    /*
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime
-    */
     
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        camera.ProcessKeyboard(FORWARD, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        camera.ProcessKeyboard(BACKWARD, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        camera.ProcessKeyboard(LEFT, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        camera.ProcessKeyboard(RIGHT, timeManager->getDeltaTimeUnlimitedFPS());
 
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
         std::cout << "Key pressed: R    Player1 plant" << std::endl;

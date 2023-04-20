@@ -10,6 +10,8 @@ public:
 	explicit Component(Entity* parent) : parent(parent) { };
 
 	virtual void update(){ };
+
+    ~Component();
 };
 
 #endif

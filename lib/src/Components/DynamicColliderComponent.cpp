@@ -3,14 +3,17 @@
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
 #include "RobotMovement.h"
+#include "TimeManager.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
 : Component(parent), radius(radius), centerOffset(centerOffset) {
     world = World::getInstance();
+
+    timeManager = TimeManager::getInstance();
+    timeManager->attach120FPS(this);
 }
 
 void DynamicColliderComponent::update() {
-    Component::update();
     checkAllCollisions();
 }
 

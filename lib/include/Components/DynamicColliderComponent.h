@@ -4,11 +4,13 @@
 #include <vector>
 #include "Component.h"
 
+class TimeManager;
 class World;
 class StaticColliderComponent;
 class DynamicColliderComponent : public Component {
 private:
     World* world;
+    TimeManager* timeManager;
     float radius;
     glm::vec2 centerOffset;
 

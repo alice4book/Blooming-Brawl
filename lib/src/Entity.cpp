@@ -79,7 +79,6 @@ void Entity::forceUpdateSelfAndChild()
 
 //Draw
 void Entity::renderEntity() {
-    this->updateComponents();
     this->updateSelfAndChild();
 
     if (isModel) {

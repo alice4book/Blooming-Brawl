@@ -2,19 +2,24 @@
 
 #include "PlayerMovement.h"
 #include "Transform.h"
+#include "TimeManager.h"
 #include<cmath>
 #include<math.h>
 #include <iostream>
 
 
-PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward)
+PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward)
 	: Component(parent)
 	, forward(forward)
 	, speed(speed)
 	, transform(transform)
 	, collider(collider)
     , ID(ID)
+    , window(window)
 {
+    timeManager = TimeManager::getInstance();
+    timeManager->attach120FPS(this);
+
     setForward = forward;
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
         //std::cout << "Joystick" << std::endl;
@@ -28,11 +33,8 @@ PlayerMovement::PlayerMovement(Entity *parent, Transform* transform, DynamicColl
     */
 }
 
-void PlayerMovement::move(GLFWwindow* window)
+void PlayerMovement::move()
 {
-    currentFrame = static_cast<float>(glfwGetTime());
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
     if (ID == Player1) {
             previousForward = forward;
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS
@@ -40,12 +42,12 @@ void PlayerMovement::move(GLFWwindow* window)
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
                     //std::cout << "W" << std::endl;
                     forward.x = 1;
-                    //transform->addToLocalPosition(forward * (speed*deltaTime));
+                    //transform->addToLocalPosition(forward * (speed*timeManager->getDeltaTime120FPS()));
                 }
                 else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
                     //std::cout << "S" << std::endl;
                     forward.x = -1;
-                    //transform->addToLocalPosition(forward * (speed * deltaTime));
+                    //transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 }
                 else {
                     forward.x = 0;
@@ -53,12 +55,12 @@ void PlayerMovement::move(GLFWwindow* window)
                 if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
                     //std::cout << "A" << std::endl;
                     forward.z = -1;
-                    //transform->addToLocalPosition(forward * (speed * deltaTime));
+                    //transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 }
                 else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
                     //std::cout << "D" << std::endl;
                     forward.z = 1;
-                    //transform->addToLocalPosition(forward * (speed * deltaTime));
+                    //transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 }
                 else {
                     forward.z = 0;
@@ -66,7 +68,7 @@ void PlayerMovement::move(GLFWwindow* window)
                 
                 forward = glm::vec3{ forward.x,0,forward.z };
                 forward = glm::normalize(forward);
-                transform->addToLocalPosition(forward * (speed * deltaTime));
+                transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 if (previousForward != forward) {
                     //std::cout << "inny" << std::endl;
                     float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
@@ -95,7 +97,7 @@ void PlayerMovement::move(GLFWwindow* window)
 
                     forward = glm::vec3{ forward.x,0,forward.z };
                     forward = glm::normalize(forward);
-                    transform->addToLocalPosition(forward * (speed * deltaTime));
+                    transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                     //std::cout << forward.x << " " << forward.z << std::endl;
                     if (previousForward != forward) {
                         //std::cout << "inny" << std::endl;
@@ -163,7 +165,7 @@ void PlayerMovement::move(GLFWwindow* window)
 
             forward = glm::vec3{ forward.x,0,forward.z };
             forward = glm::normalize(forward);
-            transform->addToLocalPosition(forward * (speed * deltaTime));
+            transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
             if (previousForward != forward) {
                 float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
                 if (angle == 0 || angle == -0) { angle = 180; }
@@ -190,7 +192,7 @@ void PlayerMovement::move(GLFWwindow* window)
 
                 forward = glm::vec3{ forward.x,0,forward.z };
                 forward = glm::normalize(forward);
-                transform->addToLocalPosition(forward * (speed * deltaTime));
+                transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 //std::cout << forward.x << " " << forward.z << std::endl;
                 if (previousForward != forward) {
                     //std::cout << "inny" << std::endl;
@@ -232,4 +234,8 @@ void PlayerMovement::move(GLFWwindow* window)
         */
 
     }
+}
+
+void PlayerMovement::update() {
+    move();
 }
