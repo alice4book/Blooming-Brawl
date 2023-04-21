@@ -2,7 +2,7 @@
 #define OPENGLGP_TIMEMANAGER_H
 
 #include "Component.h"
-#include <list>
+#include <vector>
 
 class TimeManager {
 public:
@@ -34,12 +34,12 @@ private:
     float time2FPS = 0.f;
     float deltaTime2FPS = 0.f;
 
-    static void notify(std::list<Component*> listObserver);
+    static void notify(std::vector<Component*> listObserver);
 
-    std::list<Component*> listObserverUnlimited;
-    std::list<Component*> listObserver120FPS;
-    std::list<Component*> listObserver60FPS;
-    std::list<Component*> listObserver2FPS;
+    std::vector<Component*> listObserverUnlimited;
+    std::vector<Component*> listObserver120FPS;
+    std::vector<Component*> listObserver60FPS;
+    std::vector<Component*> listObserver2FPS;
 
     static TimeManager* inst_;   // The one, single instance
     TimeManager() = default; // private constructor

@@ -201,9 +201,9 @@ int main()
         &robotColliderFront1, 1.0f, eRight, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
 
-    Entity player1("res/models/robot.obj", &modelShader);
+    Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
     skybox->addChild(&player1);
-    player1.transform->setLocalPosition({ 1,0.1,0 });
+    player1.transform->setLocalPosition({ 1,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent playerCollider1(&player1, 0.1f);
@@ -211,9 +211,9 @@ int main()
     PlayerMovement playerMovement(window, &player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
-    Entity player2("res/models/robot.obj", &modelShader);
+    Entity player2("res/models/postacie_zeskalowne/wyzej_farmer.obj", &modelShader);
     skybox->addChild(&player2);
-    player2.transform->setLocalPosition({ 1,0.1,0.5 });
+    player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent playerCollider2(&player2, 0.1f);

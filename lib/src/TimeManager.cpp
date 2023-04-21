@@ -55,15 +55,12 @@ void TimeManager::updateTime(){
     }
 }
 
-void TimeManager::notify(std::list<Component*> listObserver) {
-    auto component = listObserver.begin();
-
-    if (dynamic_cast<Component*>(*component) == nullptr)
+void TimeManager::notify(std::vector<Component*> listObserver) {
+    if (listObserver.empty() || dynamic_cast<Component*>(listObserver.front()) == nullptr)
         return;
 
-    while (component != listObserver.end()) {
-        (*component)->update();
-        ++component;
+    for(auto component : listObserver){
+        component->update();
     }
 }
 
@@ -84,10 +81,22 @@ void TimeManager::attach2FPS(Component* observer) {
 }
 
 void TimeManager::detach(Component *observer) {
-    listObserverUnlimited.remove(observer);
-    listObserver120FPS.remove(observer);
-    listObserver60FPS.remove(observer);
-    listObserver2FPS.remove(observer);
+    listObserverUnlimited.erase(
+            std::remove_if(listObserverUnlimited.begin(), listObserverUnlimited.end(),
+                           [&observer](const Component* o) { return o == observer; }),
+            listObserverUnlimited.end());
+    listObserver120FPS.erase(
+            std::remove_if(listObserver120FPS.begin(), listObserver120FPS.end(),
+                           [&observer](const Component* o) { return o == observer; }),
+            listObserver120FPS.end());
+    listObserver60FPS.erase(
+            std::remove_if(listObserver60FPS.begin(), listObserver60FPS.end(),
+                           [&observer](const Component* o) { return o == observer; }),
+            listObserver60FPS.end());
+    listObserver2FPS.erase(
+            std::remove_if(listObserver2FPS.begin(), listObserver2FPS.end(),
+                           [&observer](const Component* o) { return o == observer; }),
+            listObserver2FPS.end());
 }
 
 float TimeManager::getDeltaTimeUnlimitedFPS() const {
