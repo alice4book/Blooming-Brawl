@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
-class Shader;
+#include "Shader.h"
+#include "Text.h"
 
 class HUD : public Entity{
 
@@ -15,16 +16,28 @@ private:
 	Entity* bar1;
 	Entity* bar2;
 
+	//std::string str_score1;
+	//std::string str_score2;
+	std::string str_timer;
+
+	Text* score1;
+	Text* score2;
+	Text* timer;
+
+	Shader* textShader;
 	Shader* hudShader;
+
 	int tilesCount;
 	int player1Tiles;
 	int player2Tiles;
 
 public:
-	HUD(Shader* shader);
+	HUD(Shader* shader, Shader* textShader);
 
 	//Size bars acording to score
 	void barSize(int player1, int player2);
 
 	void setTilesCount(int newTilesCount);
+
+	void renderEntity();
 };

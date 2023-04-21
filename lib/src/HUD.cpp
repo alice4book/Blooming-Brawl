@@ -1,8 +1,9 @@
 #include "HUD.h"
 #include "Transform.h"
 
-HUD::HUD(Shader* shader) 
+HUD::HUD(Shader* shader, Shader* textShader)
 	: hudShader(shader)
+	, textShader(textShader)
 	, tilesCount(0)
 	, player1Tiles(0)
 	, player2Tiles(0)
@@ -29,6 +30,10 @@ HUD::HUD(Shader* shader)
 	bar2->transform->setLocalRotation({ 0, 90, 0 });
 	bar2->transform->setLocalPosition({ 1.1, 0, -0.84 });
 
+	score1 = new Text(textShader, "res/font/arial.ttf");
+	score2 = new Text(textShader, "res/font/arial.ttf");
+	timer = new Text(textShader, "res/font/arial.ttf");
+
 	this->addChild(hudIcon1);
 	this->addChild(hudIcon2);
 	this->addChild(barBack);
@@ -38,6 +43,8 @@ HUD::HUD(Shader* shader)
 
 void HUD::barSize(int player1, int player2)
 {
+	player1Tiles = player1;
+	player2Tiles = player2;
 	if (tilesCount > 0) {
 		bar1->transform->scaleEntity({ 1, 1, player1 * (BAR_SIZE / tilesCount) });
 		bar2->transform->scaleEntity({ 1, 1, player2 * (BAR_SIZE / tilesCount) });
@@ -47,4 +54,11 @@ void HUD::barSize(int player1, int player2)
 void HUD::setTilesCount(int newTilesCount) 
 {
 	tilesCount = newTilesCount;
+}
+
+void HUD::renderEntity() {
+	Entity::renderEntity();
+	score1->RenderText(std::to_string(player1Tiles), 10, 550, 1, { 1.f,1.f,1.f });
+	score2->RenderText(std::to_string(player2Tiles), 1190, 550, 1, { 1.f,1.f,1.f });
+	timer->RenderText(std::to_string(120), 600, 600, 1, { 1.f,1.f,1.f });
 }

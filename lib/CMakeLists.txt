@@ -33,6 +33,7 @@ target_link_libraries(${PROJECT_NAME} glfw)
 target_link_libraries(${PROJECT_NAME} imgui)
 target_link_libraries(${PROJECT_NAME} spdlog)
 target_link_libraries(${PROJECT_NAME} glm::glm)
+target_link_libraries(${PROJECT_NAME} freetype)
 link_directories(${CMAKE_BINARY_DIR}/res)
 target_link_libraries(${PROJECT_NAME} winMM.Lib)
 

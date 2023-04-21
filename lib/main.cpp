@@ -50,6 +50,8 @@ bool click = false;
 //gamepad
 int axisCount;
 
+
+
 #pragma region Light settings
 struct Direction {
     glm::vec3 direction;
@@ -231,7 +233,8 @@ int main()
 
 #pragma region HUD
     Shader hudShader("res/shaders/HUD.vert", "res/shaders/fragment.frag");
-    HUD hud(&hudShader);
+    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
+    HUD hud(&hudShader, &textShader);
     mapManager.addChild(&hud);
     hud.setTilesCount(100);//map.getTilesCount()
     hud.barSize(50, 50);
@@ -258,7 +261,6 @@ int main()
 
         // perspective
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
-
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
@@ -269,6 +271,10 @@ int main()
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
+
+        glm::mat4 projectionText = glm::ortho(0.0f, static_cast<float>(windowData.resolutionX), 0.0f, static_cast<float>(windowData.resolutionY));
+        textShader.use();
+        textShader.setMat4("projection", projectionText);
 
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
