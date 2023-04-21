@@ -57,10 +57,10 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 void RobotMovement::update() {
 	transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
 
-    if (colliderFront->touchingComponents.empty())
+    if (colliderFront->getTouchingComponents().empty())
         return;
 
-    for (auto comp : colliderFront->touchingComponents){
+    for (auto comp : colliderFront->getTouchingComponents()){
 		
         auto staticComp = dynamic_cast<StaticColliderComponent*>(comp);
         if(staticComp != nullptr && !staticComp->getIsPassable()){

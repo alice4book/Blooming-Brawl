@@ -116,7 +116,7 @@ void DynamicColliderComponent::setCenterOffset(glm::vec2 newCenterOffset) {
     centerOffset = newCenterOffset;
 }
 
-glm::vec2 DynamicColliderComponent::getCenter(){
+glm::vec2 DynamicColliderComponent::getCenter() const {
     glm::vec3 circlePosition3d = parent->transform->getLocalPosition();
     glm::vec2 circlePosition = {circlePosition3d.x, circlePosition3d.z};
     circlePosition += centerOffset;
@@ -133,6 +133,30 @@ void DynamicColliderComponent::setRadius(float newRadius){
 
 glm::vec2 DynamicColliderComponent::getCenterOffset() {
     return centerOffset;
+}
+
+const std::vector<Component *> &DynamicColliderComponent::getTouchingComponents() const {
+    return touchingComponents;
+}
+
+StaticColliderComponent* DynamicColliderComponent::getTileColliderIAmOn() const {
+    float minDistance = std::numeric_limits<float>::max();
+    StaticColliderComponent* closestComponent = nullptr;
+    glm::vec2 myPosition = getCenter();
+
+    for(auto component : touchingComponents){
+        auto nowTestedComponent = dynamic_cast<StaticColliderComponent*>(component);
+        if(nowTestedComponent == nullptr)
+            continue;
+
+        float distance = glm::length(nowTestedComponent->getCenter() + myPosition);
+        if(distance < minDistance){
+            closestComponent = nowTestedComponent;
+            minDistance = distance;
+        }
+    }
+
+    return closestComponent;
 }
 
 
