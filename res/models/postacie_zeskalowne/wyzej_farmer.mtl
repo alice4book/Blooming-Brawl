@@ -1,7 +1,7 @@
-# Blender 3.5.0 MTL File: 'duzy i mlay kwiatek na trawach.blend'
+# Blender 3.3.1 MTL File: 'None'
 # www.blender.org
 
-newmtl Sphere001
+newmtl Sphere001.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -11,7 +11,7 @@ Ni 1.450000
 d 1.000000
 illum 1
 
-newmtl okoo
+newmtl okoo.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -21,7 +21,7 @@ Ni 1.450000
 d 1.000000
 illum 1
 
-newmtl okoo3_1
+newmtl okoo3_1.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -31,7 +31,7 @@ Ni 1.450000
 d 1.000000
 illum 1
 
-newmtl okoo_copy1
+newmtl okoo_copy1.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -41,7 +41,7 @@ Ni 1.450000
 d 1.000000
 illum 1
 
-newmtl wire_086086086
+newmtl wire_086086086.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
