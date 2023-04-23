@@ -8,11 +8,8 @@ class PickUp : Component
 private:
 	DynamicColliderComponent* colliderBody;
 
-	void collisionDetection();
-
 public:
 	PickUp(Entity* parent, DynamicColliderComponent* collider);
-	void update() override;
 };
 
 

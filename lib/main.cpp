@@ -50,8 +50,6 @@ bool click = false;
 //gamepad
 int axisCount;
 
-
-
 #pragma region Light settings
 struct Direction {
     glm::vec3 direction;
@@ -60,8 +58,6 @@ struct Direction {
     glm::vec3 specular;
     glm::vec3 color;
 };
-
-float rimLight = 1.5;
 #pragma endregion
 
 struct WindowData {
@@ -155,7 +151,6 @@ int main()
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
-//    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
@@ -208,12 +203,12 @@ int main()
     player1.transform->setLocalPosition({ 1,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
-    DynamicColliderComponent playerCollider1(&player1, 0.1f);
+    DynamicColliderComponent playerCollider1(&player1, 0.05f);
     player1.addComponent((Component*)&playerCollider1);
     PlayerMovement playerMovement(window, &player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
-    Entity player2("res/models/postacie_zeskalowne/wyzej_farmer.obj", &modelShader);
+    Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
     skybox->addChild(&player2);
     player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
@@ -222,6 +217,14 @@ int main()
     player2.addComponent((Component*)&playerCollider2);
     PlayerMovement playerMovement2(window, &player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
+#pragma endregion
+
+#pragma region Power Up
+    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+    float rimLight = 0.5;
+    Entity powerUp("res/models/powerUp.obj", &rimShader);
+    powerUp.transform->setLocalPosition(glm::vec3(0.4f,1.f,0.f));
+    skybox->addChild(&powerUp);
 #pragma endregion
 
 #pragma region Audio   
@@ -268,6 +271,13 @@ int main()
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
+        
+        rimShader.use();
+        rimShader.setMat4("projection", projection);
+        rimShader.setMat4("view", view);
+        rimShader.setVec3("viewPos", camera.Position);
+        rimShader.setVec3("color", glm::vec3(1.f, 0.f, 0.f));
+        rimShader.setFloat("n_r", rimLight);
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
