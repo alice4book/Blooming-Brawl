@@ -9,6 +9,9 @@ private:
 	int BACKBAR_SIZE = 2050;
 	int BAR_SIZE = 2200;
 
+	float resizeX = 1;
+	float resizeY = 1;
+
 	Entity* hudIcon1;
 	Entity* hudIcon2;
 
@@ -16,8 +19,6 @@ private:
 	Entity* bar1;
 	Entity* bar2;
 
-	//std::string str_score1;
-	//std::string str_score2;
 	std::string str_timer;
 
 	Text* score1;
@@ -38,6 +39,8 @@ public:
 	void barSize(int player1, int player2);
 
 	void setTilesCount(int newTilesCount);
+
+	void setResize(float newResizeX, float newResizeY);
 
 	void renderEntity();
 };

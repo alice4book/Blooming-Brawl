@@ -16,7 +16,6 @@ struct Character {
     unsigned int Advance;   // Horizontal offset to advance to next glyph
 };
 
-
 class Text {
 private:
     Shader* textShader;
@@ -26,5 +25,4 @@ private:
 public:
     Text(Shader* shader, std::string font);
     void RenderText(std::string text, float x, float y, float scale, glm::vec3 color);
-
 };

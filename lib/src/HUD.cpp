@@ -56,9 +56,15 @@ void HUD::setTilesCount(int newTilesCount)
 	tilesCount = newTilesCount;
 }
 
+void HUD::setResize(float newResizeX, float newResizeY)
+{
+	resizeX = newResizeX;
+	resizeY = newResizeY;
+}
+
 void HUD::renderEntity() {
 	Entity::renderEntity();
-	score1->RenderText(std::to_string(player1Tiles), 10, 550, 1, { 1.f,1.f,1.f });
-	score2->RenderText(std::to_string(player2Tiles), 1190, 550, 1, { 1.f,1.f,1.f });
-	timer->RenderText(std::to_string(120), 600, 600, 1, { 1.f,1.f,1.f });
+	score1->RenderText(std::to_string(player1Tiles), resizeX * 10, resizeY * 550, resizeX, { 1.f,1.f,1.f });
+	score2->RenderText(std::to_string(player2Tiles), resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
+	timer->RenderText(std::to_string(120), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
 }

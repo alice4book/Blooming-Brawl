@@ -36,7 +36,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-
+void set_window_size_callback(GLFWwindow* window, int x, int y);
 // camera
 Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, -89.0f);
 float lastX;
@@ -63,6 +63,9 @@ struct Direction {
 struct WindowData {
     int resolutionX, resolutionY;
 } windowData{1280, 720};
+
+float resizeX = 1.f;
+float resizeY = 1.f;
 
 int main()
 {
@@ -102,13 +105,7 @@ int main()
     GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", nullptr, nullptr);
 
     glfwSetWindowUserPointer(window, (void* ) &windowData);
-
-    glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int x, int y){
-        auto* localWindowData = (WindowData*) glfwGetWindowUserPointer(window);
-        localWindowData->resolutionX = x;
-        localWindowData->resolutionY = y;
-        glViewport(0, 0, x, y);
-    });
+    glfwSetWindowSizeCallback(window, set_window_size_callback);
 
     if (window == nullptr)
     {
@@ -247,6 +244,7 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         timeManager->updateTime();
+        hud.setResize(resizeX, resizeY);
 
         glfwPollEvents();
 
@@ -410,4 +408,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
+}
+
+void set_window_size_callback(GLFWwindow* window, int x, int y)
+{
+    auto* localWindowData = (WindowData*)glfwGetWindowUserPointer(window);
+    resizeX = (float)x / 1280;
+    resizeY = (float)y / 720;
+    localWindowData->resolutionX = x;
+    localWindowData->resolutionY = y;
+    glViewport(0, 0, x, y);
 }
