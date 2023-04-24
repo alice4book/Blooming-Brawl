@@ -89,7 +89,10 @@ void Map::GenerateMap(int mapNr)
 		{
 			bool isPassable;
 			EState state;
-			if (row[j] == ' ') continue;
+			if (row[j] == ' ') {
+				allTiles[i][j] = NULL;
+				continue;
+			}
 			switch (row[j])
 			{
 			case 'x':
@@ -111,17 +114,55 @@ void Map::GenerateMap(int mapNr)
 			}
 			tiles[tileNr].shader = parent->shader;
 			tiles[tileNr].isModel = true;
-			tiles[tileNr].transform->setLocalPosition({ tileSize * i, 0, tileSize * j });
-			tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels));
+			tiles[tileNr].transform->setLocalPosition({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });
+			tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
 			colliders.push_back(StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
+		
 			tiles[tileNr].addComponent(&tilesComp.back());
 			tiles[tileNr].addComponent(&colliders.back());
 			parent->addChild(&tiles[tileNr]);
+			allTiles[i][j] = &tiles[tileNr];
+			
 			tileNr++;
 		}
 	}
-
 	nrOfTiles = tileNr;
+
+	//add neighbours
+	for (TileState& tile : tilesComp)
+	{
+		int neighbourNr = 0;
+		for (int i = -1; i <= 1; i++)
+		{
+			for (int j = -1; j <= 1; j++)
+			{
+				if (i != 0 || j != 0)
+				{
+					int neiX = tile.mapPosition.x + i;
+					int neiY = tile.mapPosition.y + j;
+					if (neiX >= 0 && neiX < MAX_ROWS && neiY >= 0 && neiY < MAX_COLUMNS)
+					{
+						tile.neighbours[neighbourNr] = allTiles[neiX][neiY];
+					}
+					neighbourNr++;
+				}
+			}
+		}
+		//write down neighbours
+		/*
+		std::cout << "tile " << tile.mapPosition.x << " " << tile.mapPosition.y << std::endl;
+		for (int i = 0; i < 8; i++)
+		{
+			std::vector<TileState*> neigh;
+			if (tile.neighbours[i])
+			{
+				tile.neighbours[i]->getComponentsByType(&neigh);
+				std::cout << "     " << i << " " << neigh[0]->mapPosition.x << " " << neigh[0]->mapPosition.y << std::endl ;
+			}
+			
+		}
+		*/
+	}
 }
 
 Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, int firstMap)

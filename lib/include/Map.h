@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "glm/vec2.hpp"
+
 #include "glm/vec3.hpp"
 #include "TileState.h"
 #include <string>
@@ -34,14 +34,12 @@ private:
     MapData codedMaps[NR_OF_MAPS];
     int nrOfTiles;
     
-    Entity tiles[MAX_TILES];
+    Entity tiles[MAX_TILES]; //tiles with models one after another
+    Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
     std::list <StaticColliderComponent> colliders;
 
-    //Entity* tiles;
-    //TileState* tilesComp;
     Model* tileModels;
-    std::string mapChars;
 
     void LoadMapsFromFiles(std::string* files);
     MapData LoadMapFromFile(std::string file);
