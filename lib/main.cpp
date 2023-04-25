@@ -15,6 +15,7 @@
 #include "RobotMovement.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
+#include "PickUp.h"
 
 #include "Player.h"
 #include "PlayerMovement.h"
@@ -210,7 +211,7 @@ int main()
     player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
-    DynamicColliderComponent playerCollider2(&player2, 0.1f);
+    DynamicColliderComponent playerCollider2(&player2, 0.05f);
     player2.addComponent((Component*)&playerCollider2);
     PlayerMovement playerMovement2(window, &player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
@@ -220,8 +221,13 @@ int main()
     Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
     float rimLight = 0.5;
     Entity powerUp("res/models/powerUp.obj", &rimShader);
-    powerUp.transform->setLocalPosition(glm::vec3(0.4f,1.f,0.f));
+    powerUp.transform->setLocalPosition(glm::vec3(0.7f,0.f,0.f));
     skybox->addChild(&powerUp);
+    DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
+    PickUp pickUp(&powerUp, &colliderPickUp);
+    powerUp.addComponent((Component*)&colliderPickUp);
+    powerUp.addComponent((Component*)&pickUp);
+
 #pragma endregion
 
 #pragma region Audio   

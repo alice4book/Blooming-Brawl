@@ -26,6 +26,8 @@ public:
 
     Entity(const std::string& path, Shader* s);
 
+    ~Entity();
+
     //add new component
     void addComponent(Component* comp);
 

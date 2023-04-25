@@ -3,8 +3,11 @@
 #include "PlayerMovement.h"
 #include "Transform.h"
 #include "TimeManager.h"
-#include<cmath>
-#include<math.h>
+#include "DynamicColliderComponent.h"
+#include "Entity.h"
+#include "PickUp.h"
+#include <cmath>
+#include <math.h>
 #include <iostream>
 
 
@@ -35,7 +38,19 @@ PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* tr
 
 void PlayerMovement::move()
 {
+    std::vector<PickUp*> compTypePU;
+    DynamicColliderComponent* colliding;
     if (ID == Player1) {
+            for (auto comp : collider->getTouchingComponents()) {
+                colliding = dynamic_cast<DynamicColliderComponent*>(comp);
+                if (colliding != nullptr) {
+                    dynamic_cast<Entity*>(colliding->getParent())->getComponentsByType(&compTypePU);
+                    for (PickUp* pickUp : compTypePU) {
+                        pickUp->use();
+                    }
+                }
+            }
+
             previousForward = forward;
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS
                 || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
@@ -136,10 +151,19 @@ void PlayerMovement::move()
                 }
 
             }
-
     }
-
+    compTypePU.clear();
     if (ID == Player2) {
+        for (auto comp : collider->getTouchingComponents()) {
+            colliding = dynamic_cast<DynamicColliderComponent*>(comp);
+            if (colliding != nullptr) {
+                dynamic_cast<Entity*>(colliding->getParent())->getComponentsByType(&compTypePU);
+                for (PickUp* pickUp : compTypePU) {
+                    pickUp->use();
+                }
+            }
+        }
+
         previousForward = forward;
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS
             || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
@@ -232,7 +256,6 @@ void PlayerMovement::move()
 
         }
         */
-
     }
 }
 

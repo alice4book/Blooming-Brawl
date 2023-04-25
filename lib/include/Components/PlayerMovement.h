@@ -9,6 +9,7 @@ class Entity;
 class Transform;
 class TimeManager;
 class DynamicColliderComponent;
+class PickUp;
 
 class PlayerMovement : public Component {
 private:

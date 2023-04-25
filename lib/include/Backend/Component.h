@@ -11,6 +11,8 @@ public:
 
 	virtual void update(){ };
 
+	Entity* getParent();
+
     ~Component();
 };
 

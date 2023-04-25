@@ -35,6 +35,13 @@ Entity::Entity(const std::string& path, Shader* s)
     isModel = true;
 }
 
+Entity::~Entity()
+{
+    for (auto component : components) {
+        //delete component;
+    }
+}
+
 //add new component
 void Entity::addComponent(Component* comp) {
     components.push_back(comp);
