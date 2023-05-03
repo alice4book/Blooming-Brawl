@@ -82,8 +82,10 @@ void Map::GenerateMap(int mapNr)
 	
 	//create all tiles
 	int tileNr = 0;
+	std::vector <StaticColliderComponent*> collidersRow;
 	for (int i = 0; i < codedMaps[mapNr].rows; i++)
 	{
+		collidersRow.clear();
 		std::string row = codedMaps[mapNr].codedRow[i];
 		for (int j = 0; j < row.length(); j++)
 		{
@@ -116,16 +118,19 @@ void Map::GenerateMap(int mapNr)
 			tiles[tileNr].isModel = true;
 			tiles[tileNr].transform->setLocalPosition({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });
 			tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
-			colliders.push_back(StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
-		
+			//colliders.push_back(StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
+			collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
 			tiles[tileNr].addComponent(&tilesComp.back());
-			tiles[tileNr].addComponent(&colliders.back());
+			if(&collidersRow.back() != nullptr)
+				tiles[tileNr].addComponent(collidersRow.back());
 			parent->addChild(&tiles[tileNr]);
 			allTiles[i][j] = &tiles[tileNr];
 			
 			tileNr++;
 		}
+		colliders.push_back(collidersRow);
 	}
+	collidersRow.clear();
 	nrOfTiles = tileNr;
 
 	//add neighbours

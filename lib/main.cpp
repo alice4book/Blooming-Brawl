@@ -222,7 +222,7 @@ int main()
     float rimLight = 0.5;
     Entity powerUp("res/models/powerUp.obj", &rimShader);
     powerUp.transform->setLocalPosition(glm::vec3(0.7f,0.f,0.f));
-    skybox->addChild(&powerUp);
+    //skybox->addChild(&powerUp);
     DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
     PickUp pickUp(&powerUp, &colliderPickUp);
     powerUp.addComponent((Component*)&colliderPickUp);
@@ -234,7 +234,7 @@ int main()
 //    Audio audio1(&robot1);
 //    audio1.openAudio("res/audio/background.mp3", "mp3");
 //    audio1.playLoop("mp3");
-    int b = 0;
+//    int b = 0;
 #pragma endregion
 
 #pragma region HUD
