@@ -3,10 +3,13 @@
 
 #include "Entity.h"
 
+class Map;
 class StaticColliderComponent;
 class DynamicColliderComponent;
 class World : public Entity{
 public:
+    Map* mapComponent;
+
     // This is how clients can access the single instance
     static World* getInstance();
 

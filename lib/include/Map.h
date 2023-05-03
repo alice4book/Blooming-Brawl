@@ -37,8 +37,9 @@ private:
     Entity tiles[MAX_TILES]; //tiles with models one after another
     Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
+public:
     std::vector <std::vector <StaticColliderComponent*>> colliders;
-
+private:
     Model* tileModels;
 
     void LoadMapsFromFiles(std::string* files);

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include "StaticColliderComponent.h"
+#include "World.h"
 
 
 MapData Map::LoadMapFromFile(std::string fileName)
@@ -175,6 +176,9 @@ Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSiz
 {
 	LoadMapsFromFiles(mapFiles);
 	GenerateMap(firstMap);
+
+    auto world = World::getInstance();
+    world->mapComponent = this;
 }
 
 void Map::ChangeMap(int mapIndex)

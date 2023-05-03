@@ -4,6 +4,7 @@
 #include "DynamicColliderComponent.h"
 #include "RobotMovement.h"
 #include "TimeManager.h"
+#include "Map.h"
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
 : Component(parent), radius(radius), centerOffset(centerOffset) {
@@ -19,19 +20,48 @@ void DynamicColliderComponent::update() {
 
 void DynamicColliderComponent::checkAllCollisions(){
     glm::vec2 circlePosition = getCenter();
-    touchingComponents.clear();
+    StaticColliderComponent* tileImOn = getTileColliderIAmOn();
+    touchingStaticComponents.clear();
+    touchingDynamicComponents.clear();
 
-    // Tools, map tiles
-    for(StaticColliderComponent* statComp : world->getStaticColliders()){
-         //check if two colliders fade over
-          glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
-        if(collisionDirection.x + collisionDirection.y != 0) {
-            if (!statComp->getIsPassable()) {
-                parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
+    if(tileImOn == nullptr){
+        // Map tiles
+        for(StaticColliderComponent* statComp : world->getStaticColliders()){
+            //check if two colliders fade over
+            glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
+            if(collisionDirection.x + collisionDirection.y != 0) {
+                if (!statComp->getIsPassable()) {
+                    parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
+                }
+                touchingStaticComponents.push_back(statComp);
             }
-            touchingComponents.push_back((Component *) statComp);
         }
     }
+    else{
+        // Calculate position of tile i am on
+        glm::vec2 tileImOnPosition = tileImOn->getCenter();
+        int column = abs((int)((tileImOnPosition.x - 10 * 0.254f) / 0.254f));
+        int row = (int)(tileImOnPosition.y / 0.254f);
+
+        for(int columnCounter = column - 2; columnCounter <= column + 2; columnCounter++){
+            if(columnCounter < 0 || columnCounter >= 10)
+                continue;
+            for(int rowCounter = row - 2; rowCounter <= row + 2; rowCounter++){
+                if(rowCounter < 0 || rowCounter >= 20)
+                    continue;
+                StaticColliderComponent* statComp = world->mapComponent->colliders[columnCounter][rowCounter];
+
+                glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
+                if(collisionDirection.x + collisionDirection.y != 0) {
+                    if (!statComp->getIsPassable()) {
+                        parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
+                    }
+                    touchingStaticComponents.push_back(statComp);
+                }
+            }
+        }
+    }
+
     // Robot, enemy player
     for(DynamicColliderComponent* dynamicComp : world->getDynamicColliders()){
         if(this == dynamicComp || this->parent == dynamicComp->parent)
@@ -44,7 +74,7 @@ void DynamicColliderComponent::checkAllCollisions(){
         if(!parent->getComponentsByType<RobotMovement>())
             parent->transform->addToLocalPosition({colDir.x, 0, colDir.y});
 
-        touchingComponents.push_back((Component*)dynamicComp);
+        touchingDynamicComponents.push_back(dynamicComp);
     }
 }
 
@@ -135,8 +165,12 @@ glm::vec2 DynamicColliderComponent::getCenterOffset() {
     return centerOffset;
 }
 
-const std::vector<Component *> &DynamicColliderComponent::getTouchingComponents() const {
-    return touchingComponents;
+const std::vector<StaticColliderComponent *> &DynamicColliderComponent::getTouchingStaticComponents() const {
+    return touchingStaticComponents;
+}
+
+const std::vector<DynamicColliderComponent *> &DynamicColliderComponent::getTouchingDynamicComponents() const {
+    return touchingDynamicComponents;
 }
 
 StaticColliderComponent* DynamicColliderComponent::getTileColliderIAmOn() const {
@@ -144,17 +178,16 @@ StaticColliderComponent* DynamicColliderComponent::getTileColliderIAmOn() const 
     StaticColliderComponent* closestComponent = nullptr;
     glm::vec2 myPosition = getCenter();
 
-    for(auto component : touchingComponents){
-        auto nowTestedComponent = dynamic_cast<StaticColliderComponent*>(component);
-        if(nowTestedComponent == nullptr)
-            continue;
-
-        float distance = glm::length(nowTestedComponent->getCenter() + myPosition);
+    for(StaticColliderComponent* component : touchingStaticComponents){
+        float distance = glm::length(component->getCenter() + myPosition);
         if(distance < minDistance){
-            closestComponent = nowTestedComponent;
+            closestComponent = component;
             minDistance = distance;
         }
     }
+
+    if(closestComponent == nullptr)
+        return closestComponent;
 
     return closestComponent;
 }

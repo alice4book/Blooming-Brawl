@@ -13,7 +13,8 @@ private:
     TimeManager* timeManager;
     float radius;
     glm::vec2 centerOffset;
-    std::vector<Component*> touchingComponents;
+    std::vector<StaticColliderComponent*> touchingStaticComponents;
+    std::vector<DynamicColliderComponent*> touchingDynamicComponents;
 
 public:
     DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset = {0, 0});
@@ -24,7 +25,9 @@ public:
 
     [[nodiscard]] StaticColliderComponent* getTileColliderIAmOn() const;
 
-    [[nodiscard]] const std::vector<Component *> &getTouchingComponents() const;
+    [[nodiscard]] const std::vector<StaticColliderComponent *> &getTouchingStaticComponents() const;
+
+    [[nodiscard]] const std::vector<DynamicColliderComponent *> &getTouchingDynamicComponents() const;
 
     glm::vec2 getCenterOffset();
     void setCenterOffset(glm::vec2 newCenterOffset);

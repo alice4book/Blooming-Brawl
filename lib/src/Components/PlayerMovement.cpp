@@ -39,12 +39,10 @@ PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* tr
 void PlayerMovement::move()
 {
     std::vector<PickUp*> compTypePU;
-    DynamicColliderComponent* colliding;
     if (ID == Player1) {
-            for (auto comp : collider->getTouchingComponents()) {
-                colliding = dynamic_cast<DynamicColliderComponent*>(comp);
-                if (colliding != nullptr) {
-                    dynamic_cast<Entity*>(colliding->getParent())->getComponentsByType(&compTypePU);
+            for (auto comp : collider->getTouchingDynamicComponents()) {
+                if (comp != nullptr) {
+                    dynamic_cast<Entity*>(comp->getParent())->getComponentsByType(&compTypePU);
                     for (PickUp* pickUp : compTypePU) {
                         pickUp->use();
                     }
@@ -154,10 +152,9 @@ void PlayerMovement::move()
     }
     compTypePU.clear();
     if (ID == Player2) {
-        for (auto comp : collider->getTouchingComponents()) {
-            colliding = dynamic_cast<DynamicColliderComponent*>(comp);
-            if (colliding != nullptr) {
-                dynamic_cast<Entity*>(colliding->getParent())->getComponentsByType(&compTypePU);
+        for (auto comp : collider->getTouchingDynamicComponents()) {
+            if (comp != nullptr) {
+                dynamic_cast<Entity*>(comp->getParent())->getComponentsByType(&compTypePU);
                 for (PickUp* pickUp : compTypePU) {
                     pickUp->use();
                 }
