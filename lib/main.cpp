@@ -103,7 +103,7 @@ int main()
 //    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
 
 //    Windowed mode
-    GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(windowData.resolutionX, windowData.resolutionY, "Farm Engine", nullptr, nullptr);
 
     glfwSetWindowUserPointer(window, (void* ) &windowData);
     glfwSetWindowSizeCallback(window, set_window_size_callback);
@@ -149,6 +149,7 @@ int main()
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
+    Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
@@ -246,6 +247,11 @@ int main()
     hud.barSize(50, 50);
 #pragma endregion
 
+    //Entity trawaBlur1("res/models/trawa.obj", &blurShader);
+    //Entity trawaBlur2("res/models/trawa.obj", &modelShader);
+    //trawaBlur1.transform->setLocalPosition(glm::vec3(0, 2, 0));
+    //trawaBlur2.transform->setLocalPosition(glm::vec3(0, 2, 0.5));
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -271,6 +277,14 @@ int main()
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
+        //blurShader.use();
+        //blurShader.setMat4("projection", projection);
+        //blurShader.setMat4("view", view);
+        //blurShader.setBool("horizontal", true);
+        //trawaBlur1.renderEntity();
+        //trawaBlur2.renderEntity();
+
+
         modelShader.use();
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
