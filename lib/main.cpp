@@ -25,6 +25,7 @@
 #include "HUD.h"
 
 #include "TimeManager.h"
+#include "Bloom.h"
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -68,6 +69,8 @@ struct WindowData {
 float resizeX = 1.f;
 float resizeY = 1.f;
 
+Bloom* bloom;
+
 int main()
 {
     // Setup window
@@ -103,7 +106,7 @@ int main()
 //    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
 
 //    Windowed mode
-    GLFWwindow* window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Farm Engine", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(windowData.resolutionX, windowData.resolutionY, "Farm Engine", nullptr, nullptr);
 
     glfwSetWindowUserPointer(window, (void* ) &windowData);
     glfwSetWindowSizeCallback(window, set_window_size_callback);
@@ -130,16 +133,6 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
-    // Setup Dear ImGui binding
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
-    // Setup style
-    ImGui::StyleColorsDark();
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
@@ -203,7 +196,8 @@ int main()
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent playerCollider1(&player1, 0.05f);
     player1.addComponent((Component*)&playerCollider1);
-    PlayerMovement playerMovement(window, &player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
+    PlayerMovement playerMovement(window, &player1, player1.transform, &playerCollider1, 
+        playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
     Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
@@ -213,21 +207,9 @@ int main()
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent playerCollider2(&player2, 0.05f);
     player2.addComponent((Component*)&playerCollider2);
-    PlayerMovement playerMovement2(window, &player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
+    PlayerMovement playerMovement2(window, &player2, player2.transform, &playerCollider2, 
+        playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
-#pragma endregion
-
-#pragma region Power Up
-    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
-    float rimLight = 0.5;
-    Entity powerUp("res/models/powerUp.obj", &rimShader);
-    powerUp.transform->setLocalPosition(glm::vec3(0.7f,0.f,0.f));
-    //skybox->addChild(&powerUp);
-    DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
-    PickUp pickUp(&powerUp, &colliderPickUp);
-    powerUp.addComponent((Component*)&colliderPickUp);
-    powerUp.addComponent((Component*)&pickUp);
-
 #pragma endregion
 
 #pragma region Audio   
@@ -241,11 +223,30 @@ int main()
     Shader hudShader("res/shaders/HUD.vert", "res/shaders/fragment.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     HUD hud(&hudShader, &textShader);
-    mapManager.addChild(&hud);
+    //mapManager.addChild(&hud);
     hud.setTilesCount(100);//map.getTilesCount()
     hud.barSize(50, 50);
 #pragma endregion
 
+#pragma region Power Up
+    Shader shaderLight("res/shaders/bloom/bloom.vert", "res/shaders/bloom/light_box.frag");
+    Shader shaderBlur("res/shaders/bloom/blur.vert", "res/shaders/bloom/blur.frag");
+    Shader shaderBloomFinal("res/shaders/bloom/bloom_final.vert", "res/shaders/bloom/bloom_final.frag");
+    //Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+    //float rimLight = 0.5;
+
+    Entity powerUp("res/models/powerUp.obj", &shaderLight);
+    bloom = new Bloom(windowData.resolutionX, windowData.resolutionY,
+        &shaderLight, &shaderBlur, &shaderBloomFinal);
+
+    //powerUp.transform->setLocalPosition(glm::vec3(0.7f,0.f,0.f));
+    skybox->addChild(&powerUp);
+    DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
+    PickUp pickUp(&powerUp, &colliderPickUp);
+    powerUp.addComponent((Component*)&colliderPickUp);
+    powerUp.addComponent((Component*)&pickUp);
+
+#pragma endregion
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -258,9 +259,9 @@ int main()
         processInput(window);
 
         // render
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        // glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        bloom->setHdrFBO();
         // orthographic
 //         constexpr float size = 2.f;
 //         float aspectRatio = (float) windowData.resolutionX / (float) windowData.resolutionY;
@@ -271,25 +272,24 @@ int main()
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
+        shaderLight.use();
+        shaderLight.setMat4("projection", projection);
+        shaderLight.setMat4("view", view);
+        shaderLight.setVec3("lightColor", glm::vec3(5.0f, 5.0f, 5.0f));
+        
         modelShader.use();
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
-        
-        rimShader.use();
-        rimShader.setMat4("projection", projection);
-        rimShader.setMat4("view", view);
-        rimShader.setVec3("viewPos", camera.Position);
-        rimShader.setVec3("color", glm::vec3(1.f, 0.f, 0.f));
-        rimShader.setFloat("n_r", rimLight);
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
-
+        hud.renderEntity();
+        
         glm::mat4 projectionText = glm::ortho(0.0f, static_cast<float>(windowData.resolutionX), 0.0f, static_cast<float>(windowData.resolutionY));
         textShader.use();
         textShader.setMat4("projection", projectionText);
-
+        
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
         view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
@@ -297,7 +297,9 @@ int main()
         skyboxShader.setMat4("projection", projection);
         skybox->renderEntity();
         glDepthFunc(GL_LESS);
-
+        
+        bloom->doBloom();
+        
         glfwSwapBuffers(window);
     }
 
@@ -424,4 +426,5 @@ void set_window_size_callback(GLFWwindow* window, int x, int y)
     localWindowData->resolutionX = x;
     localWindowData->resolutionY = y;
     glViewport(0, 0, x, y);
+    bloom->resize(x,y);
 }
