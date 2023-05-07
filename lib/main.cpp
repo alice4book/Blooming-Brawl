@@ -16,6 +16,7 @@
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
 #include "PickUp.h"
+#include "Spawner.h"
 
 #include "Player.h"
 #include "PlayerMovement.h"
@@ -39,6 +40,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void set_window_size_callback(GLFWwindow* window, int x, int y);
+
 // camera
 Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, -89.0f);
 float lastX;
@@ -51,16 +53,6 @@ bool click = false;
 
 //gamepad
 int axisCount;
-
-#pragma region Light settings
-struct Direction {
-    glm::vec3 direction;
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    glm::vec3 color;
-};
-#pragma endregion
 
 struct WindowData {
     int resolutionX, resolutionY;
@@ -151,6 +143,7 @@ int main()
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
     Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
+    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
@@ -177,7 +170,8 @@ int main()
     };
 
     Entity mapManager(&modelShader);
-    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, 0);
+    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &rimShader, 0);
+    map.setSpawnerShader(&rimShader);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
@@ -246,16 +240,15 @@ int main()
 #pragma endregion
 
 #pragma region Power Up
-    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+    
     float rimLight = 0.5;
-    Entity powerUp("res/models/powerUp.obj", &rimShader);
-    powerUp.transform->setLocalPosition(glm::vec3(0.7f,0.f,0.f));
-    //skybox->addChild(&powerUp);
-    DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
-    PickUp pickUp(&powerUp, &colliderPickUp);
-    powerUp.addComponent((Component*)&colliderPickUp);
-    powerUp.addComponent((Component*)&pickUp);
-
+    //Entity spawner(&rimShader);
+    //Spawner spawn(&spawner, &rimShader);
+    //spawner.addComponent(&spawn);
+    //DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
+    //PickUp pickUp(&powerUp, &colliderPickUp);
+    //powerUp.addComponent((Component*)&colliderPickUp);
+    //powerUp.addComponent((Component*)&pickUp);
 #pragma endregion
 
 #pragma region Audio   
@@ -310,7 +303,6 @@ int main()
         //blurShader.setBool("horizontal", true);
         //trawaBlur1.renderEntity();
         //trawaBlur2.renderEntity();
-
 
         modelShader.use();
         modelShader.setMat4("projection", projection);
@@ -373,6 +365,8 @@ void processInput(GLFWwindow* window)
         std::cout << "Key pressed: ,    Player2 hit" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS)
         std::cout << "Key pressed: .    Player2 plant" << std::endl;
+    //if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+        
 
     /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {

@@ -20,6 +20,7 @@ struct MapData
 };
 
 class Model;
+class Spawner;
 
 class Map :
     public Component
@@ -34,11 +35,16 @@ private:
     MapData codedMaps[NR_OF_MAPS];
     int nrOfTiles;
 
+    //spawners
+    std::vector <Entity*> spawners;
+    Shader* spawnerShader;
+
     Entity tiles[MAX_TILES]; //tiles with models one after another
     Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
 public:
     std::vector <std::vector <StaticColliderComponent*>> colliders;
+    void setSpawnerShader(Shader* shader);
 private:
     Model* tileModels;
 
@@ -46,7 +52,7 @@ private:
     MapData LoadMapFromFile(std::string file);
     void GenerateMap(int mapNr = -1);
 public:
-    Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, int firstMap = -1);
+    Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, int firstMap = -1);
     void ChangeMap(int mapIndex);
     int getTilesCount();
 

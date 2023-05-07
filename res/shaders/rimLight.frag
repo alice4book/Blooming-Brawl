@@ -7,7 +7,6 @@ in vec3 FragPos;
 
 uniform vec3 viewPos;
 uniform vec3 color;
-uniform sampler2D texture_diffuse1;
 
 //RimLight
 uniform float n_r;

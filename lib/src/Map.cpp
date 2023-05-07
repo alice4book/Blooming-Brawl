@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "StaticColliderComponent.h"
 #include "World.h"
+#include "Spawner.h"
 
 
 MapData Map::LoadMapFromFile(std::string fileName)
@@ -113,6 +114,16 @@ void Map::GenerateMap(int mapNr)
 				isPassable = true;
 				state = EState::Empty;
 				break;
+			case 's':
+				tiles[tileNr].model = &tileModels[EState::Empty];
+				isPassable = true;
+				state = EState::Empty;
+				if (spawnerShader != nullptr) {
+					spawners.push_back(new Entity(spawnerShader));
+					this->parent->addChild(spawners.back());
+					spawners.back()->addComponent(new Spawner(spawners.back(), spawnerShader));
+				}
+				break;
 			case '.':
 			default:
 				tiles[tileNr].model = &tileModels[EState::Empty];
@@ -125,6 +136,9 @@ void Map::GenerateMap(int mapNr)
 			tiles[tileNr].transform->setLocalPosition({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });
 			if (row[j] == 't') {
 				toolscord.push_back(tiles[tileNr].transform->getLocalPosition());
+			}
+			if (row[j] == 's' && spawners.size() > 0) {
+				spawners.back()->transform->setLocalPosition(tiles[tileNr].transform->getLocalPosition());
 			}
 			tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
 			//colliders.push_back(StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
@@ -179,9 +193,10 @@ void Map::GenerateMap(int mapNr)
 	}
 }
 
-Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, int firstMap)
+Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, int firstMap)
 	:Component(parent), tileModels(tileModels), tileSize(tileSize)
 {
+	spawnerShader = shader;
 	LoadMapsFromFiles(mapFiles);
 	GenerateMap(firstMap);
 
@@ -199,6 +214,11 @@ int Map::getTilesCount()
 	return MAX_TILES;
 }
 
+
+void Map::setSpawnerShader(Shader* shader)
+{
+	spawnerShader = shader;
+}
 
 void Map::LoadMapsFromFiles(std::string* files)
 {
