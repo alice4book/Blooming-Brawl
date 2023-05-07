@@ -108,6 +108,11 @@ void Map::GenerateMap(int mapNr)
 				isPassable = true;
 				state = EState::Overgrown;
 				break;
+			case 't':
+				tiles[tileNr].model = &tileModels[EState::Empty];
+				isPassable = true;
+				state = EState::Empty;
+				break;
 			case '.':
 			default:
 				tiles[tileNr].model = &tileModels[EState::Empty];
@@ -118,6 +123,9 @@ void Map::GenerateMap(int mapNr)
 			tiles[tileNr].shader = parent->shader;
 			tiles[tileNr].isModel = true;
 			tiles[tileNr].transform->setLocalPosition({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });
+			if (row[j] == 't') {
+				toolscord.push_back(tiles[tileNr].transform->getLocalPosition());
+			}
 			tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
 			//colliders.push_back(StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
 			collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
@@ -198,4 +206,9 @@ void Map::LoadMapsFromFiles(std::string* files)
 	{
 		codedMaps[i] = LoadMapFromFile(files[i]);
 	}
+}
+
+//Tools
+std::vector<glm::vec3>  Map::getToolsCord() {
+	return toolscord;
 }

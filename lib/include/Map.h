@@ -33,7 +33,7 @@ private:
     float tileSize;
     MapData codedMaps[NR_OF_MAPS];
     int nrOfTiles;
-    
+
     Entity tiles[MAX_TILES]; //tiles with models one after another
     Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
@@ -49,5 +49,11 @@ public:
     Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, int firstMap = -1);
     void ChangeMap(int mapIndex);
     int getTilesCount();
+
+    //Tools
+private:
+    std::vector<glm::vec3> toolscord;
+public:
+    std::vector<glm::vec3>  getToolsCord();
 };
 

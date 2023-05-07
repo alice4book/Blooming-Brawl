@@ -23,6 +23,7 @@
 #include "Model.h"
 #include "Map.h"
 #include "HUD.h"
+#include "Tool.h"
 
 #include "TimeManager.h"
 
@@ -179,6 +180,32 @@ int main()
     Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, 0);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
+
+#pragma endregion
+
+#pragma region Tools
+    std::vector<Entity> toolstab;
+    Entity tool1("res/models/duzy_kwiat.obj", &modelShader);
+    tool1.addComponent(new Tool(&tool1));
+    Entity tool2("res/models/maly_kwiat.obj", &modelShader);
+    mapManager.addChild(&tool1);
+    mapManager.addChild(&tool2);
+    tool2.addComponent(new Tool(&tool2));
+    toolstab.push_back(tool1);
+    toolstab.push_back(tool2);
+    int toolNr = 0;
+    std::vector<glm::vec3> toolscord;
+    toolscord = map.getToolsCord();
+    std::srand(time(NULL));
+    for (int i = 0; i < toolscord.size(); i++) {
+        std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
+        toolNr = std::rand() % toolstab.size();
+        std::vector<Tool*> vectorTool;
+        toolstab[toolNr].getComponentsByType(&vectorTool);
+        vectorTool[0]->setSpawn();
+        toolstab[toolNr].transform->setLocalPosition(toolscord[i]);
+        toolstab.erase(toolstab.begin() + toolNr);
+    }
 
 #pragma endregion
 
