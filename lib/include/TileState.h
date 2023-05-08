@@ -1,11 +1,9 @@
-#pragma once
 #include "Enums/PlayerIDType.h"
 #include "Enums/TileStateType.h"
 #include "Component.h"
 #include "glm/vec2.hpp"
 
 class Model;
-
 class TileState :
     public Component
 {
@@ -26,5 +24,6 @@ public:
 
     TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition);
 
+    void changeTileState(EPlayerID playerID);
 };
 

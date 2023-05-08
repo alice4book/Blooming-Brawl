@@ -38,13 +38,13 @@ private:
     //spawners
     std::vector <Entity*> spawners;
     Shader* spawnerShader;
+    Shader* altShader;
 
     Entity tiles[MAX_TILES]; //tiles with models one after another
     Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
 public:
     std::vector <std::vector <StaticColliderComponent*>> colliders;
-    void setSpawnerShader(Shader* shader);
 private:
     Model* tileModels;
 
@@ -52,7 +52,7 @@ private:
     MapData LoadMapFromFile(std::string file);
     void GenerateMap(int mapNr = -1);
 public:
-    Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, int firstMap = -1);
+    Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap = -1);
     void ChangeMap(int mapIndex);
     int getTilesCount();
 

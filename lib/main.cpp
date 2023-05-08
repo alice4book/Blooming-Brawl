@@ -170,8 +170,7 @@ int main()
     };
 
     Entity mapManager(&modelShader);
-    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &rimShader, 0);
-    map.setSpawnerShader(&rimShader);
+    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &rimShader, &rimShader, 0);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
@@ -223,9 +222,11 @@ int main()
     player1.transform->setLocalPosition({ 1,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
-    DynamicColliderComponent playerCollider1(&player1, 0.05f);
-    player1.addComponent((Component*)&playerCollider1);
-    PlayerMovement playerMovement(window, &player1, player1.transform, &playerCollider1, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
+    DynamicColliderComponent player1Collider(&player1, 0.05f);
+    player1.addComponent((Component*)&player1Collider);
+    DynamicColliderComponent player1ColliderFront(&player1, 0.05f);
+    player1.addComponent((Component*)&player1Collider);
+    PlayerMovement playerMovement(window, &player1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
     Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
@@ -233,9 +234,11 @@ int main()
     player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
-    DynamicColliderComponent playerCollider2(&player2, 0.05f);
-    player2.addComponent((Component*)&playerCollider2);
-    PlayerMovement playerMovement2(window, &player2, player2.transform, &playerCollider2, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
+    DynamicColliderComponent player2Collider(&player2, 0.05f);
+    player2.addComponent((Component*)&player2Collider);
+    DynamicColliderComponent player2ColliderFront(&player2, 0.05f);
+    player2.addComponent((Component*)&player2ColliderFront);
+    PlayerMovement playerMovement2(window, &player2, player2.transform, &player2Collider, &player2ColliderFront, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
 #pragma endregion
 
@@ -267,11 +270,6 @@ int main()
     hud.barSize(50, 50);
 #pragma endregion
 
-    //Entity trawaBlur1("res/models/trawa.obj", &blurShader);
-    //Entity trawaBlur2("res/models/trawa.obj", &modelShader);
-    //trawaBlur1.transform->setLocalPosition(glm::vec3(0, 2, 0));
-    //trawaBlur2.transform->setLocalPosition(glm::vec3(0, 2, 0.5));
-
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -297,12 +295,10 @@ int main()
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
-        //blurShader.use();
-        //blurShader.setMat4("projection", projection);
-        //blurShader.setMat4("view", view);
-        //blurShader.setBool("horizontal", true);
-        //trawaBlur1.renderEntity();
-        //trawaBlur2.renderEntity();
+        blurShader.use();
+        blurShader.setMat4("projection", projection);
+        blurShader.setMat4("view", view);
+        blurShader.setBool("horizontal", true);
 
         modelShader.use();
         modelShader.setMat4("projection", projection);

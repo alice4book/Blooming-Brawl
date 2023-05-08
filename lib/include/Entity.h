@@ -13,18 +13,19 @@ public:
     std::vector<Component*> components;
     std::vector<Entity*> children;
     Shader* shader{};
+    Shader* altShader{};
     Transform* transform;
-    Transform* parentTranform;
+    Transform* parentTransform = nullptr;
     Model* model{};
     bool isModel;
 
     Entity();
 
-    Entity(Model* model, Shader* s);
+    Entity(Model* model, Shader* s, Shader* altShader = nullptr);
 
-    Entity(Shader* s);
+    explicit Entity(Shader* s, Shader* altShader = nullptr);
 
-    Entity(const std::string& path, Shader* s);
+    Entity(const std::string& path, Shader* s, Shader* shader = nullptr);
 
     ~Entity();
 
@@ -50,6 +51,8 @@ public:
     virtual void renderEntity();
 
     [[nodiscard]] const std::vector<Entity *> &getChildren() const;
+
+    void switchShader();
 };
 
 template<typename T>

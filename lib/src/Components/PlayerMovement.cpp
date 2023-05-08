@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "TimeManager.h"
 #include "DynamicColliderComponent.h"
+#include "StaticColliderComponent.h"
+#include "TileState.h"
 #include "Entity.h"
 #include "PickUp.h"
 #include <cmath>
@@ -11,12 +13,13 @@
 #include <iostream>
 
 
-PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward)
+PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, float speed, EPlayerID ID, glm::vec3 forward)
 	: Component(parent)
 	, forward(forward)
 	, speed(speed)
 	, transform(transform)
 	, collider(collider)
+	, frontCollider(frontCollider)
     , ID(ID)
     , window(window)
 {
@@ -42,7 +45,7 @@ void PlayerMovement::move()
     if (ID == Player1) {
             for (auto comp : collider->getTouchingDynamicComponents()) {
                 if (comp != nullptr) {
-                    dynamic_cast<Entity*>(comp->getParent())->getComponentsByType(&compTypePU);
+                    comp->getParent()->getComponentsByType(&compTypePU);
                     for (PickUp* pickUp : compTypePU) {
                         pickUp->use();
                     }
@@ -154,7 +157,7 @@ void PlayerMovement::move()
     if (ID == Player2) {
         for (auto comp : collider->getTouchingDynamicComponents()) {
             if (comp != nullptr) {
-                dynamic_cast<Entity*>(comp->getParent())->getComponentsByType(&compTypePU);
+                comp->getParent()->getComponentsByType(&compTypePU);
                 for (PickUp* pickUp : compTypePU) {
                     pickUp->use();
                 }
@@ -258,4 +261,39 @@ void PlayerMovement::move()
 
 void PlayerMovement::update() {
     move();
+    checkInput();
+    handleSeenTile();
+}
+
+void PlayerMovement::checkInput(){
+    switch(ID){
+        case Player1:
+            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS){
+                frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+            }
+
+            break;
+        case Player2:
+            if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
+                frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void PlayerMovement::handleSeenTile(){
+    if(lastSeenTile == nullptr){
+        lastSeenTile = frontCollider->getTileColliderIAmOn();
+        if(lastSeenTile == nullptr)
+            return;
+
+        lastSeenTile->getParent()->switchShader();
+    }
+    else if(lastSeenTile != frontCollider->getTileColliderIAmOn()) {
+        lastSeenTile->getParent()->switchShader();
+        lastSeenTile = frontCollider->getTileColliderIAmOn();
+        lastSeenTile->getParent()->switchShader();
+    }
 }

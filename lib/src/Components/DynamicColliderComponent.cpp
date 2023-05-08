@@ -20,11 +20,11 @@ void DynamicColliderComponent::update() {
 
 void DynamicColliderComponent::checkAllCollisions(){
     glm::vec2 circlePosition = getCenter();
-    StaticColliderComponent* tileImOn = getTileColliderIAmOn();
+    setTileColliderIAmOn();
     touchingStaticComponents.clear();
     touchingDynamicComponents.clear();
 
-    if(tileImOn == nullptr){
+    if(tileIAmOn == nullptr){
         // Map tiles
         for(StaticColliderComponent* statComp : world->getStaticColliders()){
             //check if two colliders fade over
@@ -39,7 +39,7 @@ void DynamicColliderComponent::checkAllCollisions(){
     }
     else{
         // Calculate position of tile i am on
-        glm::vec2 tileImOnPosition = tileImOn->getCenter();
+        glm::vec2 tileImOnPosition = tileIAmOn->getCenter();
         int column = abs((int)((tileImOnPosition.x - 10 * 0.254f) / 0.254f));
         int row = (int)(tileImOnPosition.y / 0.254f);
 
@@ -173,7 +173,7 @@ const std::vector<DynamicColliderComponent *> &DynamicColliderComponent::getTouc
     return touchingDynamicComponents;
 }
 
-StaticColliderComponent* DynamicColliderComponent::getTileColliderIAmOn() const {
+void DynamicColliderComponent::setTileColliderIAmOn() {
     float minDistance = std::numeric_limits<float>::max();
     StaticColliderComponent* closestComponent = nullptr;
     glm::vec2 myPosition = getCenter();
@@ -186,12 +186,9 @@ StaticColliderComponent* DynamicColliderComponent::getTileColliderIAmOn() const 
         }
     }
 
-    if(closestComponent == nullptr)
-        return closestComponent;
-
-    return closestComponent;
+    tileIAmOn = closestComponent;
 }
 
-
-
-
+StaticColliderComponent* DynamicColliderComponent::getTileColliderIAmOn() {
+    return tileIAmOn;
+}

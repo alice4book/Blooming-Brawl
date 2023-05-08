@@ -9,6 +9,7 @@ class Entity;
 class Transform;
 class TimeManager;
 class DynamicColliderComponent;
+class StaticColliderComponent;
 class PickUp;
 
 class PlayerMovement : public Component {
@@ -20,6 +21,8 @@ private:
 	float speed;
 	Transform* transform;
 	DynamicColliderComponent* collider;
+	DynamicColliderComponent* frontCollider;
+	StaticColliderComponent* lastSeenTile = nullptr;
 	EPlayerID ID;
 
 	int axisCount;
@@ -32,8 +35,10 @@ private:
 	//const float* axes2;
 
     void move();
+    void checkInput();
+    void handleSeenTile();
 
 public:
-	PlayerMovement(GLFWwindow* window, Entity* parent, Transform* transform, DynamicColliderComponent* collider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
+	PlayerMovement(GLFWwindow* window, Entity* parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
     void update() override;
 };

@@ -1,11 +1,12 @@
-#pragma once
 #include "TileState.h"
-//#include "Component.h"
-//#include "Enums.h"
+#include "StaticColliderComponent.h"
+#include "Entity.h"
+#include "Shader.h"
 
-class Map;
+TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition)
+ : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition)
+{}
 
-TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition) : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition)
-{
-
+void TileState::changeTileState(EPlayerID playerID) {
+    // TODO: Paulina will do this
 }

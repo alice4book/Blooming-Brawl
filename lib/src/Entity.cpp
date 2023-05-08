@@ -4,42 +4,38 @@
 
 Entity::Entity() 
     : isModel(false)
-    , parentTranform(nullptr) 
+    , parentTransform(nullptr)
 {
     transform = new Transform(this);
 }
 
-Entity::Entity(Model* model, Shader* s)
-    : model(model)
-    , parentTranform(nullptr)
+Entity::Entity(Model* model, Shader* s, Shader* altShader)
+    : model(model), shader(s), altShader(altShader)
 {
     transform = new Transform(this);
-    shader = s;
     isModel = true;
 }
 
-Entity::Entity(Shader* s)
-    : parentTranform(nullptr)
+Entity::Entity(Shader* s,Shader* altShader)
+    : shader(s), altShader(altShader)
 {
     transform = new Transform(this);
-    shader = s;
     isModel = false;
 }
 
-Entity::Entity(const std::string& path, Shader* s)
-    : parentTranform(nullptr) 
+Entity::Entity(const std::string& path, Shader* s, Shader* altShader)
+    : shader(s), altShader(altShader)
 {
     transform = new Transform(this);
     model = new Model(path);//this, path);
-    shader = s;
     isModel = true;
 }
 
 Entity::~Entity()
 {
-    for (auto component : components) {
-        //delete component;
-    }
+//    for (auto component : components) {
+//        delete component;
+//    }
 }
 
 //add new component
@@ -57,7 +53,7 @@ void Entity::updateComponents()
 void Entity::addChild(Entity* arg)
 {
     children.push_back(arg);
-    arg->parentTranform = this->transform;
+    arg->parentTransform = this->transform;
 }
 
 
@@ -73,8 +69,8 @@ void Entity::updateSelfAndChild()
 //Force update of transform even if local space don't change
 void Entity::forceUpdateSelfAndChild()
 {
-    if (parentTranform)
-        transform->computeModelMatrix(parentTranform->getModelMatrix());
+    if (parentTransform)
+        transform->computeModelMatrix(parentTransform->getModelMatrix());
     else
         transform->computeModelMatrix();
 
@@ -100,4 +96,9 @@ void Entity::renderEntity() {
 
 const std::vector<Entity *> &Entity::getChildren() const {
     return children;
+}
+
+void Entity::switchShader(){
+    if(altShader != nullptr)
+        std::swap(shader, altShader);
 }

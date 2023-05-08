@@ -101,21 +101,25 @@ void Map::GenerateMap(int mapNr)
 			{
 			case 'x':
 				tiles[tileNr].model = &tileModels[EState::Impassable];
+				tiles[tileNr].altShader = altShader;
 				isPassable = false;
 				state = EState::Impassable;
 				break;
 			case 'o':
 				tiles[tileNr].model = &tileModels[EState::Overgrown];
+                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Overgrown;
 				break;
 			case 't':
 				tiles[tileNr].model = &tileModels[EState::Empty];
+                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Empty;
 				break;
 			case 's':
 				tiles[tileNr].model = &tileModels[EState::Empty];
+                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Empty;
 				if (spawnerShader != nullptr) {
@@ -127,6 +131,7 @@ void Map::GenerateMap(int mapNr)
 			case '.':
 			default:
 				tiles[tileNr].model = &tileModels[EState::Empty];
+                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Empty;
 				break;
@@ -140,9 +145,10 @@ void Map::GenerateMap(int mapNr)
 			if (row[j] == 's' && spawners.size() > 0) {
 				spawners.back()->transform->setLocalPosition(tiles[tileNr].transform->getLocalPosition());
 			}
-			tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
-			//colliders.push_back(StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
-			collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable));
+
+            tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
+            collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable, &tilesComp.back()));
+
 			tiles[tileNr].addComponent(&tilesComp.back());
 			if(&collidersRow.back() != nullptr)
 				tiles[tileNr].addComponent(collidersRow.back());
@@ -193,10 +199,9 @@ void Map::GenerateMap(int mapNr)
 	}
 }
 
-Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, int firstMap)
-	:Component(parent), tileModels(tileModels), tileSize(tileSize)
+Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap)
+	:Component(parent), tileModels(tileModels), tileSize(tileSize), altShader(altShader), spawnerShader(shader)
 {
-	spawnerShader = shader;
 	LoadMapsFromFiles(mapFiles);
 	GenerateMap(firstMap);
 
@@ -212,12 +217,6 @@ void Map::ChangeMap(int mapIndex)
 int Map::getTilesCount()
 {
 	return MAX_TILES;
-}
-
-
-void Map::setSpawnerShader(Shader* shader)
-{
-	spawnerShader = shader;
 }
 
 void Map::LoadMapsFromFiles(std::string* files)
