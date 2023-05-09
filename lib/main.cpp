@@ -154,10 +154,10 @@ int main()
 
     Model tileModels[8] = {
         Model("res/models/trawa.obj"),
-        Model("res/models/maly_kwiat.obj"),
         Model("res/models/maly_kwiat2.obj"),
-        Model("res/models/duzy_kwiat.obj"),
+        Model("res/models/maly_kwiat.obj"),
         Model("res/models/duzy_kwiat2.obj"),
+        Model("res/models/duzy_kwiat.obj"),
         Model("res/models/skaly.obj"),
         Model("res/models/krzak.obj"),
         Model("res/models/spalony.obj")

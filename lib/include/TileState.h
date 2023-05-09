@@ -24,6 +24,7 @@ public:
 
     TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition);
 
+    void setState(EState newState);
     void changeTileState(EPlayerID playerID);
 };
 
