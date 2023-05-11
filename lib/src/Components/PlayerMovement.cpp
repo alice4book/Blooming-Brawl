@@ -31,12 +31,12 @@ PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* tr
         //std::cout << "Joystick" << std::endl;
         const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axisCount);
     }
-    /*
+    
     if (glfwJoystickPresent(GLFW_JOYSTICK_2)) {
         //std::cout << "Joystick" << std::endl;
         const float* axes2 = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &axisCount2);
     }
-    */
+    
 }
 
 void PlayerMovement::move()
@@ -199,7 +199,7 @@ void PlayerMovement::move()
             }
 
         }
-        /*
+        
         if (glfwJoystickPresent(GLFW_JOYSTICK_2)) {
             //std::cout << "Joystick" << std::endl;
             axes2 = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &axisCount2);
@@ -255,7 +255,7 @@ void PlayerMovement::move()
             }
 
         }
-        */
+        
     }
 }
 
@@ -271,11 +271,31 @@ void PlayerMovement::checkInput(){
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS){
                 frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
             }
+            if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
+                GLFWgamepadstate state;
+                if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+                {
+                    if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
+                    {
+                        frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+                    }
+                }
+            }
 
             break;
         case Player2:
             if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
                 frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+            }
+            if (glfwJoystickPresent(GLFW_JOYSTICK_2)) {
+                GLFWgamepadstate state;
+                if (glfwGetGamepadState(GLFW_JOYSTICK_2, &state))
+                {
+                    if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
+                    {
+                        frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+                    }
+                }
             }
             break;
         default:

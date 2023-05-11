@@ -31,8 +31,8 @@ private:
     GLFWwindow* window;
     TimeManager* timeManager;
 
-	//int axisCount2;
-	//const float* axes2;
+	int axisCount2;
+	const float* axes2;
 
     void move();
     void checkInput();
