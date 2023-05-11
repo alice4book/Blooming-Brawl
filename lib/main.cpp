@@ -213,9 +213,11 @@ int main()
     robot1.addComponent((Component*)&robotCollider1);
     DynamicColliderComponent robotColliderFront1(&robot1, 0.1f, glm::vec2(0.01f, 0.0f));
     robot1.addComponent((Component*)&robotColliderFront1);
+    PathFinding pathFinding(&map);
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
-        &robotColliderFront1, 1.0f, eRight, {0,0,-1});
+        &robotColliderFront1, 1.0f, eRight, pathFinding, TILE_SIZE, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
+    robotmovement.findClosestNode();
 
     Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
     skybox->addChild(&player1);

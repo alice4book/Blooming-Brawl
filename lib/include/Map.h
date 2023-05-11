@@ -21,16 +21,17 @@ struct MapData
 
 class Model;
 class Spawner;
+class Node;
 
 class Map :
     public Component
 {
-private:
+public:
     const static int NR_OF_MAPS = 3;
     const static int MAX_ROWS = 10; //like in MapData codedRow
     const static int MAX_COLUMNS = 20;
     const static int MAX_TILES = MAX_ROWS * MAX_COLUMNS;
-
+private:
     float tileSize;
     MapData codedMaps[NR_OF_MAPS];
     int nrOfTiles;
@@ -43,8 +44,11 @@ private:
     Entity tiles[MAX_TILES]; //tiles with models one after another
     Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
+    
 public:
+    TileState* allTilesComp[MAX_ROWS][MAX_COLUMNS] = {};
     std::vector <std::vector <StaticColliderComponent*>> colliders;
+    Node* nodes[MAX_ROWS][MAX_COLUMNS] = {}; //for robot path finding
 private:
     Model* tileModels;
 

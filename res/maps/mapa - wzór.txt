@@ -8,3 +8,4 @@ o - krzew
 t - narzędzie (nie może być więcej niż mamy narzędzi w grze obecnie 2)
 Ilość '?' musi być >= liczbie kamieni + krzewów
 Ilość znaków w wierszu - max 20
+Każdy wiersz musi mieć równą liczbę znaków (trzeba np. dodać spacje na koniec)

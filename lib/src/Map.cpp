@@ -18,7 +18,7 @@ MapData Map::LoadMapFromFile(std::string fileName)
 	file >> data.overgrown;
 	std::string line;
 	getline(file, line);
-	for (int i = 0; i < data.rows; i++)
+	for (int i = data.rows - 1; i >= 0; i--)
 	{
 		getline(file, data.codedRow[i]);
 	}
@@ -95,6 +95,7 @@ void Map::GenerateMap(int mapNr)
 			EState state;
 			if (row[j] == ' ') {
 				allTiles[i][j] = NULL;
+				nodes[i][j] = NULL;
 				continue;
 			}
 			switch (row[j])
@@ -138,7 +139,7 @@ void Map::GenerateMap(int mapNr)
 			}
 			tiles[tileNr].shader = parent->shader;
 			tiles[tileNr].isModel = true;
-			tiles[tileNr].transform->setLocalPosition({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });
+			tiles[tileNr].transform->setLocalPosition({ tileSize * i, 0, tileSize * j }); //({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });//({ tileSize * i, 0, tileSize * j });
 			if (row[j] == 't') {
 				toolscord.push_back(tiles[tileNr].transform->getLocalPosition());
 			}
@@ -154,7 +155,15 @@ void Map::GenerateMap(int mapNr)
 				tiles[tileNr].addComponent(collidersRow.back());
 			parent->addChild(&tiles[tileNr]);
 			allTiles[i][j] = &tiles[tileNr];
-			
+
+			nodes[i][j] = &tilesComp.back().node;
+			nodes[i][j]->pos.x = i;
+			nodes[i][j]->pos.y = j;
+			if (tilesComp.back().state == EState::Impassable)
+				nodes[i][j]->isPassable = false;
+
+			allTilesComp[i][j] = &tilesComp.back();
+
 			tileNr++;
 		}
 		colliders.push_back(collidersRow);
@@ -177,6 +186,7 @@ void Map::GenerateMap(int mapNr)
 					if (neiX >= 0 && neiX < MAX_ROWS && neiY >= 0 && neiY < MAX_COLUMNS)
 					{
 						tile.neighbours[neighbourNr] = allTiles[neiX][neiY];
+						tile.node.neighbours[neighbourNr] = nodes[neiX][neiY];
 					}
 					neighbourNr++;
 				}

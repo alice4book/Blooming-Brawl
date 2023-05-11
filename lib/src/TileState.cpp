@@ -55,8 +55,4 @@ void TileState::changeTileState(EPlayerID playerID) {
     {
         setState(EState::Burned);
     }
-    else if (playerID == EPlayerID::RobotDestroyer) // Tile has owner. Robot called.
-    {
-        setState(EState::Burned);
-    }
 }

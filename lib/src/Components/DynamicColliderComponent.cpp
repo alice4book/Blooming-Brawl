@@ -40,7 +40,8 @@ void DynamicColliderComponent::checkAllCollisions(){
     else{
         // Calculate position of tile i am on
         glm::vec2 tileImOnPosition = tileIAmOn->getCenter();
-        int column = abs((int)((tileImOnPosition.x - 10 * 0.254f) / 0.254f));
+        //int column = abs((int)((tileImOnPosition.x - 10 * 0.254f) / 0.254f));
+        int column = (int)(tileImOnPosition.x / 0.254f);
         int row = (int)(tileImOnPosition.y / 0.254f);
 
         for(int columnCounter = column - 2; columnCounter <= column + 2; columnCounter++){

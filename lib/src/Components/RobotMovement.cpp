@@ -6,10 +6,57 @@
 #include "StaticColliderComponent.h"
 #include "Transform.h"
 #include "TimeManager.h"
+#include <vector>
+#include "Map.h"
+
+#include <iostream> //usuñ
+
+#include <TileStateType.h>
+#include <algorithm>
+
+std::vector<Node*> RobotMovement::findPath(Node* node)
+{
+	std::vector<Node*> nodes;
+	if (!node->isPassable) return nodes;
+	glm::vec2 snappedPos = getSnappedPosition();
+	nodes = pathFinding.findPath(snappedPos.x, snappedPos.y, node->pos.x, node->pos.y);
+	return nodes;
+}
+
+bool RobotMovement::moveToPoint(Node* node)
+{
+	if (node->pos == getSnappedPosition()) return true;
+	std::vector<Node*> nodes = findPath(node);
+	if (nodes.size() == 0) return false;
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		newPositions.push(glm::vec2(nodes[i]->pos.x * TILE_SIZE, nodes[i]->pos.y * TILE_SIZE));
+	}
+	return true;
+}
+
+void RobotMovement::rotate(glm::vec2 oldPos, glm::vec2 newPos)
+{
+	int rot;
+	if (oldPos == newPos) return;
+	glm::vec2 dir = newPos - oldPos;
+	alpha = atan2(dir.x, dir.y);
+	transform->setLocalRotation({ 0, alpha, 0 });
+}
+	
+
+glm::vec2 RobotMovement::getSnappedPosition()
+{
+	glm::vec3 localPos = transform->getLocalPosition();
+	return glm::vec2(round(localPos.x/TILE_SIZE), round(localPos.z/TILE_SIZE));
+}
+
+
+
 
 RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	DynamicColliderComponent* colliderBody, DynamicColliderComponent* colliderFront,
-	float speed, RobotMovementType type, glm::vec3 forward, float offset)
+	float speed, RobotMovementType type, PathFinding& pathFinding, float TILE_SIZE, glm::vec3 forward, float offset)
 	: Component(parent)
 	, forward(forward)
 	, speed(speed)
@@ -17,9 +64,13 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	, colliderBody(colliderBody)
 	, colliderFront(colliderFront)
 	, offset(offset)
-{
+	, pathFinding(pathFinding)
+	, TILE_SIZE(TILE_SIZE)
+	{
     timeManager = TimeManager::getInstance();
     timeManager->attach120FPS(this);
+
+	height = transform->getLocalPosition().y;
 
 	if(forward.x == 1.0f && forward.z == 0.0f){
 		side = 0.0;
@@ -38,7 +89,7 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	}
 
 	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
-
+	/*
 	switch (type) {
 	case eLeft:
 		moveRob = &RobotMovement::turnLeft;
@@ -51,10 +102,11 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 		break;
 	default:
 		moveRob = &RobotMovement::noMove;
-	}
+	}*/
 }
 
 void RobotMovement::update() {
+	/*
 	transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
 
     if (!colliderFront->getTouchingDynamicComponents().empty()) {
@@ -68,9 +120,187 @@ void RobotMovement::update() {
             (this->*moveRob)(timeManager->getDeltaTime120FPS());
             break;
         }
-    }
+    }*/
+	std::cout << "pos:" << getSnappedPosition().x << getSnappedPosition().y << std::endl;//usun¹æ
+	if (newPositions.size() != 0)
+	{
+		float step = speed * timeManager->getDeltaTime120FPS();
+		glm::vec3 currentPosition = transform->getLocalPosition();
+		glm::vec2 newPosition = newPositions.front();
+		glm::vec3 newPosition3D(newPosition.x, height, newPosition.y);
+		glm::vec3 direction = newPosition3D - currentPosition;
+		if (direction.x != 0 || direction.z != 0)
+		{
+			direction = glm::normalize(direction);
+			transform->addToLocalPosition(direction * step);
+		}
+
+		if (glm::length(transform->getLocalPosition() - newPosition3D) < MIN_DISTANCE)
+		{
+			glm::vec2 snappedPos = getSnappedPosition();
+			TileState* tileState = pathFinding.map->allTilesComp[(int)snappedPos.x][(int)snappedPos.y];
+
+			tileState->changeTileState(EPlayerID::RobotDestroyer);
+
+			glm::vec2 oldPos = newPositions.front();
+			newPositions.pop();
+			if (newPositions.size() > 0)
+			{
+				rotate(oldPos, newPositions.front());
+			}
+			else
+			{
+				findClosestNode();
+			}
+		}
+	}
+	else findClosestNode();
 }
 
+void RobotMovement::findClosestNode()
+{
+	glm::vec2 currentPos = getSnappedPosition();
+
+	Map* map = pathFinding.map;
+	int mapHeight = map->MAX_ROWS;
+	int mapWidth = map->MAX_COLUMNS;
+	Node* closestNode = NULL;
+	int closestDistance = 0;
+	bool firstFound = false;
+	int sight;
+	/*
+	switch (alpha)
+	{
+	case 0:
+		sight = 0;
+		for (int i = currentPos.x; i < mapHeight; i++)
+		{
+			int sightLeft = std::max((int)currentPos.y - sight, 0);
+			int sightRight = std::min((int)currentPos.y + sight, mapWidth);
+			for (int j = sightLeft; j <= sightRight; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+			sight++;
+		}
+		break;
+	case 45:
+		for (int i = currentPos.x; i < mapHeight; i++)
+		{
+			for (int j = currentPos.y; j < mapWidth; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+		}
+		break;
+	case 90:
+		sight = 0;
+		for (int i = currentPos.y; i < mapWidth; i++)
+		{
+			int sightDown = std::max((int)currentPos.x - sight, 0);
+			int sightUp= std::min((int)currentPos.x + sight, mapHeight);
+			for (int j = sightDown; j <= sightUp; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+			sight++;
+		}
+		break;
+	case 135:
+		for (int i = currentPos.x; i > 0; i--)
+		{
+			for (int j = currentPos.y; j < mapWidth; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+		}
+	case 180 :
+		sight = 0;
+		for (int i = currentPos.x; i > 0; i--)
+		{
+			int sightLeft = std::max((int)currentPos.y - i, 0);
+			int sightRight = std::min((int)currentPos.y + i, mapWidth);
+			for (int j = sightLeft; j <= sightRight; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+			sight++;
+		}
+		break;
+	case 225:
+		for (int i = currentPos.x; i > 0; i--)
+		{
+			for (int j = currentPos.y; j > 0; j--)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+		}
+	case 270:
+		sight = 0;
+		for (int i = currentPos.y; i > 0; i--)
+		{
+			int sightDown = std::max((int)currentPos.x - sight, 0);
+			int sightUp = std::min((int)currentPos.x + sight, mapHeight);
+			for (int j = sightDown; j <= sightUp; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+			sight++;
+		}
+		break;
+	case 315:
+		for (int i = currentPos.x; i < mapHeight; i++)
+		{
+			for (int j = currentPos.y; j > 0; j--)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+		}
+	default:
+		break;
+	}
+	if (closestNode == NULL)
+	{
+		for (int i = 0; i < mapHeight; i++)
+		{
+			for (int j = 0; j > mapWidth; j++)
+			{
+				checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			}
+		}
+	}
+	*/
+	for (int i = 0; i < mapHeight; i++)
+	{
+		for (int j = 0; j < mapWidth; j++)
+		{
+			checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+		}
+	}
+	if (closestNode) {
+		std::cout << "closest " << closestNode->pos.x << " " << closestNode->pos.y << std::endl;
+		moveToPoint(closestNode);
+	}
+}
+
+
+void RobotMovement::checkIfClosest(int i, int j, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound)
+{
+	EState state = map->allTilesComp[i][j]->state;
+	if (state == EState::Growing || state == EState::Growing2 ||
+		state == EState::Grown || state == EState::Grown2)
+	{
+		int distance = glm::length(currentPos - glm::vec2(i, j));
+		if ((distance < closestDistance) || !firstFound)
+		{
+			closestNode = map->nodes[i][j];
+			closestDistance = distance;
+			firstFound = true;
+		}
+	}
+}
+
+/*
 // turns robot right (only with right angle)
 void RobotMovement::turnRight(float dTime) {
 	side += 90.f;
@@ -104,3 +334,4 @@ void RobotMovement::turnLeft(float dTime) {
 void RobotMovement::noMove(float dTime) {
 	transform->addToLocalPosition(forward * -(speed * dTime));
 }
+*/
