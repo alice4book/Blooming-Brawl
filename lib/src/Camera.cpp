@@ -23,6 +23,11 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
     updateCameraVectors();
 }
 
+void Camera::setCameraPosition(float tilesSize, float hight, int tilesCountX, int tilesCountY) {
+
+    Position = { ((tilesCountY-7) * tilesSize) * 0.5f, hight, ((tilesCountX - 1) * tilesSize) * 0.5f};
+}
+
 // returns the view matrix calculated using Euler Angles and the LookAt Matrix
 glm::mat4 Camera::GetViewMatrix()
 {

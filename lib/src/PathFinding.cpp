@@ -17,7 +17,7 @@ std::vector<Node*> PathFinding::calculatePath()
     Node* currentNode = goalNode;
     while (currentNode->cameFromNode != NULL)
     {
-        std::cout << currentNode->cameFromNode->pos.x<<" "<< currentNode->cameFromNode->pos.y<<std::endl;
+        //std::cout << currentNode->cameFromNode->pos.x<<" "<< currentNode->cameFromNode->pos.y<<std::endl;
         path.push_back(currentNode->cameFromNode);
         currentNode = currentNode->cameFromNode;
     }

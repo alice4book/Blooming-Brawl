@@ -121,7 +121,7 @@ void RobotMovement::update() {
             break;
         }
     }*/
-	std::cout << "pos:" << getSnappedPosition().x << getSnappedPosition().y << std::endl;//usun¹æ
+	//std::cout << "pos:" << getSnappedPosition().x << getSnappedPosition().y << std::endl;//usun¹æ
 	if (newPositions.size() != 0)
 	{
 		float step = speed * timeManager->getDeltaTime120FPS();

@@ -42,7 +42,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void set_window_size_callback(GLFWwindow* window, int x, int y);
 
 // camera
-Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, -89.0f);
+Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, -75.0f);
 float lastX;
 float lastY;
 bool firstMouse = true;
@@ -139,6 +139,7 @@ int main()
 #pragma endregion
 
 #pragma region setup
+
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
@@ -174,6 +175,7 @@ int main()
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
+    camera.setCameraPosition(TILE_SIZE, 4.0f, map.MAX_COLUMNS, map.MAX_ROWS);
 #pragma endregion
 
 #pragma region Tools

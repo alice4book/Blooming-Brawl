@@ -42,6 +42,8 @@ public:
     // constructor with scalar values
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
+    void setCameraPosition(float tilesSize, float hight, int tilesCountX, int tilesCountY);
+
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix();
 
