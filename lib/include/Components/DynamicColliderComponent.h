@@ -10,15 +10,16 @@ class StaticColliderComponent;
 class DynamicColliderComponent : public Component {
 private:
     World* world;
-    TimeManager* timeManager;
     float radius;
     glm::vec2 centerOffset;
     std::vector<StaticColliderComponent*> touchingStaticComponents;
     std::vector<DynamicColliderComponent*> touchingDynamicComponents;
-    StaticColliderComponent* tileIAmOn;
+    StaticColliderComponent* tileIAmOn{};
+
+    bool isTrigger;
 
 public:
-    DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset = {0, 0});
+    DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset = {0, 0}, bool isTrigger = false);
 
     void update() override;
 

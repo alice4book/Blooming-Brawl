@@ -211,9 +211,9 @@ int main()
     skybox->addChild(&robot1);
     robot1.transform->setLocalPosition({ TILE_SIZE * 5, 0.1, TILE_SIZE * 5});
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
-    DynamicColliderComponent robotCollider1(&robot1, 0.1f);
+    DynamicColliderComponent robotCollider1(&robot1, 0.1f, {0,0}, false);
     robot1.addComponent((Component*)&robotCollider1);
-    DynamicColliderComponent robotColliderFront1(&robot1, 0.1f, glm::vec2(0.01f, 0.0f));
+    DynamicColliderComponent robotColliderFront1(&robot1, 0.1f, glm::vec2(0.01f, 0.0f), true);
     robot1.addComponent((Component*)&robotColliderFront1);
     PathFinding pathFinding(&map);
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
@@ -228,7 +228,7 @@ int main()
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent player1Collider(&player1, 0.05f);
     player1.addComponent((Component*)&player1Collider);
-    DynamicColliderComponent player1ColliderFront(&player1, 0.05f);
+    DynamicColliderComponent player1ColliderFront(&player1, 0.05f, {0,0}, true);
     player1.addComponent((Component*)&player1Collider);
     PlayerMovement playerMovement(window, &player1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
@@ -240,7 +240,7 @@ int main()
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent player2Collider(&player2, 0.05f);
     player2.addComponent((Component*)&player2Collider);
-    DynamicColliderComponent player2ColliderFront(&player2, 0.05f);
+    DynamicColliderComponent player2ColliderFront(&player2, 0.05f, {0,0}, true);
     player2.addComponent((Component*)&player2ColliderFront);
     PlayerMovement playerMovement2(window, &player2, player2.transform, &player2Collider, &player2ColliderFront, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
@@ -252,7 +252,7 @@ int main()
     //Entity spawner(&rimShader);
     //Spawner spawn(&spawner, &rimShader);
     //spawner.addComponent(&spawn);
-    //DynamicColliderComponent colliderPickUp(&powerUp, 0.1f);
+    //DynamicColliderComponent colliderPickUp(&powerUp, 0.1f, {0,0}, true);
     //PickUp pickUp(&powerUp, &colliderPickUp);
     //powerUp.addComponent((Component*)&colliderPickUp);
     //powerUp.addComponent((Component*)&pickUp);

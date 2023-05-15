@@ -6,12 +6,11 @@
 #include "TimeManager.h"
 #include "Map.h"
 
-DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset)
-: Component(parent), radius(radius), centerOffset(centerOffset) {
-    world = World::getInstance();
+DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset, bool isTrigger)
+: Component(parent), radius(radius), centerOffset(centerOffset), isTrigger(isTrigger) {
+    TimeManager::getInstance()->attachUnlimitedFPS(this);
 
-    timeManager = TimeManager::getInstance();
-    timeManager->attach120FPS(this);
+    world = World::getInstance();
 }
 
 void DynamicColliderComponent::update() {
@@ -38,16 +37,15 @@ void DynamicColliderComponent::checkAllCollisions(){
         }
     }
     else{
-        // Calculate position of tile i am on
+        // Calculate position of tile I am on
         glm::vec2 tileImOnPosition = tileIAmOn->getCenter();
-        //int column = abs((int)((tileImOnPosition.x - 10 * 0.254f) / 0.254f));
         int column = (int)(tileImOnPosition.x / 0.254f);
         int row = (int)(tileImOnPosition.y / 0.254f);
 
-        for(int columnCounter = column - 2; columnCounter <= column + 2; columnCounter++){
+        for(int columnCounter = column - 1; columnCounter <= column + 1; columnCounter++){
             if(columnCounter < 0 || columnCounter >= 10)
                 continue;
-            for(int rowCounter = row - 2; rowCounter <= row + 2; rowCounter++){
+            for(int rowCounter = row - 1; rowCounter <= row + 1; rowCounter++){
                 if(rowCounter < 0 || rowCounter >= 20)
                     continue;
                 StaticColliderComponent* statComp = world->mapComponent->colliders[columnCounter][rowCounter];
@@ -72,10 +70,12 @@ void DynamicColliderComponent::checkAllCollisions(){
         if(fabs(colDir.x) + fabs(colDir.y) == 0)
             continue;
 
-        if(!parent->getComponentsByType<RobotMovement>())
-            parent->transform->addToLocalPosition({colDir.x, 0, colDir.y});
-
         touchingDynamicComponents.push_back(dynamicComp);
+
+        // your parent is not a robot, and you are not facing wall
+        if(isTrigger)
+            parent->transform->addToLocalPosition({colDir.x * 0.2f, 0, colDir.y * 0.2f});
+
     }
 }
 
