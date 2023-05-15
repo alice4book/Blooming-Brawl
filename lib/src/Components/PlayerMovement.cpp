@@ -106,7 +106,6 @@ void PlayerMovement::move()
 
                 if (abs(axes[0]) > 0 && abs(axes[0]) < 0.1 && abs(axes[1]) > 0 && abs(axes[1]) < 0.1) {
                     forward = glm::vec3{ 0,0,0 };
-                    //std::cout << forward.x << " " << forward.z << std::endl;
                 }else {
                     forward.x = -axes[1];
                     forward.z = axes[0];
@@ -114,17 +113,17 @@ void PlayerMovement::move()
                     forward = glm::vec3{ forward.x,0,forward.z };
                     forward = glm::normalize(forward);
                     transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
-                    //std::cout << forward.x << " " << forward.z << std::endl;
+                    std::cout << forward.x << " " << forward.z << std::endl;
                     if (previousForward != forward) {
-                        //std::cout << "inny" << std::endl;
+                        //w miare plynny obrot
                         float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
-                        //std::cout << -angle << std::endl;
-                        //std::cout << forward.x << " " << forward.z << std::endl;
-                        //if (angle == 0 || angle == -0) { angle = 180; }
-                        //if (setForward == forward) { angle = 0; }
                         if (angle < 0 && angle > -180) { angle = -180 - angle; }
-                        //angle = (angle > 0 ? angle : (2 * M_PI + angle)) * 360 / (2 * M_PI);
+                        if (forward.x == 1 && (forward.z < 0.1 && forward.z > -0.1)) { angle = 0; }
+                        if (forward.x == -1 && (forward.z < 0.1 && forward.z > -0.1)) { angle = 180; }
                         
+
+
+
                         transform->setLocalRotation({ 0,-angle,0 });
                     }
 
@@ -219,14 +218,10 @@ void PlayerMovement::move()
                 transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 //std::cout << forward.x << " " << forward.z << std::endl;
                 if (previousForward != forward) {
-                    //std::cout << "inny" << std::endl;
                     float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
-                    //std::cout << -angle << std::endl;
-                    //std::cout << forward.x << " " << forward.z << std::endl;
-                    //if (angle == 0 || angle == -0) { angle = 180; }
-                    //if (setForward == forward) { angle = 0; }
                     if (angle < 0 && angle > -180) { angle = -180 - angle; }
-                    //angle = (angle > 0 ? angle : (2 * M_PI + angle)) * 360 / (2 * M_PI);
+                    if (forward.x == 1 && (forward.z < 0.1 && forward.z > -0.1)) { angle = 0; }
+                    if (forward.x == -1 && (forward.z < 0.1 && forward.z > -0.1)) { angle = 180; }
 
                     transform->setLocalRotation({ 0,-angle,0 });
                 }
