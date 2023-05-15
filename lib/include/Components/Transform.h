@@ -29,6 +29,8 @@ public:
 
     void addToLocalPosition(const glm::vec3& addPosition);
 
+    glm::vec3 getLocalRotation();
+
     void setLocalRotation(const glm::vec3& newEulerRot);
 
     void rotateLocal(const glm::vec3& newEulerRot);

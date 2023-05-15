@@ -48,6 +48,10 @@ void Transform::addToLocalPosition(const glm::vec3& addPosition)
     m_isDirty = true;
 }
 
+glm::vec3 Transform::getLocalRotation() {
+    return m_eulerRot;
+}
+
 void Transform::setLocalRotation(const glm::vec3& newEulerRot)
 {
     m_eulerRot = newEulerRot;
@@ -85,4 +89,6 @@ bool Transform::isDirty()
 {
     return m_isDirty;
 }
+
+
 

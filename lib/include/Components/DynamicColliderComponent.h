@@ -19,7 +19,7 @@ private:
     bool isTrigger;
 
 public:
-    DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset = {0, 0}, bool isTrigger = false);
+    DynamicColliderComponent(Entity *parent, float radius, bool isTrigger, glm::vec2 centerOffset = {0, 0});
 
     void update() override;
 

@@ -6,8 +6,8 @@
 #include "TimeManager.h"
 #include "Map.h"
 
-DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, glm::vec2 centerOffset, bool isTrigger)
-: Component(parent), radius(radius), centerOffset(centerOffset), isTrigger(isTrigger) {
+DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, bool isTrigger, glm::vec2 centerOffset)
+: Component(parent), radius(radius), isTrigger(isTrigger), centerOffset(centerOffset){
     TimeManager::getInstance()->attachUnlimitedFPS(this);
 
     world = World::getInstance();
@@ -18,10 +18,11 @@ void DynamicColliderComponent::update() {
 }
 
 void DynamicColliderComponent::checkAllCollisions(){
-    glm::vec2 circlePosition = getCenter();
     setTileColliderIAmOn();
     touchingStaticComponents.clear();
     touchingDynamicComponents.clear();
+    glm::vec2 centerOffsetWithParentRotation;
+    glm::vec2 circlePosition = getCenter();
 
     if(tileIAmOn == nullptr){
         // Map tiles
@@ -29,7 +30,7 @@ void DynamicColliderComponent::checkAllCollisions(){
             //check if two colliders fade over
             glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
             if(collisionDirection.x + collisionDirection.y != 0) {
-                if (!statComp->getIsPassable()) {
+                if (!statComp->getIsPassable() && !isTrigger) {
                     parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
                 }
                 touchingStaticComponents.push_back(statComp);
@@ -42,17 +43,17 @@ void DynamicColliderComponent::checkAllCollisions(){
         int column = (int)(tileImOnPosition.x / 0.254f);
         int row = (int)(tileImOnPosition.y / 0.254f);
 
-        for(int columnCounter = column - 1; columnCounter <= column + 1; columnCounter++){
+        for(int columnCounter = column - 2; columnCounter <= column + 2; columnCounter++){
             if(columnCounter < 0 || columnCounter >= 10)
                 continue;
-            for(int rowCounter = row - 1; rowCounter <= row + 1; rowCounter++){
+            for(int rowCounter = row - 2; rowCounter <= row + 2; rowCounter++){
                 if(rowCounter < 0 || rowCounter >= 20)
                     continue;
                 StaticColliderComponent* statComp = world->mapComponent->colliders[columnCounter][rowCounter];
 
                 glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
                 if(collisionDirection.x + collisionDirection.y != 0) {
-                    if (!statComp->getIsPassable()) {
+                    if (!statComp->getIsPassable() && !isTrigger) {
                         parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
                     }
                     touchingStaticComponents.push_back(statComp);
@@ -73,9 +74,10 @@ void DynamicColliderComponent::checkAllCollisions(){
         touchingDynamicComponents.push_back(dynamicComp);
 
         // your parent is not a robot, and you are not facing wall
-        if(isTrigger)
-            parent->transform->addToLocalPosition({colDir.x * 0.2f, 0, colDir.y * 0.2f});
+        if(isTrigger || dynamicComp->isTrigger)
+            continue;
 
+        parent->transform->addToLocalPosition({colDir.x * 0.2f, 0, colDir.y * 0.2f});
     }
 }
 
@@ -148,10 +150,18 @@ void DynamicColliderComponent::setCenterOffset(glm::vec2 newCenterOffset) {
 }
 
 glm::vec2 DynamicColliderComponent::getCenter() const {
-    glm::vec3 circlePosition3d = parent->transform->getLocalPosition();
-    glm::vec2 circlePosition = {circlePosition3d.x, circlePosition3d.z};
-    circlePosition += centerOffset;
-    return circlePosition;
+    glm::vec3 parentPosition3d = parent->transform->getLocalPosition();
+    glm::vec2 result = {parentPosition3d.x, parentPosition3d.z};
+
+    // degree * (PI/180)
+    float radians = parent->transform->getLocalRotation().y * 0.01745329251f;
+    float si = sinf(radians);
+    float co = cosf(radians);
+
+    result.x += co * centerOffset.x - si * centerOffset.y;
+    result.y -= si * centerOffset.x + co * centerOffset.y;
+
+    return result;
 }
 
 float DynamicColliderComponent::getRadius() const{
