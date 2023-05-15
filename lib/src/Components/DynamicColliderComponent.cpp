@@ -190,7 +190,11 @@ void DynamicColliderComponent::setTileColliderIAmOn() {
     glm::vec2 myPosition = getCenter();
 
     for(StaticColliderComponent* component : touchingStaticComponents){
-        float distance = glm::length(component->getCenter() + myPosition);
+        // if it's rock don't include
+        if(!component->getIsPassable())
+            continue;
+
+        float distance = glm::length(component->getCenter() - myPosition);
         if(distance < minDistance){
             closestComponent = component;
             minDistance = distance;
