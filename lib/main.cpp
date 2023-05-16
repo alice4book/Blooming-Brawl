@@ -145,6 +145,7 @@ int main()
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
     Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
     Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+    Shader highlightShader("res/shaders/vertexModel.vert", "res/shaders/highlightLight.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
@@ -171,7 +172,7 @@ int main()
     };
 
     Entity mapManager(&modelShader);
-    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &rimShader, &rimShader, 0);
+    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &rimShader, &highlightShader, 0);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
@@ -316,6 +317,11 @@ int main()
         rimShader.setVec3("viewPos", camera.Position);
         rimShader.setFloat("n_r", rimLight);
 
+        highlightShader.use();
+        highlightShader.setMat4("projection", projection);
+        highlightShader.setMat4("view", view);
+        highlightShader.setVec3("viewPos", camera.Position);
+        highlightShader.setVec3("color", {0.5,0.5,0.5});
 
         hudShader.use();
         hudShader.setMat4("projection", projection);
