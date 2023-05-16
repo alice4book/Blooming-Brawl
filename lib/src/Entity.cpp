@@ -33,9 +33,27 @@ Entity::Entity(const std::string& path, Shader* s, Shader* altShader)
 
 Entity::~Entity()
 {
-//    for (auto component : components) {
-//        delete component;
-//    }
+    //for (auto component : components) {
+    //    delete component;
+    //}
+    /*
+    Need to add parent entity
+    if (parent) {
+        for (int i = 0; i < parent->children.size(); i++) {
+            if (parent->children[i] == this) {
+                std::cout << i << std::endl;
+                parent->children.erase(parent->children.begin() + i);
+                break;
+            }
+        }
+        for (int i = children.size() - 1; i >= 0; i--) {
+            std::cout << i << std::endl;
+            parent->addChild(children[i]);
+            children.pop_back();
+        }
+    }
+    std::cout << "deleted" << std::endl;
+    */
 }
 
 //add new component

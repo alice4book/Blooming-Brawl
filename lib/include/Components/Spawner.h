@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "Entity.h"
-
+#include <vector>
+#include <memory>
 class PickUp;
 class Shader;
 class TimeManager;
@@ -17,20 +17,28 @@ private:
 
 	Shader* shader;
 
-	Entity spawndItem;
+	Entity* currentItem;
 
 	TimeManager* timeManager;
+
+	std::vector<Entity*> pickUps;
 
 	float timeToSpawn;
 
 	float timer;
 
-	bool isSpawned;
 
 public:
+
 	Spawner(Entity* parent, Shader* shader);
+
+	bool isSpawned;
 
 	void update() override;
 
-	void createPickUp();
+	Entity* createPickUp(glm::vec3 color);
+
+	Entity* drawPickUp();
+
+	void disablePickUp();
 };

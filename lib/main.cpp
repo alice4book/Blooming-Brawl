@@ -248,15 +248,15 @@ int main()
 
 #pragma region Power Up
     float rimLight = 0.5;
-    Entity spawner(&rimShader);
-    Spawner spawn(&spawner, &rimShader);
-    spawner.addComponent(&spawn);
-    //PickUp pickUp(&powerUp, &colliderPickUp);
-    //powerUp.addComponent((Component*)&colliderPickUp);
-    //powerUp.addComponent(new PickUp(&powerUp, &colliderPickUp));
-    spawner.transform->addToLocalPosition({ 0.4,0,0.4 });
-    mapManager.addChild(&spawner);
-    spawn.createPickUp();
+    //Entity spawner(&rimShader);
+    //Spawner spawn(&spawner, &rimShader);
+    //spawner.addComponent(&spawn);
+    ////PickUp pickUp(&powerUp, &colliderPickUp);
+    ////powerUp.addComponent((Component*)&colliderPickUp);
+    ////powerUp.addComponent(new PickUp(&powerUp, &colliderPickUp));
+    //spawner.transform->addToLocalPosition({ 0.4,0,0.4 });
+    //mapManager.addChild(&spawner);
+    //spawn.createPickUp();
 #pragma endregion
 
 #pragma region Audio   
@@ -314,8 +314,8 @@ int main()
         rimShader.setMat4("projection", projection);
         rimShader.setMat4("view", view);
         rimShader.setVec3("viewPos", camera.Position);
-        rimShader.setVec3("color", glm::vec3(1.f, 0.f, 0.f));
         rimShader.setFloat("n_r", rimLight);
+
 
         hudShader.use();
         hudShader.setMat4("projection", projection);

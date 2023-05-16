@@ -8,6 +8,6 @@ x..................x
 x.....xxxxxxx......x
 x..xxxx...x........x
 x.....x...xxxxx....x
-x.....x............x
+x..s..x............x
 x.....x...........xx
 xxxxxxxxxxxxxxxxxxxx
