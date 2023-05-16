@@ -71,6 +71,7 @@ void Entity::forceUpdateSelfAndChild()
 {
     if (parentTransform)
         transform->computeModelMatrix(parentTransform->getModelMatrix());
+        
     else
         transform->computeModelMatrix();
 

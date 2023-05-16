@@ -247,15 +247,16 @@ int main()
 #pragma endregion
 
 #pragma region Power Up
-    
     float rimLight = 0.5;
-    //Entity spawner(&rimShader);
-    //Spawner spawn(&spawner, &rimShader);
-    //spawner.addComponent(&spawn);
-    //DynamicColliderComponent colliderPickUp(&powerUp, 0.1f, {0,0}, true);
+    Entity spawner(&rimShader);
+    Spawner spawn(&spawner, &rimShader);
+    spawner.addComponent(&spawn);
     //PickUp pickUp(&powerUp, &colliderPickUp);
     //powerUp.addComponent((Component*)&colliderPickUp);
-    //powerUp.addComponent((Component*)&pickUp);
+    //powerUp.addComponent(new PickUp(&powerUp, &colliderPickUp));
+    spawner.transform->addToLocalPosition({ 0.4,0,0.4 });
+    mapManager.addChild(&spawner);
+    spawn.createPickUp();
 #pragma endregion
 
 #pragma region Audio   

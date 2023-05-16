@@ -1,5 +1,7 @@
 #include "Transform.h"
+#include "Entity.h"
 #include "glm/trigonometric.hpp"
+#include <glm/gtc/type_ptr.hpp>
 #include "glm/ext/matrix_transform.hpp"
 
 Transform::Transform(Entity *parent) : Component(parent) {
@@ -75,9 +77,17 @@ void Transform::addToScaleEntity(const glm::vec3& addScale) {
     m_isDirty = true;
 }
 
+
 const glm::vec3& Transform::getLocalPosition()
 {
     return m_pos;
+}
+
+const glm::vec3& Transform::getGlobalPosition()
+{
+    glm::mat4 m4x4 = m_modelMatrix;
+    glm::value_ptr(m4x4);
+    return { m4x4[3][0], m4x4[3][1], m4x4[3][2]};
 }
 
 const glm::mat4& Transform::getModelMatrix()

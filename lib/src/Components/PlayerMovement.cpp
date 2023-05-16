@@ -152,7 +152,7 @@ void PlayerMovement::move()
 
             }
     }
-    compTypePU.clear();
+
     if (ID == Player2) {
         for (auto comp : collider->getTouchingDynamicComponents()) {
             if (comp != nullptr) {

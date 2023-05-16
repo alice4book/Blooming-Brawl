@@ -102,41 +102,38 @@ void Map::GenerateMap(int mapNr)
 			{
 			case 'x':
 				tiles[tileNr].model = &tileModels[EState::Impassable];
-				tiles[tileNr].altShader = altShader;
 				isPassable = false;
 				state = EState::Impassable;
 				break;
 			case 'o':
 				tiles[tileNr].model = &tileModels[EState::Overgrown];
-                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Overgrown;
 				break;
 			case 't':
 				tiles[tileNr].model = &tileModels[EState::Empty];
-                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Empty;
 				break;
 			case 's':
 				tiles[tileNr].model = &tileModels[EState::Empty];
-                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Empty;
 				if (spawnerShader != nullptr) {
 					spawners.push_back(new Entity(spawnerShader));
-					this->parent->addChild(spawners.back());
+					parent->addChild(spawners.back());
 					spawners.back()->addComponent(new Spawner(spawners.back(), spawnerShader));
 				}
 				break;
 			case '.':
 			default:
 				tiles[tileNr].model = &tileModels[EState::Empty];
-                tiles[tileNr].altShader = altShader;
 				isPassable = true;
 				state = EState::Empty;
 				break;
 			}
+
+			tiles[tileNr].altShader = altShader;
 			tiles[tileNr].shader = parent->shader;
 			tiles[tileNr].isModel = true;
 			tiles[tileNr].transform->setLocalPosition({ tileSize * i, 0, tileSize * j }); //({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });//({ tileSize * i, 0, tileSize * j });

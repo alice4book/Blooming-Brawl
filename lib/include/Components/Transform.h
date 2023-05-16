@@ -41,6 +41,8 @@ public:
 
     const glm::vec3& getLocalPosition();
 
+    const glm::vec3& getGlobalPosition();
+
     const glm::mat4& getModelMatrix();
 
     bool isDirty();

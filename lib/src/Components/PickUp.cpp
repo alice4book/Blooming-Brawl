@@ -11,5 +11,5 @@ PickUp::PickUp(Entity* parent, DynamicColliderComponent* collider):
 void PickUp::use()
 {
 	//delete parent;
-	//std::cout << " SSS " << std::endl;
+	std::cout << " SSS " << std::endl;
 }

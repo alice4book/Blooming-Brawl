@@ -30,9 +30,11 @@ public:
     [[nodiscard]] const std::vector<DynamicColliderComponent *> &getTouchingDynamicComponents() const;
 
     glm::vec2 getCenterOffset();
+
     void setCenterOffset(glm::vec2 newCenterOffset);
 
     [[nodiscard]] glm::vec2 getCenter() const;
+    void setCenter(glm::vec2 newCenter);
 
     [[nodiscard]] float getRadius() const;
     void setRadius(float newRadius);

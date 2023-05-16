@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
+#include <iostream>
 
 // set up vertex data (and buffer(s)) and configure vertex attributes
 std::vector <float> vertices;
@@ -173,4 +174,11 @@ void World::reloadLists(Entity* e){
     for (auto* child : e->children) {
         reloadLists(child);
     }
+}
+
+void World::clearReloadLists(Entity* e)
+{
+    staticColComp.clear();
+    dynamicColComp.clear();
+    reloadLists(e);
 }

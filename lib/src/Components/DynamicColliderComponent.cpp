@@ -5,6 +5,7 @@
 #include "RobotMovement.h"
 #include "TimeManager.h"
 #include "Map.h"
+#include <iostream>
 
 DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius, bool isTrigger, glm::vec2 centerOffset)
 : Component(parent), radius(radius), isTrigger(isTrigger), centerOffset(centerOffset){
@@ -62,17 +63,18 @@ void DynamicColliderComponent::checkAllCollisions(){
         }
     }
 
+   // std::cout <<"   " << world->getDynamicColliders().size() << std::endl;
     // Robot, enemy player
     for(DynamicColliderComponent* dynamicComp : world->getDynamicColliders()){
         if(this == dynamicComp || this->parent == dynamicComp->parent)
             continue;
-
         glm::vec2 colDir = checkDynamicCollisionDirection(dynamicComp, circlePosition);
         if(fabs(colDir.x) + fabs(colDir.y) == 0)
             continue;
-
+        
         touchingDynamicComponents.push_back(dynamicComp);
 
+        //std::cout << touchingDynamicComponents.size() << std::endl;
         // your parent is not a robot, and you are not facing wall
         if(isTrigger || dynamicComp->isTrigger)
             continue;
@@ -150,7 +152,7 @@ void DynamicColliderComponent::setCenterOffset(glm::vec2 newCenterOffset) {
 }
 
 glm::vec2 DynamicColliderComponent::getCenter() const {
-    glm::vec3 parentPosition3d = parent->transform->getLocalPosition();
+    glm::vec3 parentPosition3d = parent->transform->getGlobalPosition();
     glm::vec2 result = {parentPosition3d.x, parentPosition3d.z};
 
     // degree * (PI/180)
