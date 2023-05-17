@@ -4,7 +4,6 @@
 #include "Entity.h"
 #include "World.h"
 #include "TimeManager.h"
-#include "Shader.h"
 #include "DynamicColliderComponent.h"
 #include <iostream>
 #include <PickUp.h>
@@ -36,19 +35,18 @@ void Spawner::update() {
 			parent->addChild(currentItem);
 			currentItem->forceUpdateSelfAndChild();
 			world->clearReloadLists();
-			std::cout << parent->children.size() << std::endl;
-			std::vector<PickUp*> comp;
-			currentItem->getComponentsByType(&comp);
-			shader->use();
-			shader->setVec3("color", comp[0]->rimColor);
 			timer = 0.0f;
 			isSpawned = true;
 		}
 	}
+	else {
+		//std::cout << currentItem->components.size() << std::endl;
+	}
+	
 }
 
-
 Entity* Spawner::createPickUp(glm::vec3 color) {
+
 	Entity* spawndItem = new Entity("res/models/powerUp.obj", shader);
 	spawndItem->transform->addToLocalPosition({ 0.0,0.18,0.0 });
 	DynamicColliderComponent* col =  new DynamicColliderComponent(spawndItem, 0.1f, true);

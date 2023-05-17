@@ -321,7 +321,7 @@ int main()
         highlightShader.setMat4("projection", projection);
         highlightShader.setMat4("view", view);
         highlightShader.setVec3("viewPos", camera.Position);
-        highlightShader.setVec3("color", {0.5,0.5,0.5});
+        highlightShader.setVec3("hlcolor", {0.5,0.5,0.5});
 
         hudShader.use();
         hudShader.setMat4("projection", projection);

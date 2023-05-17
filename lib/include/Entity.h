@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "glm/glm.hpp"
 
 class Model;
 class Shader;
@@ -18,6 +19,8 @@ public:
     Transform* parentTransform = nullptr;
     Model* model{};
     bool isModel;
+    //for pickup 
+    glm::vec3 color = {0,0,0};
 
     Entity();
 
@@ -49,6 +52,9 @@ public:
 
     //Draw
     virtual void renderEntity();
+
+    //For pickup
+    void setColor(glm::vec3 col);
 
     [[nodiscard]] const std::vector<Entity *> &getChildren() const;
 

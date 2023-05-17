@@ -27,12 +27,13 @@ private:
 
 	float timer;
 
+	bool isSpawned;
+
+	glm::vec3 rimColor;
 
 public:
 
 	Spawner(Entity* parent, Shader* shader);
-
-	bool isSpawned;
 
 	void update() override;
 

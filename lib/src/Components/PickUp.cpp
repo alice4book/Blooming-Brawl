@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 #include "DynamicColliderComponent.h"
 #include "Spawner.h"
+#include "Entity.h"
 #include <iostream>
 
 PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* collider, glm::vec3 color)
@@ -9,7 +10,10 @@ PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* colli
 	, colliderBody(collider)
 	, spawn(spawner)
 	, rimColor(color)
-{}
+{
+	parent->setColor(color);
+}
+
 
 void PickUp::use()
 { 
