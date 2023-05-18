@@ -140,15 +140,15 @@ int main()
 
 #pragma region setup
 
-    // build and compile our shader zprogram
-    Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
+    // build and compile our shader z program
+    Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragmentModel.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
-    Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
-    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
-    Shader highlightShader("res/shaders/vertexModel.vert", "res/shaders/highlightLight.frag");
-//    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
-//    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
-//    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
+    Shader blurShader("res/shaders/vertex.vert", "res/shaders/blur.frag");
+    Shader rimShader("res/shaders/vertex.vert", "res/shaders/rimLight.frag");
+    Shader highlightShader("res/shaders/vertex.vert", "res/shaders/highlightLight.frag");
+//    Shader ambientShader("res/shaders/vertex.vert", "res/shaders/ambientLight.frag");
+//    Shader reflectShader("res/shaders/vertex.vert", "res/shaders/reflect.frag");
+//    Shader phongBlinnShader("res/shaders/vertex.vert", "res/shaders/phongblinn.frag");
 //    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
 
     World* skybox = World::getInstance();
@@ -176,7 +176,7 @@ int main()
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
-    camera.setCameraPosition(TILE_SIZE, 4.0f, map.MAX_COLUMNS, map.MAX_ROWS);
+    camera.setCameraPosition(TILE_SIZE, 4.0f, Map::MAX_COLUMNS, Map::MAX_ROWS);
 #pragma endregion
 
 #pragma region Tools
@@ -276,6 +276,8 @@ int main()
     hud.barSize(50, 50);
 #pragma endregion
 
+    glm::vec3 lightPos = {0,6,3};
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -309,7 +311,12 @@ int main()
         modelShader.use();
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians((float)glfwGetTime() * -10.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0))); // rotate the quad to show normal mapping from multiple directions
+        modelShader.setMat4("model", model);
         modelShader.setVec3("viewPos", camera.Position);
+        modelShader.setVec3("lightPos", lightPos);
         
         rimShader.use();
         rimShader.setMat4("projection", projection);
