@@ -48,8 +48,8 @@ void Spawner::update() {
 Entity* Spawner::createPickUp(glm::vec3 color) {
 
 	Entity* spawndItem = new Entity("res/models/powerUp.obj", shader);
-	spawndItem->transform->addToLocalPosition({ 0.0,0.18,0.0 });
-	DynamicColliderComponent* col =  new DynamicColliderComponent(spawndItem, 0.1f, true);
+	spawndItem->transform->addToLocalPosition({ 0.0,0.1,0.0 });
+	DynamicColliderComponent* col =  new DynamicColliderComponent(spawndItem, 0.05f, true);
 	spawndItem->addComponent(col);
 	spawndItem->addComponent(new PickUp(spawndItem, this, col, color));
 	return spawndItem;

@@ -144,7 +144,7 @@ int main()
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
     Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
-    Shader rimShader("res/shaders/vertexModel.vert", "res/shaders/rimLight.frag");
+    Shader pickupShader("res/shaders/vertexPickUp.vert", "res/shaders/rimLight.frag");
     Shader highlightShader("res/shaders/vertexModel.vert", "res/shaders/highlightLight.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
@@ -172,7 +172,7 @@ int main()
     };
 
     Entity mapManager(&modelShader);
-    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &rimShader, &highlightShader, 0);
+    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &pickupShader, &highlightShader, 0);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
@@ -247,17 +247,9 @@ int main()
     player2.addComponent((Component*)&playerMovement2);
 #pragma endregion
 
-#pragma region Power Up
-    float rimLight = 0.5;
-    //Entity spawner(&rimShader);
-    //Spawner spawn(&spawner, &rimShader);
-    //spawner.addComponent(&spawn);
-    ////PickUp pickUp(&powerUp, &colliderPickUp);
-    ////powerUp.addComponent((Component*)&colliderPickUp);
-    ////powerUp.addComponent(new PickUp(&powerUp, &colliderPickUp));
-    //spawner.transform->addToLocalPosition({ 0.4,0,0.4 });
-    //mapManager.addChild(&spawner);
-    //spawn.createPickUp();
+#pragma region Power Up Setting
+    float rimLight = 0.5f;
+    float pickupMovement = 0.0f;
 #pragma endregion
 
 #pragma region Audio   
@@ -280,6 +272,8 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         timeManager->updateTime();
+
+
         hud.setResize(resizeX, resizeY);
 
         glfwPollEvents();
@@ -311,11 +305,16 @@ int main()
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
         
-        rimShader.use();
-        rimShader.setMat4("projection", projection);
-        rimShader.setMat4("view", view);
-        rimShader.setVec3("viewPos", camera.Position);
-        rimShader.setFloat("n_r", rimLight);
+        pickupShader.use();
+        pickupShader.setMat4("projection", projection);
+        pickupShader.setMat4("view", view);
+        pickupShader.setVec3("viewPos", camera.Position);
+        pickupShader.setFloat("n_r", rimLight);
+        if (pickupMovement > 6.2831) {
+            pickupMovement = pickupMovement - 6.2831;
+        }
+        pickupMovement += timeManager->getDeltaTimeUnlimitedFPS() * 2.2f;
+        pickupShader.setFloat("time", pickupMovement);
 
         highlightShader.use();
         highlightShader.setMat4("projection", projection);
