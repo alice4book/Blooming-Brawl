@@ -1,3 +1,4 @@
+#pragma once
 #include "Enums/PlayerIDType.h"
 #include "Enums/TileStateType.h"
 #include "Component.h"
@@ -5,13 +6,15 @@
 #include "Node.h"
 
 class Model;
+class Map;
+
 class TileState :
     public Component
 {
 private:
     EPlayerID ownerID = EPlayerID::None;
     Model* tileModels;
-    
+    Map* map;
     /*float defaultTimerGrow;
     float defaultTimerBurn;
     float timerGrow = 0;
@@ -24,7 +27,7 @@ public:
     Entity* neighbours[8] = {}; //neighbouring tiles or NULL
     Node node;
 
-    TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition);
+    TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map);
 
     void setState(EState newState);
     void changeTileState(EPlayerID playerID);

@@ -22,6 +22,7 @@ struct MapData
 class Model;
 class Spawner;
 class Node;
+class HUD;
 
 class Map :
     public Component
@@ -35,6 +36,8 @@ private:
     float tileSize;
     MapData codedMaps[NR_OF_MAPS];
     int nrOfTiles;
+    int player1TilesCount;
+    int player2TilesCount;
 
     //spawners
     std::vector <Entity*> spawners;
@@ -44,6 +47,8 @@ private:
     Entity tiles[MAX_TILES]; //tiles with models one after another
     Entity* allTiles[MAX_ROWS][MAX_COLUMNS] = {}; //tiles with models and empty spaces as NULL
     std::list <TileState> tilesComp;
+
+    HUD* hud;
     
 public:
     TileState* allTilesComp[MAX_ROWS][MAX_COLUMNS] = {};
@@ -58,7 +63,14 @@ private:
 public:
     Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap = -1);
     void ChangeMap(int mapIndex);
+
     int getTilesCount();
+    void addToPlayer1TilesCount(int p1);
+    void addToPlayer2TilesCount(int p2);
+    int getPlayer1TilesCount();
+    int getPlayer2TilesCount();
+
+    void addHud(HUD* hud);
 
     //Tools
 private:

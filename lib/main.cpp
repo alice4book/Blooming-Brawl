@@ -264,8 +264,8 @@ int main()
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     HUD hud(&hudShader, &textShader);
     mapManager.addChild(&hud);
-    hud.setTilesCount(100);//map.getTilesCount()
     hud.barSize(50, 50);
+    map.addHud(&hud);
 #pragma endregion
 
     // render loop

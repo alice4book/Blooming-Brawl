@@ -6,6 +6,7 @@
 #include "StaticColliderComponent.h"
 #include "World.h"
 #include "Spawner.h"
+#include "HUD.h"
 
 
 MapData Map::LoadMapFromFile(std::string fileName)
@@ -144,7 +145,7 @@ void Map::GenerateMap(int mapNr)
 				spawners.back()->transform->setLocalPosition(tiles[tileNr].transform->getLocalPosition());
 			}
 
-            tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j)));
+            tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j), this));
             collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable, &tilesComp.back()));
 
 			tiles[tileNr].addComponent(&tilesComp.back());
@@ -214,6 +215,8 @@ Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSiz
 
     auto world = World::getInstance();
     world->mapComponent = this;
+	player1TilesCount = 0;
+	player2TilesCount = 0;
 }
 
 void Map::ChangeMap(int mapIndex)
@@ -224,6 +227,35 @@ void Map::ChangeMap(int mapIndex)
 int Map::getTilesCount()
 {
 	return MAX_TILES;
+}
+
+void Map::addToPlayer1TilesCount(int p1)
+{
+	player1TilesCount += p1;
+	hud->barSize(player1TilesCount, player2TilesCount);
+}
+
+void Map::addToPlayer2TilesCount(int p2)
+{
+	player2TilesCount += p2;
+	hud->barSize(player1TilesCount, player2TilesCount);
+}
+
+int Map::getPlayer1TilesCount()
+{
+	return player1TilesCount;
+}
+
+int Map::getPlayer2TilesCount()
+{
+	return player2TilesCount;
+}
+
+void Map::addHud(HUD* hud)
+{
+	this->hud = hud;
+	if(hud != nullptr)
+		hud->setTilesCount(nrOfTiles);
 }
 
 void Map::LoadMapsFromFiles(std::string* files)

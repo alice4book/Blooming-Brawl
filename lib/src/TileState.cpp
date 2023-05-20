@@ -3,9 +3,11 @@
 #include "Entity.h"
 #include "Shader.h"
 #include "Model.h"
+#include "Map.h"
+#include <iostream>
 
-TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition)
- : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition)
+TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map)
+ : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition), map(map)
 {}
 
 void TileState::setState(EState newState)
@@ -28,11 +30,15 @@ void TileState::changeTileState(EPlayerID playerID) {
             }
             else if (state == EState::Empty)
             {
-                ownerID = playerID;
-               if (playerID == EPlayerID::Player1)
+               ownerID = playerID;
+               if (playerID == EPlayerID::Player1){
                     setState(EState::Growing);
-                else
+                    map->addToPlayer1TilesCount(1);
+               }
+               else {
                     setState(EState::Growing2);
+                    map->addToPlayer2TilesCount(1);
+               }
             }
         }
     }
@@ -54,5 +60,12 @@ void TileState::changeTileState(EPlayerID playerID) {
     else if (playerID == EPlayerID::Player1 || playerID == EPlayerID::Player2 || playerID == EPlayerID::RobotDestroyer)  // Tile has owner. Enemy player called.
     {
         setState(EState::Burned);
+        if (ownerID == EPlayerID::Player1) {
+            map->addToPlayer1TilesCount(-1);
+        }
+        else if (ownerID == EPlayerID::Player2) {
+            map->addToPlayer2TilesCount(-1);
+        }
+        ownerID = EPlayerID::None;
     }
 }
