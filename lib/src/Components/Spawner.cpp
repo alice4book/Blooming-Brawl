@@ -8,6 +8,7 @@
 #include <iostream>
 #include <PickUp.h>
 #include <Transform.h>
+#include "Enums/PickupType.h";
 
 Spawner::Spawner(Entity* parent, Shader* shader)
 	: Component(parent)
@@ -21,7 +22,7 @@ Spawner::Spawner(Entity* parent, Shader* shader)
 	isSpawned = false;
 	pickUps.push_back(createPickUp({ 1,0,0 }));
 	pickUps.push_back(createPickUp({ 0,1,0 }));
-	pickUps.push_back(createPickUp({ 1,0,1 }));
+	pickUps.push_back(createPickUp({ 1,0,1 }, Speed));
 }
 
 void Spawner::update() {
@@ -39,19 +40,16 @@ void Spawner::update() {
 			isSpawned = true;
 		}
 	}
-	else {
-		//std::cout << currentItem->components.size() << std::endl;
-	}
 	
 }
 
-Entity* Spawner::createPickUp(glm::vec3 color) {
+Entity* Spawner::createPickUp(glm::vec3 color, EPickUp type) {
 
 	Entity* spawndItem = new Entity("res/models/powerUp.obj", shader);
 	spawndItem->transform->addToLocalPosition({ 0.0,0.1,0.0 });
 	DynamicColliderComponent* col =  new DynamicColliderComponent(spawndItem, 0.05f, true);
 	spawndItem->addComponent(col);
-	spawndItem->addComponent(new PickUp(spawndItem, this, col, color));
+	spawndItem->addComponent(new PickUp(spawndItem, this, col, color, type));
 	return spawndItem;
 }
 

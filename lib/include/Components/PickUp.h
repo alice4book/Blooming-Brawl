@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "glm/glm.hpp"
+#include "Enums/PickupType.h";
 //WIP
 class DynamicColliderComponent;
 class Spawner;
@@ -14,15 +15,24 @@ private:
 
 	Spawner* spawn;
 
-	TimeManager* timeManager;
-
 	glm::vec3 rimColor;
 
+	float timer;
+
+	TimeManager* timeManager;
+
+	Entity* player;
 public:
 	PickUp(Entity* parent, Spawner* spawner,
-		DynamicColliderComponent* collider, glm::vec3 color);
+		DynamicColliderComponent* collider, glm::vec3 color, EPickUp type);
 
-	void use();
+	void update() override;
+
+	void use(Entity* player);
+	void endUse();
+
+	bool isSpawn;
+	EPickUp type;
 };
 
 

@@ -2,6 +2,8 @@
 #include "Component.h"
 #include <vector>
 #include <memory>
+#include "Enums/PickupType.h";
+
 class PickUp;
 class Shader;
 class TimeManager;
@@ -37,9 +39,10 @@ public:
 
 	void update() override;
 
-	Entity* createPickUp(glm::vec3 color);
+	Entity* createPickUp(glm::vec3 color, EPickUp type = EPickUp::NoPower);
 
 	Entity* drawPickUp();
 
+	//spawner dosent start spawning again until pickup powerup is finished
 	void disablePickUp();
 };

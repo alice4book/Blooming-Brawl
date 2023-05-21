@@ -41,4 +41,5 @@ private:
 public:
 	PlayerMovement(GLFWwindow* window, Entity* parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
     void update() override;
+	void setSpeed(float newSpeed);
 };

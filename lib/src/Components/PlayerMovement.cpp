@@ -47,7 +47,7 @@ void PlayerMovement::move()
                 if (comp != nullptr) {
                     comp->getParent()->getComponentsByType(&compTypePU);
                     for (PickUp* pickUp : compTypePU) {
-                        pickUp->use();
+                        pickUp->use(parent);
                     }
                 }
             }
@@ -158,7 +158,7 @@ void PlayerMovement::move()
             if (comp != nullptr) {
                 comp->getParent()->getComponentsByType(&compTypePU);
                 for (PickUp* pickUp : compTypePU) {
-                    pickUp->use();
+                    pickUp->use(parent);
                 }
             }
         }
@@ -258,6 +258,11 @@ void PlayerMovement::update() {
     move();
     checkInput();
     handleSeenTile();
+}
+
+void PlayerMovement::setSpeed(float newSpeed)
+{
+    speed = newSpeed;
 }
 
 void PlayerMovement::checkInput(){
