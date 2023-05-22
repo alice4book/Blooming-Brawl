@@ -86,12 +86,10 @@ void PlayerMovement::move()
                 forward = glm::normalize(forward);
                 transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 if (previousForward != forward) {
-                    //std::cout << "inny" << std::endl;
                     float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
                     if (angle == 0 || angle == -0) { angle = 180; }
                     if (setForward == forward) { angle = 0; }
                     if (angle < 0 && angle > -180) { angle = -180 - angle; }
-                    //std::cout << -angle << std::endl;
                     transform->setLocalRotation({ 0,-angle,0 });
                 }
 

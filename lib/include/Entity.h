@@ -49,6 +49,7 @@ public:
 
     //Draw
     virtual void renderEntity();
+    virtual void renderEntity(Shader* shader);
 
     [[nodiscard]] const std::vector<Entity *> &getChildren() const;
 

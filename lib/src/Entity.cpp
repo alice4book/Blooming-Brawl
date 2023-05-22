@@ -102,3 +102,16 @@ void Entity::switchShader(){
     if(altShader != nullptr)
         std::swap(shader, altShader);
 }
+
+void Entity::renderEntity(Shader* shader) {
+    this->updateSelfAndChild();
+
+    if (isModel) {
+        shader->use();
+        shader->setMat4("model", transform->getModelMatrix());
+        model->Draw(*shader);
+    }
+    for (auto& i : children) {
+        i->renderEntity();
+    }
+}
