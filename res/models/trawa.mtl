@@ -8,7 +8,6 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 3
-map_Kd ../textures/trawa/kwio_podstawa_BaseColor.png
-map_Ns ../textures/trawa/kwio_podstawa_Roughness.png
-map_refl ../textures/trawa/kwio_podstawa_Metallic.png
-map_Bump -bm 1.000000 ../textures/trawa/kwio_podstawa_Normal.png
+map_Kd ../textures/duzy_kwiatek/DUZY KWIATEK_podstawa_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY KWIATEK_podstawa_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY KWIATEK_podstawa_Metalic.png
