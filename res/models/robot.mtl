@@ -8,9 +8,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd FARMA/tekstury_farma/robot_twarz/smooth_dol_tlow_BaseColor.png
-map_Ns FARMA/tekstury_farma/robot_twarz/smooth_dol_tlow_Roughness.png
-map_refl FARMA/tekstury_farma/robot_twarz/smooth_dol_tlow_Metallic.png
+map_Kd ../textures/robot/smooth_dol_tlow_BaseColor.png
+map_Ns ../textures/robot/smooth_dol_tlow_Roughness.png
+map_refl ../textures/robot/smooth_dol_tlow_Metallic.png
 
 newmtl glowa.001
 Ka 1.000000 1.000000 1.000000
@@ -19,9 +19,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
 illum 2
-map_Kd FARMA/tekstury_farma/robot_twarz/robot_terazz_glowa_BaseColor.png
-map_Ns FARMA/tekstury_farma/robot_twarz/robot_terazz_glowa_Roughness.png
-map_refl FARMA/tekstury_farma/robot_twarz/robot_terazz_glowa_Metallic.png
+map_Kd ../textures/robot/robot_terazz_glowa_BaseColor.png
+map_Ns ../textures/robot/robot_terazz_glowa_Roughness.png
+map_refl ../textures/robot/robot_terazz_glowa_Metallic.png
 
 newmtl gpra_tlow.002
 Ka 1.000000 1.000000 1.000000
@@ -30,10 +30,10 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_BaseColor.png
-map_Ns FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_Roughness.png
-map_refl FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_Metallic.png
-map_Bump -bm 1.000000 FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_Normal.png
+map_Kd ../textures/robot/smooth_gpra_tlow_BaseColor.png
+map_Ns ../textures/robot/smooth_gpra_tlow_Roughness.png
+map_refl ../textures/robot/smooth_gpra_tlow_Metallic.png
+map_Bump -bm 1.000000 ../textures/robot/smooth_gpra_tlow_Normal.png
 
 newmtl gpra_tlow.003
 Ka 1.000000 1.000000 1.000000
@@ -42,10 +42,10 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_BaseColor.png
-map_Ns FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_Roughness.png
-map_refl FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_Metallic.png
-map_Bump -bm 1.000000 FARMA/tekstury_farma/robot_twarz/smooth_gpra_tlow_Normal.png
+map_Kd ../textures/robot/smooth_gpra_tlow_BaseColor.png
+map_Ns ../textures/robot/smooth_gpra_tlow_Roughness.png
+map_refl ../textures/robot/smooth_gpra_tlow_Metallic.png
+map_Bump -bm 1.000000 ../textures/robot/smooth_gpra_tlow_Normal.png
 
 newmtl oczy.002
 Ka 1.000000 1.000000 1.000000
@@ -54,9 +54,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd FARMA/tekstury_farma/robot_twarz/robot_terazz_oczy_BaseColor.png
-map_Ns FARMA/tekstury_farma/robot_twarz/robot_terazz_oczy_Roughness.png
-map_refl FARMA/tekstury_farma/robot_twarz/robot_terazz_oczy_Metallic.png
+map_Kd ../textures/robot/robot_terazz_oczy_BaseColor.png
+map_Ns ../textures/robot/robot_terazz_oczy_Roughness.png
+map_refl ../textures/robot/robot_terazz_oczy_Metallic.png
 
 newmtl rece.001
 Ka 1.000000 1.000000 1.000000
@@ -65,7 +65,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd FARMA/tekstury_farma/robot_twarz/smooth_rece_BaseColor.png
-map_Ns FARMA/tekstury_farma/robot_twarz/smooth_rece_Roughness.png
-map_refl FARMA/tekstury_farma/robot_twarz/smooth_rece_Metallic.png
-map_Bump -bm 1.000000 FARMA/tekstury_farma/robot_twarz/smooth_rece_Normal.png
+map_Kd ../textures/robot/smooth_rece_BaseColor.png
+map_Ns ../textures/robot/smooth_rece_Roughness.png
+map_refl ../textures/robot/smooth_rece_Metallic.png
+map_Bump -bm 1.000000 ../textures/robot/smooth_rece_Normal.png
