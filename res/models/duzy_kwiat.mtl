@@ -14,9 +14,9 @@ newmtl podstawa
 	Ni 1.5200
 	Ke 0.0000 0.0000 0.0000
 	illum 2
-map_Kd ../textures/duzy_kwiatek/DUZY KWIATEK_podstawa_BaseColor.png
-map_Ns ../textures/duzy_kwiatek/DUZY KWIATEK_podstawa_Roughness.png
-map_refl ../textures/duzy_kwiatek/DUZY KWIATEK_podstawa_Metalic.png
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_Metalic.png
 
 newmtl lodyga_liscie
 	Kd 0.5000 0.5000 0.5000
@@ -31,9 +31,9 @@ newmtl lodyga_liscie
 	Ni 1.5200
 	Ke 0.0000 0.0000 0.0000
 	illum 2
-map_Kd ../textures/duzy_kwiatek/DUZY KWIATEK_lodyga_liscie_BaseColor.png
-map_Ns ../textures/duzy_kwiatek/DUZY KWIATEK_lodyga_liscie_Roughness.png
-map_refl ../textures/duzy_kwiatek/DUZY KWIATEK_lodyga_liscie_Metalic.png
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metalic.png
 
 newmtl zawijasy
 	Kd 0.5000 0.5000 0.5000
@@ -48,9 +48,9 @@ newmtl zawijasy
 	Ni 1.5200
 	Ke 0.0000 0.0000 0.0000
 	illum 2
-map_Kd ../textures/duzy_kwiatek/DUZY KWIATEK_zawijasy_BaseColor.png
-map_Ns ../textures/duzy_kwiatek/DUZY KWIATEK_zawijasy_Roughness.png
-map_refl ../textures/duzy_kwiatek/DUZY KWIATEK_zawijasy_Metalic.png
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_zawijasy_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_zawijasy_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_zawijasy_Metalic.png
 
 newmtl platki_male
 	Kd 0.5000 0.5000 0.5000
@@ -65,9 +65,9 @@ newmtl platki_male
 	Ni 1.5200
 	Ke 0.0000 0.0000 0.0000
 	illum 2
-map_Kd ../textures/duzy_kwiatek/DUZY KWIATEK_platki_male_BaseColor.png
-map_Ns ../textures/duzy_kwiatek/DUZY KWIATEK_platki_male_Roughness.png
-map_refl ../textures/duzy_kwiatek/DUZY KWIATEK_platki_male_Metalic.png
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_platki_male_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_platki_male_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_platki_male_Metalic.png
 
 newmtl platki_duze
 Kd 0.5000 0.5000 0.5000
@@ -82,6 +82,6 @@ Pcr 0.0000
 Ni 1.5200
 Ke 0.0000 0.0000 0.0000
 illum 2
-map_Kd ../textures/duzy_kwiatek/DUZY KWIATEK_platki_duze_BaseColor.png
-map_Ns ../textures/duzy_kwiatek/DUZY KWIATEK_platki_duze_Roughness.png
-map_refl ../textures/duzy_kwiatek/DUZY KWIATEK_platki_duze_Metalic.png
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_platki_duze_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_platki_duze_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_platki_duze_Metalic.png
