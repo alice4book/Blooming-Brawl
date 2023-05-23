@@ -52,6 +52,7 @@ public:
 
     //Draw
     virtual void renderEntity();
+    virtual void renderEntity(Shader* shader);
 
     //For pickup
     void setColor(glm::vec3 col);

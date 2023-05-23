@@ -146,10 +146,14 @@ int main()
     Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
     Shader pickupShader("res/shaders/vertexPickUp.vert", "res/shaders/rimLight.frag");
     Shader highlightShader("res/shaders/vertexModel.vert", "res/shaders/highlightLight.frag");
+    Shader directionalShader("res/shaders/vertexModel.vert", "res/shaders/directional.frag");
+    Shader depthShader("res/shaders/depthShader.vert", "res/shaders/depthShader.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
 //    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
+
+    glm::vec3 dirLightColor(1.0f, 1.0f, 1.0f);
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
@@ -171,7 +175,7 @@ int main()
         "res/maps/map3.txt"
     };
 
-    Entity mapManager(&modelShader);
+    Entity mapManager(&directionalShader);
     Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &pickupShader, &highlightShader, 0);
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
@@ -181,9 +185,9 @@ int main()
 
 #pragma region Tools
     std::vector<Entity> toolstab;
-    Entity tool1("res/models/duzy_kwiat.obj", &modelShader);
+    Entity tool1("res/models/duzy_kwiat.obj", &directionalShader);
     tool1.addComponent(new Tool(&tool1));
-    Entity tool2("res/models/maly_kwiat.obj", &modelShader);
+    Entity tool2("res/models/maly_kwiat.obj", &directionalShader);
     mapManager.addChild(&tool1);
     mapManager.addChild(&tool2);
     tool2.addComponent(new Tool(&tool2));
@@ -208,7 +212,7 @@ int main()
 #pragma region Collision & Robot test
     
     //add and move robot1 (version robot turns only right)
-    Entity robot1("res/models/robot.obj", &modelShader);
+    Entity robot1("res/models/robot.obj", &directionalShader);
     skybox->addChild(&robot1);
     robot1.transform->setLocalPosition({ TILE_SIZE * 5, 0.1, TILE_SIZE * 5});
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
@@ -222,7 +226,7 @@ int main()
     robot1.addComponent((Component*)&robotmovement);
     robotmovement.findClosestNode();
 
-    Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
+    Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
     skybox->addChild(&player1);
     player1.transform->setLocalPosition({ 1,0,0 });
     Player playerP1(&player1, Player1);
@@ -234,7 +238,7 @@ int main()
     PlayerMovement playerMovement(window, &player1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
     
-    Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &modelShader);
+    Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
     skybox->addChild(&player2);
     player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
@@ -268,6 +272,36 @@ int main()
     map.addHud(&hud);
 #pragma endregion
 
+    // Framebuffer for shadow map
+    const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
+    unsigned int depthMapFBO;
+    glGenFramebuffers(1, &depthMapFBO);
+
+    unsigned int depthMap;
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    float near_plane = 1.0f, far_plane = 100.0f;
+    glm::mat4 orthogonalProjection = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, near_plane, far_plane);
+    glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 1.0f, -1.0f),
+                                    glm::vec3(0.0f, 0.0f, 0.0f),
+                                       glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightProjection = orthogonalProjection * lightView;
+
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -281,9 +315,31 @@ int main()
         // input
         processInput(window);
 
+        //shadow
+        glEnable(GL_DEPTH_TEST);
+
+        depthShader.use();
+        depthShader.setMat4("lightProjection", lightProjection);
+
+
+        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glActiveTexture(GL_TEXTURE0);
+        player1.renderEntity(&depthShader);
+        player2.renderEntity(&depthShader);
+        robot1.renderEntity(&depthShader);
+        mapManager.renderEntity(&depthShader);
+        tool1.renderEntity(&depthShader);
+        tool2.renderEntity(&depthShader);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        glViewport(0, 0, windowData.resolutionX, windowData.resolutionY);
+
         // render
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
 
         // orthographic
 //         constexpr float size = 2.f;
@@ -321,6 +377,19 @@ int main()
         highlightShader.setMat4("view", view);
         highlightShader.setVec3("viewPos", camera.Position);
         highlightShader.setVec3("hlcolor", {0.5,0.5,0.5});
+
+        //shadow
+        directionalShader.use();
+        glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);
+        directionalShader.setMat4("lightProjection",lightProjection);
+        glActiveTexture(GL_TEXTURE0 + 2);
+        glBindTexture(GL_TEXTURE_2D, depthMap);
+        directionalShader.setInt("texture_diffuse1", 0);
+        glUniform1i(glGetUniformLocation(directionalShader.ID, "depthMap"), 2);
+        modelShader.setMat4("projection", projection);
+        modelShader.setMat4("view", view);
+        directionalShader.setVec4("aColor", glm::vec4(dirLightColor, 0.0f));
+        directionalShader.setVec3("viewPos", camera.Position);
 
         hudShader.use();
         hudShader.setMat4("projection", projection);

@@ -114,6 +114,19 @@ void Entity::renderEntity() {
     }
 }
 
+void Entity::renderEntity(Shader* shader) {
+    this->updateSelfAndChild();
+
+    if (isModel) {
+        shader->use();
+        shader->setMat4("model", transform->getModelMatrix());
+        model->Draw(*shader);
+    }
+    for (auto& i : children) {
+        i->renderEntity();
+    }
+}
+
 void Entity::setColor(glm::vec3 col) {
     this->color = col;
 }
