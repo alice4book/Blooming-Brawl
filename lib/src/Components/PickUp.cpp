@@ -43,7 +43,7 @@ void PickUp::use(Entity* player)
 				timer = 10.0f;
 				std::vector<PlayerMovement*> playerCom;
 				player->getComponentsByType(&playerCom);
-				playerCom[0]->setSpeed(2.f);
+				playerCom[0]->setSpeed(1.6f);
 				break;
 		}
 		parent->isModel = false;
@@ -57,7 +57,7 @@ void PickUp::endUse()
 	if (type == Speed) {
 		std::vector<PlayerMovement*> playerCom;
 		this->player->getComponentsByType(&playerCom);
-		playerCom[0]->setSpeed(1.f);
+		playerCom[0]->setSpeed(1.0f);
 	}
 	timeManager->detach(this);
 	player = nullptr;

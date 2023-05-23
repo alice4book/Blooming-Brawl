@@ -36,6 +36,7 @@ private:
     float tileSize;
     MapData codedMaps[NR_OF_MAPS];
     int nrOfTiles;
+    int emptyTiles;
     int player1TilesCount;
     int player2TilesCount;
 

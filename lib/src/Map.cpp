@@ -108,16 +108,19 @@ void Map::GenerateMap(int mapNr)
 				break;
 			case 'o':
 				tiles[tileNr].model = &tileModels[EState::Overgrown];
+				emptyTiles++;
 				isPassable = true;
 				state = EState::Overgrown;
 				break;
 			case 't':
 				tiles[tileNr].model = &tileModels[EState::Empty];
+				emptyTiles++;
 				isPassable = true;
 				state = EState::Empty;
 				break;
 			case 's':
 				tiles[tileNr].model = &tileModels[EState::Empty];
+				emptyTiles++;
 				isPassable = true;
 				state = EState::Empty;
 				if (spawnerShader != nullptr) {
@@ -129,6 +132,7 @@ void Map::GenerateMap(int mapNr)
 			case '.':
 			default:
 				tiles[tileNr].model = &tileModels[EState::Empty];
+				emptyTiles++;
 				isPassable = true;
 				state = EState::Empty;
 				break;
@@ -217,6 +221,7 @@ Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSiz
     world->mapComponent = this;
 	player1TilesCount = 0;
 	player2TilesCount = 0;
+	emptyTiles = 0;
 }
 
 void Map::ChangeMap(int mapIndex)
@@ -255,7 +260,7 @@ void Map::addHud(HUD* hud)
 {
 	this->hud = hud;
 	if(hud != nullptr)
-		hud->setTilesCount(nrOfTiles);
+		hud->setTilesCount(emptyTiles);
 }
 
 void Map::LoadMapsFromFiles(std::string* files)
