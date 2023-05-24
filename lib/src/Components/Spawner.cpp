@@ -8,13 +8,13 @@
 #include <iostream>
 #include <PickUp.h>
 #include <Transform.h>
-#include "Enums/PickupType.h";
+#include "Enums/PickupType.h"
 
 Spawner::Spawner(Entity* parent, Shader* shader)
 	: Component(parent)
 	, shader(shader)
 	, timer(0.0f)
-	, timeToSpawn(2.0f)
+	, timeToSpawn(4.0f)
 {
 	timeManager = TimeManager::getInstance();
 	timeManager->attach120FPS(this);
@@ -40,11 +40,9 @@ void Spawner::update() {
 			isSpawned = true;
 		}
 	}
-	
 }
 
 Entity* Spawner::createPickUp(glm::vec3 color, EPickUp type) {
-
 	Entity* spawndItem = new Entity("res/models/powerUp.obj", shader);
 	spawndItem->transform->addToLocalPosition({ 0.0,0.1,0.0 });
 	DynamicColliderComponent* col =  new DynamicColliderComponent(spawndItem, 0.05f, true);
@@ -62,4 +60,5 @@ void Spawner::disablePickUp() {
 	parent->children.pop_back();
 	world->clearReloadLists();
 	isSpawned = false;
+	timeToSpawn = 4.0f;
 }

@@ -4,6 +4,7 @@
 . - puste
 x - skała
 o - krzew
+s - pickup spawner
 ? - losowo
 t - narzędzie (nie może być więcej niż mamy narzędzi w grze obecnie 2)
 Ilość '?' musi być >= liczbie kamieni + krzewów

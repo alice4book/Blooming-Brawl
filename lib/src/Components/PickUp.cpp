@@ -22,6 +22,7 @@ PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* colli
 	timer = -1.0f;
 	parent->setColor(color);
 	isSpawn = false;
+	isUsed = false;
 }
 
 void PickUp::update()
@@ -36,19 +37,19 @@ void PickUp::update()
 void PickUp::use(Entity* player)
 {
 	if (player != nullptr) {
+		isUsed = true;
 		this->player = player;
 		timeManager->attach120FPS(this);
+		timer = 10.0f;
 		switch (type) {
 			case Speed:
-				timer = 10.0f;
 				std::vector<PlayerMovement*> playerCom;
 				player->getComponentsByType(&playerCom);
 				playerCom[0]->setSpeed(1.6f);
 				break;
 		}
 		parent->isModel = false;
-		parent->model = nullptr;
-		colliderBody = nullptr;
+		colliderBody->enabled = false;
 	}
 }
 
@@ -61,7 +62,11 @@ void PickUp::endUse()
 	}
 	timeManager->detach(this);
 	player = nullptr;
+	isUsed = false;
 	spawn->disablePickUp();
+
+	parent->isModel = true;
+	colliderBody->enabled = true;
 }
 
 

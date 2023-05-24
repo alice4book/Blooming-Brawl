@@ -1,7 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "glm/glm.hpp"
-#include "Enums/PickupType.h";
+#include "Enums/PickupType.h"
+
 //WIP
 class DynamicColliderComponent;
 class Spawner;
@@ -31,6 +32,7 @@ public:
 	void use(Entity* player);
 	void endUse();
 
+	bool isUsed;
 	bool isSpawn;
 	EPickUp type;
 };

@@ -15,7 +15,8 @@ DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius,
 }
 
 void DynamicColliderComponent::update() {
-    checkAllCollisions();
+    if(enabled)
+        checkAllCollisions();
 }
 
 void DynamicColliderComponent::checkAllCollisions(){

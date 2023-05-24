@@ -47,7 +47,8 @@ void PlayerMovement::move()
                 if (comp != nullptr) {
                     comp->getParent()->getComponentsByType(&compTypePU);
                     for (PickUp* pickUp : compTypePU) {
-                        pickUp->use(parent);
+                        if(!pickUp->isUsed)
+                            pickUp->use(parent);
                     }
                 }
             }
@@ -158,7 +159,8 @@ void PlayerMovement::move()
             if (comp != nullptr) {
                 comp->getParent()->getComponentsByType(&compTypePU);
                 for (PickUp* pickUp : compTypePU) {
-                    pickUp->use(parent);
+                    if (!pickUp->isUsed)
+                        pickUp->use(parent);
                 }
             }
         }

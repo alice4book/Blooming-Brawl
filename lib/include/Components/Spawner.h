@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <vector>
 #include <memory>
-#include "Enums/PickupType.h";
+#include "Enums/PickupType.h"
 
 class PickUp;
 class Shader;

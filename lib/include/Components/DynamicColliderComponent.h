@@ -40,7 +40,8 @@ public:
     void setRadius(float newRadius);
 
     StaticColliderComponent* getTileColliderIAmOn();
-
+    
+    bool enabled = true;
 private:
     void setTileColliderIAmOn();
 
