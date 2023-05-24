@@ -6,8 +6,8 @@
 class HUD : public Entity{
 
 private:
-	int BACKBAR_SIZE = 2050;
-	int BAR_SIZE = 2200;
+	double BACKBAR_SIZE = 2050;
+	double BAR_SIZE = 2200;
 
 	float resizeX = 1;
 	float resizeY = 1;

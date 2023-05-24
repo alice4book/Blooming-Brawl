@@ -68,8 +68,6 @@ public:
     int getTilesCount();
     void addToPlayer1TilesCount(int p1);
     void addToPlayer2TilesCount(int p2);
-    int getPlayer1TilesCount();
-    int getPlayer2TilesCount();
 
     void addHud(HUD* hud);
 

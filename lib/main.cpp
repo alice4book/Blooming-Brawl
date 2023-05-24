@@ -222,7 +222,7 @@ int main()
     robot1.addComponent((Component*)&robotColliderFront1);
     PathFinding pathFinding(&map);
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
-        &robotColliderFront1, 1.0f, eRight, pathFinding, TILE_SIZE, {0,0,-1});
+        &robotColliderFront1, 0.4f, eRight, pathFinding, TILE_SIZE, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
     robotmovement.findClosestNode();
 
@@ -268,10 +268,9 @@ int main()
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     HUD hud(&hudShader, &textShader);
     mapManager.addChild(&hud);
-    hud.barSize(50, 50);
     map.addHud(&hud);
 #pragma endregion
-
+#pragma region Shadow
     // Framebuffer for shadow map
     const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
     unsigned int depthMapFBO;
@@ -301,6 +300,7 @@ int main()
                                        glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightProjection = orthogonalProjection * lightView;
 
+#pragma endregion
 
     // render loop
     while (!glfwWindowShouldClose(window))

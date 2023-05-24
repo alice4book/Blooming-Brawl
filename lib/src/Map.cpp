@@ -85,6 +85,7 @@ void Map::GenerateMap(int mapNr)
 	
 	//create all tiles
 	int tileNr = 0;
+	emptyTiles = 0;
 	std::vector <StaticColliderComponent*> collidersRow;
 	for (int i = 0; i < codedMaps[mapNr].rows; i++)
 	{
@@ -221,7 +222,6 @@ Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSiz
     world->mapComponent = this;
 	player1TilesCount = 0;
 	player2TilesCount = 0;
-	emptyTiles = 0;
 }
 
 void Map::ChangeMap(int mapIndex)
@@ -244,16 +244,6 @@ void Map::addToPlayer2TilesCount(int p2)
 {
 	player2TilesCount += p2;
 	hud->barSize(player1TilesCount, player2TilesCount);
-}
-
-int Map::getPlayer1TilesCount()
-{
-	return player1TilesCount;
-}
-
-int Map::getPlayer2TilesCount()
-{
-	return player2TilesCount;
 }
 
 void Map::addHud(HUD* hud)
