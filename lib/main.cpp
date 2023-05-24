@@ -123,7 +123,7 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
+    /*
     // Setup Dear ImGui binding
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -133,7 +133,7 @@ int main()
 
     // Setup style
     ImGui::StyleColorsDark();
-
+    */
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
 #pragma endregion
@@ -143,11 +143,11 @@ int main()
     // build and compile our shader zprogram
     Shader modelShader("res/shaders/vertexModel.vert", "res/shaders/fragment.frag");
     Shader skyboxShader("res/shaders/vertexSkybox.vert", "res/shaders/fragmentSkybox.frag");
-    Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
     Shader pickupShader("res/shaders/vertexPickUp.vert", "res/shaders/rimLight.frag");
     Shader highlightShader("res/shaders/vertexModel.vert", "res/shaders/highlightLight.frag");
     Shader directionalShader("res/shaders/vertexModel.vert", "res/shaders/directional.frag");
     Shader depthShader("res/shaders/depthShader.vert", "res/shaders/depthShader.frag");
+//    Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
 //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
 //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
@@ -351,11 +351,6 @@ int main()
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
-        blurShader.use();
-        blurShader.setMat4("projection", projection);
-        blurShader.setMat4("view", view);
-        blurShader.setBool("horizontal", true);
-
         modelShader.use();
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
@@ -386,8 +381,12 @@ int main()
         glBindTexture(GL_TEXTURE_2D, depthMap);
         directionalShader.setInt("texture_diffuse1", 0);
         glUniform1i(glGetUniformLocation(directionalShader.ID, "depthMap"), 2);
-        modelShader.setMat4("projection", projection);
-        modelShader.setMat4("view", view);
+        //modelShader.use();
+        //modelShader.setMat4("projection", projection);
+        //modelShader.setMat4("view", view);
+        directionalShader.use();
+        directionalShader.setMat4("projection", projection);
+        directionalShader.setMat4("view", view);
         directionalShader.setVec4("aColor", glm::vec4(dirLightColor, 0.0f));
         directionalShader.setVec3("viewPos", camera.Position);
 
