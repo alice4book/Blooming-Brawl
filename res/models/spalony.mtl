@@ -1,86 +1,57 @@
-# Blender 3.4.1 MTL File: 'duzy i mlay kwiatek na trawach.blend'
+# Blender 3.5.1 MTL File: 'kwiatek_nowy wstawiony.blend'
 # www.blender.org
 
-newmtl lsicie_lodyga.005
+newmtl lodyga_liscie.001
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
+Ni 1.520000
 d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_lsicie lodyga_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_lsicie lodyga_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_lsicie lodyga_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_lsicie lodyga_Normal.png
+illum 2
+map_Kd ../textures/spalony_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/spalony_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/spalony_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metalic.png
 
-newmtl platki.005
+newmtl platki_duze.001
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
+Ni 1.520000
 d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_platki_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_platki_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_platki_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_platki_Normal.png
+illum 2
+map_Kd ../textures/spalony_kwiatek/DUZY_KWIATEK_platki_duze_BaseColor.png
+map_Ns ../textures/spalony_kwiatek/DUZY_KWIATEK_platki_duze_Roughness.png
+map_refl ../textures/spalony_kwiatek/DUZY_KWIATEK_platki_duze_Metalic.png
 
-newmtl platki.006
+newmtl platki_male.001
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
+Ni 1.520000
 d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_platki_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_platki_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_platki_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_platki_Normal.png
+illum 2
+map_Kd ../textures/spalony_kwiatek/DUZY_KWIATEK_platki_male_BaseColor.png
+map_Ns ../textures/spalony_kwiatek/DUZY_KWIATEK_platki_male_Roughness.png
+map_refl ../textures/spalony_kwiatek/DUZY_KWIATEK_platki_male_Metalic.png
 
-newmtl platki.007
+newmtl podstawa.004
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
+Ni 1.520000
 d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_platki_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_platki_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_platki_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_platki_Normal.png
+illum 2
+map_Kd ../textures/spalony_kwiatek/DUZY_KWIATEK_podstawa_BaseColor.png
+map_Ns ../textures/spalony_kwiatek/DUZY_KWIATEK_podstawa_Roughness.png
+map_refl ../textures/spalony_kwiatek/DUZY_KWIATEK_podstawa_Metalic.png
 
-newmtl platki.008
+newmtl zawijasy.001
 Ka 1.000000 1.000000 1.000000
 Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
+Ni 1.520000
 d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_platki_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_platki_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_platki_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_platki_Normal.png
-
-newmtl platki.009
-Ka 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_platki_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_platki_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_platki_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_platki_Normal.png
-
-newmtl podstawa.032
-Ka 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 3
-map_Kd ../textures/spalony_kwiatek/kwio_podstawa_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/kwio_podstawa_Roughness.png
-map_refl ../textures/spalony_kwiatek/kwio_podstawa_Metallic.png
-map_Bump -bm 1.000000 ../textures/spalony_kwiatek/kwio_podstawa_Normal.png
+illum 2
+map_Kd ../textures/spalony_kwiatek/DUZY_KWIATEK_zawijasy_BaseColor.png
+map_Ns ../textures/spalony_kwiatek/DUZY_KWIATEK_zawijasy_Roughness.png
+map_refl ../textures/spalony_kwiatek/DUZY_KWIATEK_zawijasy_Metalic.png
