@@ -165,7 +165,7 @@ int main()
         Model("res/models/duzy_kwiat2.obj"),
         Model("res/models/duzy_kwiat.obj"),
         Model("res/models/skaly.obj"),
-        Model("res/models/krzak.obj"),
+        Model("res/models/dom.obj"),
         Model("res/models/spalony.obj")
     };
 
@@ -185,9 +185,9 @@ int main()
 
 #pragma region Tools
     std::vector<Entity> toolstab;
-    Entity tool1("res/models/krzak.obj", &directionalShader);
+    Entity tool1("res/models/dom.obj", &directionalShader);
     tool1.addComponent(new Tool(&tool1));
-    Entity tool2("res/models/krzak.obj", &directionalShader);
+    Entity tool2("res/models/dom.obj", &directionalShader);
     mapManager.addChild(&tool1);
     mapManager.addChild(&tool2);
     tool2.addComponent(new Tool(&tool2));

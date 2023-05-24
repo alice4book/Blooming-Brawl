@@ -1,0 +1,206 @@
+# Blender 3.5.1 MTL File: 'mroczna_farma.blend'
+# www.blender.org
+
+newmtl drzwi
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl duza_krawedz
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_duza_krawedz_BaseColor.png
+map_Ns ../textures/dom/domcio_duza_krawedz_Roughness.png
+map_refl ../textures/dom/domcio_duza_krawedz_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_duza_krawedz_Normal.png
+
+newmtl ganek
+Ka 1.000000 1.000000 1.000000
+Kd 0.210150 0.210150 0.210150
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_ganek_BaseColor.png
+map_Ns ../textures/dom/domcio_ganek_Roughness.png
+map_refl ../textures/dom/domcio_ganek_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_ganek_Normal.png
+
+newmtl krawedz
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_krawedz_BaseColor.png
+map_Ns ../textures/dom/domcio_krawedz_Roughness.png
+map_refl ../textures/dom/domcio_krawedz_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_krawedz_Normal.png
+
+newmtl nad_drzwiami
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_nad_drzwiami_BaseColor.png
+map_Ns ../textures/dom/domcio_nad_drzwiami_Roughness.png
+map_refl ../textures/dom/domcio_nad_drzwiami_Metallic.png
+map_Bump ../textures/dom/domcio_nad_drzwiami_Normal.png
+
+newmtl obramowanie_drzwi
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl okno_dol
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_okno_dol_BaseColor.png
+map_Ns ../textures/dom/domcio_okno_dol_Roughness.png
+map_refl ../textures/dom/domcio_okno_dol_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_okno_dol_Normal.png
+
+newmtl okno_gora_lewo
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_okno_gora_lewo_BaseColor.png
+map_Ns ../textures/dom/domcio_okno_gora_lewo_Roughness.png
+map_refl ../textures/dom/domcio_okno_gora_lewo_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_okno_gora_lewo_Normal.png
+
+newmtl okno_gora_prawo
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_okno_gora_prawo_BaseColor.png
+map_Ns ../textures/dom/domcio_okno_gora_prawo_Roughness.png
+map_refl ../textures/dom/domcio_okno_gora_prawo_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_okno_gora_prawo_Normal.png
+
+newmtl pod_slup
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_pod_slup_BaseColor.png
+map_Ns ../textures/dom/domcio_pod_slup_Roughness.png
+map_refl ../textures/dom/domcio_pod_slup_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_pod_slup_Normal.png
+
+newmtl schody
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_schody_BaseColor.png
+map_Ns ../textures/dom/domcio_schody_Roughness.png
+map_refl ../textures/dom/domcio_schody_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_schody_Normal.png
+
+newmtl sciana_dol
+Ka 1.000000 1.000000 1.000000
+Kd 0.258914 0.362650 0.597202
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_sciana_dol_BaseColor.png
+map_Ns ../textures/dom/domcio_sciana_dol_Roughness.png
+map_refl ../textures/dom/domcio_sciana_dol_Metallic.png
+map_Bump -bm 1.100000 ../textures/dom/domcio_sciana_dol_Normal.png
+
+newmtl sciana_gora_lewo
+Ka 1.000000 1.000000 1.000000
+Kd 0.423268 0.462077 0.603828
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_sciana_gora_lewo_BaseColor.png
+map_Ns ../textures/dom/domcio_sciana_gora_lewo_Roughness.png
+map_refl ../textures/dom/domcio_sciana_gora_lewo_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_sciana_gora_lewo_Normal.png
+
+newmtl sciana_gora_prawo
+Ka 1.000000 1.000000 1.000000
+Kd 0.415214 0.453599 0.593911
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_sciana_gora_prawo_BaseColor.png
+map_Ns ../textures/dom/domcio_sciana_gora_prawo_Roughness.png
+map_refl ../textures/dom/domcio_sciana_gora_prawo_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_sciana_gora_prawo_Normal.png
+
+newmtl skaly.002
+Ka 1.000000 1.000000 1.000000
+Kd 0.124443 0.127429 0.102495
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.520000
+d 1.000000
+illum 1
+map_Kd ../textures/skaly/skaly_skaly_BaseColor.png
+map_Ns ../textures/skaly/skaly_skaly_Roughness.png
+map_refl ../textures/skaly/skaly_skaly_Metalic.png
+
+newmtl slup
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/dom/domcio_slup_BaseColor.png
+map_Ns ../textures/dom/domcio_slup_Roughness.png
+map_refl ../textures/dom/domcio_slup_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_slup_Normal.png
+
+newmtl szyba
+Ka 1.000000 1.000000 1.000000
+Kd 0.953715 0.855918 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Ns ../textures/dom/domcio_szyba_Roughness.png
+map_refl ../textures/dom/domcio_szyba_Metallic.png
+map_Bump -bm 1.000000 ../textures/dom/domcio_szyba_Normal.png
