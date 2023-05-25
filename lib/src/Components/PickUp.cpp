@@ -6,6 +6,7 @@
 #include "TimeManager.h"
 #include "PlayerIDType.h"
 #include "PlayerMovement.h"
+#include "Shader.h"
 #include <iostream>
 
 
@@ -23,10 +24,17 @@ PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* colli
 	parent->setColor(color);
 	isSpawn = false;
 	isUsed = false;
+	pickupMovement = 0.0f;
 }
 
 void PickUp::update()
 {
+	if (pickupMovement > 6.2831f) {
+		pickupMovement = pickupMovement - 6.2831f;
+	}
+	pickupMovement += timeManager->getDeltaTime120FPS() * 2.2f;
+	parent->shader->use();
+	parent->shader->setFloat("time", pickupMovement);
 	if (timer > 0.0f) {
 		timer -= timeManager->getDeltaTime120FPS();
 		if (timer < 0.0f)

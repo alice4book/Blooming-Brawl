@@ -253,7 +253,6 @@ int main()
 
 #pragma region Power Up Setting
     float rimLight = 0.5f;
-    float pickupMovement = 0.0f;
 #pragma endregion
 
 #pragma region Audio   
@@ -264,7 +263,7 @@ int main()
 #pragma endregion
 
 #pragma region HUD
-    Shader hudShader("res/shaders/HUD.vert", "res/shaders/fragment.frag");
+    Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     HUD hud(&hudShader, &textShader);
     mapManager.addChild(&hud);
@@ -321,7 +320,6 @@ int main()
         depthShader.use();
         depthShader.setMat4("lightProjection", lightProjection);
 
-
         glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -361,11 +359,6 @@ int main()
         pickupShader.setMat4("view", view);
         pickupShader.setVec3("viewPos", camera.Position);
         pickupShader.setFloat("n_r", rimLight);
-        if (pickupMovement > 6.2831) {
-            pickupMovement = pickupMovement - 6.2831;
-        }
-        pickupMovement += timeManager->getDeltaTimeUnlimitedFPS() * 2.2f;
-        pickupShader.setFloat("time", pickupMovement);
 
         highlightShader.use();
         highlightShader.setMat4("projection", projection);
@@ -381,9 +374,6 @@ int main()
         glBindTexture(GL_TEXTURE_2D, depthMap);
         directionalShader.setInt("texture_diffuse1", 0);
         glUniform1i(glGetUniformLocation(directionalShader.ID, "depthMap"), 2);
-        //modelShader.use();
-        //modelShader.setMat4("projection", projection);
-        //modelShader.setMat4("view", view);
         directionalShader.use();
         directionalShader.setMat4("projection", projection);
         directionalShader.setMat4("view", view);

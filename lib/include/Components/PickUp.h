@@ -23,6 +23,8 @@ private:
 	TimeManager* timeManager;
 
 	Entity* player;
+
+	float pickupMovement;
 public:
 	PickUp(Entity* parent, Spawner* spawner,
 		DynamicColliderComponent* collider, glm::vec3 color, EPickUp type);
