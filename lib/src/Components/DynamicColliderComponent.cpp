@@ -108,6 +108,10 @@ glm::vec2 DynamicColliderComponent::checkStaticCollisionDirection(StaticCollider
         return {0, 0};
 
     if (absDistance.x <= squareSize.x) {
+        if (absDistance.y <= squareSize.y) {
+            // (depending on distance sign change sign of sqrAndRad) - distance.x
+            return {((float)signbit(distance.x) * -2 * sqrAndRad.x + sqrAndRad.x) - distance.x, ((float)signbit(distance.y) * -2 * sqrAndRad.y + sqrAndRad.y) - distance.y};
+        }
         // (depending on distance sign change sign of sqrAndRad) - distance.y
         return {0, ((float)signbit(distance.y) * -2 * sqrAndRad.y + sqrAndRad.y) - distance.y};
     }
