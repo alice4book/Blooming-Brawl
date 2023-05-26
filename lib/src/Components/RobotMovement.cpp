@@ -154,10 +154,12 @@ void RobotMovement::update() {
 			}
 		}
 	}
-	else findClosestNode();
+	else if (findClosestNode()) {}
+	else
+		wonder();
 }
 
-void RobotMovement::findClosestNode()
+bool RobotMovement::findClosestNode()
 {
 	glm::vec2 currentPos = getSnappedPosition();
 
@@ -278,8 +280,25 @@ void RobotMovement::findClosestNode()
 		}
 	}
 	if (closestNode) {
-		std::cout << "closest " << closestNode->pos.x << " " << closestNode->pos.y << std::endl;
+		//std::cout << "closest " << closestNode->pos.x << " " << closestNode->pos.y << std::endl;
 		moveToPoint(closestNode);
+		return true;
+	}
+	return false;
+}
+
+void RobotMovement::wonder()
+{
+	Map* map = pathFinding.map;
+	int mapHeight = map->MAX_ROWS;
+	int mapWidth = map->MAX_COLUMNS;
+	int i, j;
+	i = rand() % mapHeight;
+	j = rand() % mapWidth;
+	EState state = map->allTilesComp[i][j]->state;
+	if (state == EState::Empty)
+	{
+		moveToPoint(map->nodes[i][j]);
 	}
 }
 

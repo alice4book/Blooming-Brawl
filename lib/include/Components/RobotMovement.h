@@ -47,5 +47,7 @@ public:
 	//void turnLeft(float dTime);	
 	//void noMove(float dTime);
 	void update() override;
-	void findClosestNode();
+	bool findClosestNode();
+	//WIP
+	void wonder();
 };
