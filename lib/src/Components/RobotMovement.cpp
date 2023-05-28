@@ -66,6 +66,7 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	, offset(offset)
 	, pathFinding(pathFinding)
 	, TILE_SIZE(TILE_SIZE)
+	, isWondering(false)
 	{
     timeManager = TimeManager::getInstance();
     timeManager->attach120FPS(this);
@@ -124,6 +125,9 @@ void RobotMovement::update() {
 	//std::cout << "pos:" << getSnappedPosition().x << getSnappedPosition().y << std::endl;//usun¹æ
 	if (newPositions.size() != 0)
 	{
+		if (isWondering) {
+			findClosestNode();
+		}
 		float step = speed * timeManager->getDeltaTime120FPS();
 		glm::vec3 currentPosition = transform->getLocalPosition();
 		glm::vec2 newPosition = newPositions.front();
@@ -281,6 +285,11 @@ bool RobotMovement::findClosestNode()
 	}
 	if (closestNode) {
 		//std::cout << "closest " << closestNode->pos.x << " " << closestNode->pos.y << std::endl;
+		if (isWondering) {
+			std::queue<glm::vec2> empty;
+			std::swap(newPositions, empty);
+		}
+		isWondering = false;
 		moveToPoint(closestNode);
 		return true;
 	}
@@ -298,6 +307,7 @@ void RobotMovement::wonder()
 	EState state = map->allTilesComp[i][j]->state;
 	if (state == EState::Empty)
 	{
+		isWondering = true;
 		moveToPoint(map->nodes[i][j]);
 	}
 }

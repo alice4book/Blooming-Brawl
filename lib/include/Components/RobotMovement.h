@@ -39,6 +39,8 @@ private:
 	int alpha = 0;
 	void checkIfClosest(int x, int y, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound);
 
+	bool isWondering;
+
 public:
 	RobotMovement(Entity* parent, Transform* transform, DynamicColliderComponent* colliderBody,
 		DynamicColliderComponent* colliderFront, float speed, 
