@@ -6,7 +6,9 @@
 #include "TimeManager.h"
 #include "PlayerIDType.h"
 #include "PlayerMovement.h"
+#include "World.h"
 #include "Shader.h"
+#include "Map.h"
 #include <iostream>
 
 
@@ -49,11 +51,18 @@ void PickUp::use(Entity* player)
 		this->player = player;
 		timeManager->attach120FPS(this);
 		timer = 10.0f;
+		//auto world = World::getInstance();
+		//Map* mapCom = world->mapComponent;
+		std::vector<PlayerMovement*> playerCom;
 		switch (type) {
 			case Speed:
-				std::vector<PlayerMovement*> playerCom;
 				player->getComponentsByType(&playerCom);
 				playerCom[0]->setSpeed(1.6f);
+				break;
+			case Rain:
+				
+				break;
+			case Meteor:
 				break;
 		}
 		parent->isModel = false;
@@ -63,10 +72,16 @@ void PickUp::use(Entity* player)
 
 void PickUp::endUse()
 {
-	if (type == Speed) {
-		std::vector<PlayerMovement*> playerCom;
-		this->player->getComponentsByType(&playerCom);
+	std::vector<PlayerMovement*> playerCom;
+	switch (type) {
+	case Speed:
+		player->getComponentsByType(&playerCom);
 		playerCom[0]->setSpeed(1.0f);
+		break;
+	case Rain:
+		break;
+	case Meteor:
+		break;
 	}
 	timeManager->detach(this);
 	player = nullptr;

@@ -253,6 +253,23 @@ void Map::addHud(HUD* hud)
 		hud->setTilesCount(emptyTiles);
 }
 
+//WIP
+std::vector<TileState*> Map::getPlayerTiles(EPlayerID playerID)
+{ 
+	// copy all the contents of one list to another
+	std::vector<TileState*> playerTileStates;
+	std::list<TileState*> listOfTiles;
+	TileState* obj;
+	while(!listOfTiles.empty()) {
+		obj = listOfTiles.back();
+		if (playerID == obj->getOwner()) {
+			playerTileStates.push_back(obj);
+		}
+		listOfTiles.pop_back();
+	}
+	return playerTileStates;
+}
+
 void Map::LoadMapsFromFiles(std::string* files)
 {
 	for (int i = 0; i < NR_OF_MAPS; i++)

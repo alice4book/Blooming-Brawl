@@ -4,7 +4,9 @@
 enum EPickUp
 {
 	NoPower,
-	Speed
+	Speed,
+	Rain,
+	Meteor
 };
 
 #endif //OPENGLGP_PICKUPTYPE_H

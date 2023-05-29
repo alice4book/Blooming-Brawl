@@ -69,3 +69,8 @@ void TileState::changeTileState(EPlayerID playerID) {
         ownerID = EPlayerID::None;
     }
 }
+
+EPlayerID TileState::getOwner()
+{
+    return ownerID;
+}

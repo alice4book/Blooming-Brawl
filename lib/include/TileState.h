@@ -31,5 +31,6 @@ public:
 
     void setState(EState newState);
     void changeTileState(EPlayerID playerID);
+    EPlayerID getOwner();
 };
 

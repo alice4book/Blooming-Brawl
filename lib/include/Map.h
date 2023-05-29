@@ -23,6 +23,7 @@ class Model;
 class Spawner;
 class Node;
 class HUD;
+enum EPlayerID;
 
 class Map :
     public Component
@@ -70,7 +71,7 @@ public:
     void addToPlayer2TilesCount(int p2);
 
     void addHud(HUD* hud);
-
+    std::vector<TileState*> getPlayerTiles(EPlayerID playerID);
     //Tools
 private:
     std::vector<glm::vec3> toolscord;
