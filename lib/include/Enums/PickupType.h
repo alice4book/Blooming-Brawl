@@ -6,7 +6,7 @@ enum EPickUp
 	NoPower,
 	Speed,
 	Rain,
-	Meteor
+	Locust
 };
 
 #endif //OPENGLGP_PICKUPTYPE_H

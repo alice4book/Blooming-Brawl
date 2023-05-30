@@ -27,7 +27,7 @@ private:
 	float pickupMovement;
 public:
 	PickUp(Entity* parent, Spawner* spawner,
-		DynamicColliderComponent* collider, glm::vec3 color, EPickUp type);
+		DynamicColliderComponent* collider, glm::vec3 color, EPickUp type = EPickUp::NoPower);
 
 	void update() override;
 

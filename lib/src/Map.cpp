@@ -258,14 +258,12 @@ std::vector<TileState*> Map::getPlayerTiles(EPlayerID playerID)
 { 
 	// copy all the contents of one list to another
 	std::vector<TileState*> playerTileStates;
-	std::list<TileState*> listOfTiles;
-	TileState* obj;
-	while(!listOfTiles.empty()) {
-		obj = listOfTiles.back();
-		if (playerID == obj->getOwner()) {
-			playerTileStates.push_back(obj);
+	auto iter_front = tilesComp.begin();
+	for (int i = 0; i < tilesComp.size(); i++) {
+		if (playerID == iter_front->getOwner()) {
+			playerTileStates.push_back(&(*iter_front));
 		}
-		listOfTiles.pop_back();
+		std::advance(iter_front, 1);
 	}
 	return playerTileStates;
 }

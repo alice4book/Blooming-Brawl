@@ -20,8 +20,8 @@ Spawner::Spawner(Entity* parent, Shader* shader)
 	timeManager->attach120FPS(this);
 	world = World::getInstance();
 	isSpawned = false;
-	pickUps.push_back(createPickUp({ 1,0,0 }));
-	pickUps.push_back(createPickUp({ 0,1,0 }));
+	pickUps.push_back(createPickUp({ 0.2,0.2,1 }, Rain));
+	pickUps.push_back(createPickUp({ 0,1,0 }, Locust));
 	pickUps.push_back(createPickUp({ 1,0,1 }, Speed));
 }
 

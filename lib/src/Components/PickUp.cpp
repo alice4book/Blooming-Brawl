@@ -10,9 +10,10 @@
 #include "Shader.h"
 #include "Map.h"
 #include <iostream>
+#include <Player.h>
 
 
-PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* collider, glm::vec3 color, EPickUp type = EPickUp::NoPower)
+PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* collider, glm::vec3 color, EPickUp type)
 	: Component(parent)
 	, colliderBody(collider)
 	, spawn(spawner)
@@ -51,18 +52,37 @@ void PickUp::use(Entity* player)
 		this->player = player;
 		timeManager->attach120FPS(this);
 		timer = 10.0f;
-		//auto world = World::getInstance();
-		//Map* mapCom = world->mapComponent;
-		std::vector<PlayerMovement*> playerCom;
+		auto world = World::getInstance();
+		Map* mapCom = world->mapComponent;
+		std::vector<PlayerMovement*> playerMoveCom;
+		std::vector<Player*> playerCom;
+		std::vector<TileState*> tileStateCom;
 		switch (type) {
 			case Speed:
-				player->getComponentsByType(&playerCom);
-				playerCom[0]->setSpeed(1.6f);
+				player->getComponentsByType(&playerMoveCom);
+				playerMoveCom[0]->setSpeed(1.6f);
 				break;
 			case Rain:
-				
+				player->getComponentsByType(&playerCom);
+				tileStateCom = mapCom->getPlayerTiles(playerCom[0]->getID());
+				for (auto tile : tileStateCom) {
+					
+				}
 				break;
-			case Meteor:
+			case Locust:
+				player->getComponentsByType(&playerCom);
+				if (playerCom[0]->getID() == Player1) {
+					tileStateCom = mapCom->getPlayerTiles(Player2);
+				}
+				else if (playerCom[0]->getID() == Player2) {
+					tileStateCom = mapCom->getPlayerTiles(Player1);
+				}
+				int randomTilesCount = tileStateCom.size() * 30 / 100;
+				int randomTilesNr;
+				for (int i = 0; i < randomTilesCount; i++) {
+					randomTilesNr = rand() % randomTilesCount;
+					tileStateCom[randomTilesNr]->setState(Burned);
+				}
 				break;
 		}
 		parent->isModel = false;
@@ -79,8 +99,6 @@ void PickUp::endUse()
 		playerCom[0]->setSpeed(1.0f);
 		break;
 	case Rain:
-		break;
-	case Meteor:
 		break;
 	}
 	timeManager->detach(this);
