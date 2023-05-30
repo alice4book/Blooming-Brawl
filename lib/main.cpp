@@ -61,6 +61,9 @@ struct WindowData {
 float resizeX = 1.f;
 float resizeY = 1.f;
 
+
+float gamma = 2.2;
+
 int main()
 {
     // Setup window
@@ -300,6 +303,8 @@ int main()
                                        glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightProjection = orthogonalProjection * lightView;
 
+    //glEnable(GL_FRAMEBUFFER_SRGB);
+
 #pragma endregion
 
     // render loop
@@ -375,7 +380,8 @@ int main()
         glBindTexture(GL_TEXTURE_2D, depthMap);
         directionalShader.setInt("texture_diffuse1", 0);
         glUniform1i(glGetUniformLocation(directionalShader.ID, "depthMap"), 2);
-        directionalShader.use();
+        directionalShader.setFloat("gamma", gamma);
+        //directionalShader.use();
         directionalShader.setMat4("projection", projection);
         directionalShader.setMat4("view", view);
         directionalShader.setVec4("aColor", glm::vec4(dirLightColor, 0.0f));
@@ -430,6 +436,16 @@ void processInput(GLFWwindow* window)
         std::cout << "Key pressed: ,    Player2 hit" << std::endl;
     if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS)
         std::cout << "Key pressed: .    Player2 plant" << std::endl;
+
+    if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+        gamma = gamma - 0.1;
+        std::cout << gamma << std::endl;
+    }
+    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+        gamma = gamma + 0.1;
+        std::cout << gamma << std::endl;
+    }
+
     //if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
         
 

@@ -14,11 +14,12 @@ in vec3 Normal;
 in vec3 FragPos;
 in vec4 fragPosLight;
 
+
 uniform sampler2D texture_diffuse1;
 uniform sampler2D depthMap;
 uniform vec3 viewPos;
 uniform DirLight dirLight;
-
+uniform float gamma;
 
 void main()
 {
@@ -54,7 +55,7 @@ void main()
 		float currentDepth = lightCoords.z;
 		float bias = 0.0005f;
 		if (currentDepth > closestDepth+bias)
-		shadow = 1.0f;
+			shadow += 1.0f;
 		
 		
 		/*
@@ -85,7 +86,9 @@ void main()
 
 
 
-
-    FragColor = vec4(ambient + diffuse + specular, 1.0);
+	vec3 color = vec3(ambient + diffuse + specular);
+	color = pow(color, vec3(1.0/gamma));
+    FragColor = vec4(color, 1.0);
+	
 	
 }
