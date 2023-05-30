@@ -67,6 +67,8 @@ int main()
     if (!glfwInit())
         return 1;
 
+    std::srand(time(NULL));
+
 #pragma region GL_version
 #if __APPLE__
     // GL 3.2 + GLSL 150
@@ -165,7 +167,7 @@ int main()
         Model("res/models/duzy_kwiat2.obj"),
         Model("res/models/duzy_kwiat.obj"),
         Model("res/models/skaly.obj"),
-        Model("res/models/dom.obj"),
+        Model("res/models/krzak.obj"),
         Model("res/models/spalony.obj")
     };
 
@@ -196,7 +198,6 @@ int main()
     int toolNr = 0;
     std::vector<glm::vec3> toolscord;
     toolscord = map.getToolsCord();
-    std::srand(time(NULL));
     for (int i = 0; i < toolscord.size(); i++) {
         std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
         toolNr = std::rand() % toolstab.size();
