@@ -87,6 +87,7 @@ void Map::GenerateMap(int mapNr)
 	int tileNr = 0;
 	emptyTiles = 0;
 	std::vector <StaticColliderComponent*> collidersRow;
+	float rotataRand;
 	for (int i = 0; i < codedMaps[mapNr].rows; i++)
 	{
 		collidersRow.clear();
@@ -104,6 +105,8 @@ void Map::GenerateMap(int mapNr)
 			{
 			case 'x':
 				tiles[tileNr].model = &tileModels[EState::Impassable];
+				rotataRand = rand() % 4;
+				tiles[tileNr].transform->rotateLocal({0,90 * rotataRand,0});
 				isPassable = false;
 				state = EState::Impassable;
 				break;

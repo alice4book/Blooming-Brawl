@@ -190,9 +190,9 @@ int main()
 
 #pragma region Tools
     std::vector<Entity> toolstab;
-    Entity tool1("res/models/trawa.obj", &directionalShader);
+    Entity tool1("res/models/lopata.obj", &directionalShader);
     tool1.addComponent(new Tool(&tool1));
-    Entity tool2("res/models/trawa.obj", &directionalShader);
+    Entity tool2("res/models/motyka.obj", &directionalShader);
     mapManager.addChild(&tool1);
     mapManager.addChild(&tool2);
     tool2.addComponent(new Tool(&tool2));

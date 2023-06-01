@@ -4,9 +4,9 @@
 xxxxxxxxxxxxxxxxxxxx
 x.....x..........x.x
 x.x...x....s....x.xx
-x..................x
+x...t..............x
 x.....xxxxxxx......x
-x..xxxx...x........x
+x..xxxx...x.....t..x
 x.....x...xxxxx....x
 x..s..x............x
 x.....x....s......xx
