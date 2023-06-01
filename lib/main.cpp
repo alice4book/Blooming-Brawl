@@ -62,7 +62,7 @@ float resizeX = 1.f;
 float resizeY = 1.f;
 
 
-float gamma = 2.2;
+float gamma = 1;
 
 int main()
 {
