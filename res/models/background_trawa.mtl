@@ -1,0 +1,13 @@
+# Blender 3.3.1 MTL File: 'background_trawa.blend'
+# www.blender.org
+
+newmtl Material.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/trawa/DUZY_KWIATEK_podstawa_BaseColor.png
+map_Ns ../textures/trawa/DUZY_KWIATEK_podstawa_Roughness.png
+map_refl ../textures/trawa/DUZY_KWIATEK_podstawa_Metallic.png

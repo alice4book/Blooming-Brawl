@@ -165,7 +165,7 @@ int main()
 
     Model tileModels[8] = {
         Model("res/models/trawa.obj"),
-        Model("res/models/duzy_kwiat.obj"),
+        Model("res/models/duzy_kwiat2.obj"),
         Model("res/models/duzy_kwiat.obj"),
         Model("res/models/duzy_kwiat2.obj"),
         Model("res/models/duzy_kwiat.obj"),
@@ -189,38 +189,40 @@ int main()
 #pragma endregion
 
 #pragma region Tools
-    std::vector<Entity> toolstab;
-    Entity tool1("res/models/lopata.obj", &directionalShader);
-    tool1.addComponent(new Tool(&tool1));
-    Entity tool2("res/models/motyka.obj", &directionalShader);
-    mapManager.addChild(&tool1);
-    mapManager.addChild(&tool2);
-    tool2.addComponent(new Tool(&tool2));
-    toolstab.push_back(tool1);
-    toolstab.push_back(tool2);
-    int toolNr = 0;
-    std::vector<glm::vec3> toolscord;
-    toolscord = map.getToolsCord();
-    for (int i = 0; i < toolscord.size(); i++) {
-        std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
-        toolNr = std::rand() % toolstab.size();
-        std::vector<Tool*> vectorTool;
-        toolstab[toolNr].getComponentsByType(&vectorTool);
-        vectorTool[0]->setSpawn();
-        toolstab[toolNr].transform->setLocalPosition(toolscord[i]);
-        toolstab.erase(toolstab.begin() + toolNr);
-    }
+   //std::vector<Entity> toolstab;
+   //Entity tool1("res/models/lopata.obj", &directionalShader);
+   //tool1.addComponent(new Tool(&tool1));
+   //Entity tool2("res/models/motyka.obj", &directionalShader);
+   //mapManager.addChild(&tool1);
+   //mapManager.addChild(&tool2);
+   //tool2.addComponent(new Tool(&tool2));
+   //toolstab.push_back(tool1);
+   //toolstab.push_back(tool2);
+   //int toolNr = 0;
+   //std::vector<glm::vec3> toolscord;
+   //toolscord = map.getToolsCord();
+   //for (int i = 0; i < toolscord.size(); i++) {
+   //    std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
+   //    toolNr = std::rand() % toolstab.size();
+   //    std::vector<Tool*> vectorTool;
+   //    toolstab[toolNr].getComponentsByType(&vectorTool);
+   //    vectorTool[0]->setSpawn();
+   //    toolstab[toolNr].transform->setLocalPosition(toolscord[i]);
+   //    toolstab.erase(toolstab.begin() + toolNr);
+   //}
 
 #pragma endregion
 
 #pragma region House
+    Entity background("res/models/background_trawa.obj", &directionalShader);
     Entity house1("res/models/dom.obj", &directionalShader);
     Entity house2("res/models/dom.obj", &directionalShader);
+    background.transform->setLocalPosition({2.f,-0.5f,2.f});
     house2.transform->setLocalRotation({0.f,180.f,0.f});
     house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
+    skybox->addChild(&background);
     skybox->addChild(&house1);
     skybox->addChild(&house2);
-
 #pragma endregion
 
 #pragma region Collision & Robot test
@@ -228,7 +230,6 @@ int main()
     //add and move robot1 (version robot turns only right)
     Entity robot1("res/models/robot.obj", &directionalShader);
     skybox->addChild(&robot1);
-    robot1.transform->setLocalPosition({ TILE_SIZE * 5, 0.1, TILE_SIZE * 5});
     robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     DynamicColliderComponent robotCollider1(&robot1, 0.1f, false, {0,0});
     robot1.addComponent((Component*)&robotCollider1);
@@ -236,13 +237,12 @@ int main()
     robot1.addComponent((Component*)&robotColliderFront1);
     PathFinding pathFinding(&map);
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
-        &robotColliderFront1, 0.4f, eRight, pathFinding, TILE_SIZE, {0,0,-1});
+       &robotColliderFront1, 0.4f, eRight, pathFinding, TILE_SIZE, {0,0,-1});
     robot1.addComponent((Component*)&robotmovement);
     robotmovement.findClosestNode();
 
     Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
     skybox->addChild(&player1);
-    player1.transform->setLocalPosition({ 1,0,0 });
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent player1Collider(&player1, 0.05f, false);
@@ -254,7 +254,6 @@ int main()
     
     Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
     skybox->addChild(&player2);
-    player2.transform->setLocalPosition({ 1,0,0.5 });
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent player2Collider(&player2, 0.05f, false);
@@ -263,6 +262,10 @@ int main()
     player2.addComponent((Component*)&player2ColliderFront);
     PlayerMovement playerMovement2(window, &player2, player2.transform, &player2Collider, &player2ColliderFront, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
+
+    player2.transform->setLocalPosition({ 0.6, 0, 2.4 });
+    player1.transform->setLocalPosition({ 0.5, 0, 2.4 });
+    robot1.transform->setLocalPosition({ 0.4, 0, 2.4 });
 #pragma endregion
 
 #pragma region Power Up Setting
@@ -283,6 +286,7 @@ int main()
     mapManager.addChild(&hud);
     map.addHud(&hud);
 #pragma endregion
+
 #pragma region Shadow
     // Framebuffer for shadow map
     const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
@@ -344,8 +348,8 @@ int main()
         player2.renderEntity(&depthShader);
         robot1.renderEntity(&depthShader);
         mapManager.renderEntity(&depthShader);
-        tool1.renderEntity(&depthShader);
-        tool2.renderEntity(&depthShader);
+        //tool1.renderEntity(&depthShader);
+        //tool2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glViewport(0, 0, windowData.resolutionX, windowData.resolutionY);
@@ -391,7 +395,6 @@ int main()
         directionalShader.setInt("texture_diffuse1", 0);
         glUniform1i(glGetUniformLocation(directionalShader.ID, "depthMap"), 2);
         directionalShader.setFloat("gamma", gamma);
-        //directionalShader.use();
         directionalShader.setMat4("projection", projection);
         directionalShader.setMat4("view", view);
         directionalShader.setVec4("aColor", glm::vec4(dirLightColor, 0.0f));

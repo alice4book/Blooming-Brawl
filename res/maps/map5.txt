@@ -1,0 +1,13 @@
+10
+6
+6
+    xxxxxxxxxxxx
+    x??????????x
+    x..........x
+     x...t....x
+      x.s....x
+      x....s.x
+     x....t...x
+    x..........x
+    x??????????x
+    xxxxxxxxxxxx
