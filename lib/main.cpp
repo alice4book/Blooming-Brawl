@@ -185,14 +185,14 @@ int main()
     mapManager.addComponent(&map);
     skybox->addChild(&mapManager);
 
-    camera.setCameraPosition(TILE_SIZE, 4.0f, map.MAX_COLUMNS, map.MAX_ROWS);
+    camera.setCameraPosition(TILE_SIZE, 4.7f, map.MAX_COLUMNS, map.MAX_ROWS);
 #pragma endregion
 
 #pragma region Tools
     std::vector<Entity> toolstab;
-    Entity tool1("res/models/dom.obj", &directionalShader);
+    Entity tool1("res/models/trawa.obj", &directionalShader);
     tool1.addComponent(new Tool(&tool1));
-    Entity tool2("res/models/dom.obj", &directionalShader);
+    Entity tool2("res/models/trawa.obj", &directionalShader);
     mapManager.addChild(&tool1);
     mapManager.addChild(&tool2);
     tool2.addComponent(new Tool(&tool2));
@@ -210,6 +210,16 @@ int main()
         toolstab[toolNr].transform->setLocalPosition(toolscord[i]);
         toolstab.erase(toolstab.begin() + toolNr);
     }
+
+#pragma endregion
+
+#pragma region House
+    Entity house1("res/models/dom.obj", &directionalShader);
+    Entity house2("res/models/dom.obj", &directionalShader);
+    house2.transform->setLocalRotation({0.f,180.f,0.f});
+    house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
+    skybox->addChild(&house1);
+    skybox->addChild(&house2);
 
 #pragma endregion
 
