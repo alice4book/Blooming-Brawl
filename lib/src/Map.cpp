@@ -99,6 +99,7 @@ void Map::GenerateMap(int mapNr)
 			if (row[j] == ' ') {
 				allTiles[i][j] = NULL;
 				nodes[i][j] = NULL;
+				collidersRow.push_back(nullptr);
 				continue;
 			}
 			switch (row[j])

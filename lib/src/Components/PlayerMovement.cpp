@@ -12,7 +12,6 @@
 #include <math.h>
 #include <iostream>
 
-
 PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, float speed, EPlayerID ID, glm::vec3 forward)
 	: Component(parent)
 	, forward(forward)
@@ -122,9 +121,6 @@ void PlayerMovement::move()
                         if (forward.x == 1 && (forward.z < 0.1 && forward.z > -0.1)) { angle = 0; }
                         if (forward.x == -1 && (forward.z < 0.1 && forward.z > -0.1)) { angle = 180; }
                         
-
-
-
                         transform->setLocalRotation({ 0,-angle,0 });
                     }
 
@@ -153,7 +149,6 @@ void PlayerMovement::move()
 
             }
     }
-
     if (ID == Player2) {
         for (auto comp : collider->getTouchingDynamicComponents()) {
             if (comp != nullptr) {

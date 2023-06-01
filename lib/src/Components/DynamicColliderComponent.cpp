@@ -45,20 +45,21 @@ void DynamicColliderComponent::checkAllCollisions(){
         int column = (int)(tileImOnPosition.x / 0.254f);
         int row = (int)(tileImOnPosition.y / 0.254f);
 
-        for(int columnCounter = column - 2; columnCounter <= column + 2; columnCounter++){
+        for(int columnCounter = column - 1 ; columnCounter <= column + 1; columnCounter++){
             if(columnCounter < 0 || columnCounter >= 10)
                 continue;
-            for(int rowCounter = row - 2; rowCounter <= row + 2; rowCounter++){
+            for(int rowCounter = row - 1; rowCounter <= row + 1; rowCounter++){
                 if(rowCounter < 0 || rowCounter >= 20)
                     continue;
                 StaticColliderComponent* statComp = world->mapComponent->colliders[columnCounter][rowCounter];
-
-                glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
-                if(collisionDirection.x + collisionDirection.y != 0) {
-                    if (!statComp->getIsPassable() && !isTrigger) {
-                        parent->transform->addToLocalPosition({collisionDirection.x, 0, collisionDirection.y});
+                if (statComp) {
+                    glm::vec2 collisionDirection = checkStaticCollisionDirection(statComp, circlePosition);
+                    if (collisionDirection.x + collisionDirection.y != 0) {
+                        if (!statComp->getIsPassable() && !isTrigger) {
+                            parent->transform->addToLocalPosition({ collisionDirection.x, 0, collisionDirection.y });
+                        }
+                        touchingStaticComponents.push_back(statComp);
                     }
-                    touchingStaticComponents.push_back(statComp);
                 }
             }
         }
