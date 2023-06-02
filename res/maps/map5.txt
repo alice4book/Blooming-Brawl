@@ -3,11 +3,11 @@
 6
     xxxxxxxxxxxx
     x??????????x
-    x..........x
-     x...t....x
-      x.s....x
+    xx...t....xx
+     xx......xx
       x....s.x
-     x....t...x
-    x..........x
+      x.s....x
+     xx......xx
+    xx....t...xx
     x??????????x
     xxxxxxxxxxxx
