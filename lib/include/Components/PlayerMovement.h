@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 #include "glm/vec3.hpp"
 
+class Tool;
 class Entity;
 class Transform;
 class TimeManager;
@@ -19,6 +20,7 @@ private:
 	glm::vec3 setForward;
 	float side;
 	float speed;
+	Tool* tool;
 	Transform* transform;
 	DynamicColliderComponent* collider;
 	DynamicColliderComponent* frontCollider;

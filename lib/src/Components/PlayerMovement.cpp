@@ -8,19 +8,21 @@
 #include "TileState.h"
 #include "Entity.h"
 #include "PickUp.h"
+#include "Tool.h"
 #include <cmath>
 #include <math.h>
 #include <iostream>
 
-PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, float speed, EPlayerID ID, glm::vec3 forward)
-	: Component(parent)
-	, forward(forward)
-	, speed(speed)
-	, transform(transform)
-	, collider(collider)
-	, frontCollider(frontCollider)
+PlayerMovement::PlayerMovement(GLFWwindow* window, Entity* parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, float speed, EPlayerID ID, glm::vec3 forward)
+    : Component(parent)
+    , forward(forward)
+    , speed(speed)
+    , transform(transform)
+    , collider(collider)
+    , frontCollider(frontCollider)
     , ID(ID)
     , window(window)
+    , tool(nullptr)
 {
     timeManager = TimeManager::getInstance();
     timeManager->attach120FPS(this);
@@ -41,6 +43,7 @@ PlayerMovement::PlayerMovement(GLFWwindow* window, Entity *parent, Transform* tr
 void PlayerMovement::move()
 {
     std::vector<PickUp*> compTypePU;
+    std::vector<Tool*> compTypeTool;
     if (ID == Player1) {
             for (auto comp : collider->getTouchingDynamicComponents()) {
                 if (comp != nullptr) {
@@ -49,8 +52,24 @@ void PlayerMovement::move()
                         if(!pickUp->isUsed)
                             pickUp->use(parent);
                     }
+                    comp->getParent()->getComponentsByType(&compTypeTool);
+                    for (Tool* tool : compTypeTool) {
+                        if (!tool->isPickedUp() && !tool->isRestarting()) {
+                            if (this->tool == nullptr) {
+                                this->tool = tool;
+                                tool->PickedUp(Player1);
+                            }
+                            else {
+                                this->tool->PickedUp(None, parent->transform);
+                                this->tool = tool;
+                                tool->PickedUp(Player1);
+
+                            }
+                        }
+                    }
                 }
             }
+
 
             previousForward = forward;
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS
@@ -156,6 +175,21 @@ void PlayerMovement::move()
                 for (PickUp* pickUp : compTypePU) {
                     if (!pickUp->isUsed)
                         pickUp->use(parent);
+                }
+                comp->getParent()->getComponentsByType(&compTypeTool);
+                for (Tool* tool : compTypeTool) {
+                    if (!tool->isPickedUp() && !tool->isRestarting()) {
+                        if (this->tool == nullptr) {
+                            this->tool = tool;
+                            tool->PickedUp(Player2);
+                        }
+                        else {
+                            this->tool->PickedUp(None, parent->transform);
+                            this->tool = tool;
+                            tool->PickedUp(Player2);
+
+                        }
+                    }
                 }
             }
         }
