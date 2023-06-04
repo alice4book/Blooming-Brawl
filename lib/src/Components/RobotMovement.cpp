@@ -37,22 +37,21 @@ bool RobotMovement::moveToPoint(Node* node)
 
 void RobotMovement::rotate(glm::vec2 oldPos, glm::vec2 newPos)
 {
-	int rot;
-	if (oldPos == newPos) return;
-	glm::vec2 dir = newPos - oldPos;
-	alpha = atan2(dir.x, dir.y);
-	transform->setLocalRotation({ 0, alpha, 0 });
+	glm::vec3 forwardHere = { oldPos.x - newPos.x, 0.0f, oldPos.y - newPos.y };
+	forwardHere = normalize(forwardHere);
+	float angle = atan2(startForward.x * forwardHere.z - forwardHere.x * startForward.z,
+		forwardHere.x * forwardHere.z + startForward.x * startForward.z) * (180.0 / 3.1415);
+	if (angle == 0 || angle == -0) { angle = 0; }
+	if (startForward == forwardHere) { angle = 180; }
+	if (angle < 0 && angle > -180) { angle = -180 - angle; }
+	transform->setLocalRotation({ 0,angle,0 });
 }
 	
-
 glm::vec2 RobotMovement::getSnappedPosition()
 {
 	glm::vec3 localPos = transform->getLocalPosition();
 	return glm::vec2(round(localPos.x/TILE_SIZE), round(localPos.z/TILE_SIZE));
 }
-
-
-
 
 RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	DynamicColliderComponent* colliderBody, DynamicColliderComponent* colliderFront,
@@ -70,24 +69,8 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	{
     timeManager = TimeManager::getInstance();
     timeManager->attach120FPS(this);
-
+	startForward = forward;
 	height = transform->getLocalPosition().y;
-
-	if(forward.x == 1.0f && forward.z == 0.0f){
-		side = 0.0;
-	}else
-	if(forward.x == -1.0f && forward.z == 0.0f){
-		side = 180.0;
-	}else
-	if(forward.x == 0.0f && forward.z == 1.0f){
-		side = 90.0;
-	}else
-	if(forward.x == 0.0f && forward.z == -1.0f){
-		side = 270.0;
-	}
-	else {
-		side = 0.0;
-	}
 
 	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
 	/*
@@ -150,6 +133,7 @@ void RobotMovement::update() {
 			newPositions.pop();
 			if (newPositions.size() > 0)
 			{
+				std::cout << "Rotate" << std::endl;
 				rotate(oldPos, newPositions.front());
 			}
 			else

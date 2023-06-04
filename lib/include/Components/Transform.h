@@ -35,6 +35,8 @@ public:
 
     void rotateLocal(const glm::vec3& newEulerRot);
 
+    void addToLocalRotation(const glm::vec3& addEulerRot);
+
     void scaleEntity(const glm::vec3& newScale);
 
     void addToScaleEntity(const glm::vec3& addScale);

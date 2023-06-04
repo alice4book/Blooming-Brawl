@@ -15,6 +15,8 @@ class TimeManager;
 class RobotMovement : public Component{
 private:
 	glm::vec3 forward;
+	glm::vec3 startForward;
+
 	float side;
 	float speed = 0.005f;
 	Transform* transform;

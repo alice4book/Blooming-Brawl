@@ -241,7 +241,7 @@ int main()
     robot1.addComponent((Component*)&robotColliderFront1);
     PathFinding pathFinding(&map);
     RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
-       &robotColliderFront1, 0.4f, eRight, pathFinding, TILE_SIZE, {0,0,-1});
+       &robotColliderFront1, 0.4f, eRight, pathFinding, TILE_SIZE, {0,0,1});
     robot1.addComponent((Component*)&robotmovement);
     robotmovement.findClosestNode();
 
@@ -352,8 +352,8 @@ int main()
         player2.renderEntity(&depthShader);
         robot1.renderEntity(&depthShader);
         mapManager.renderEntity(&depthShader);
-        //tool1.renderEntity(&depthShader);
-        //tool2.renderEntity(&depthShader);
+        tool1.renderEntity(&depthShader);
+        tool2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glViewport(0, 0, windowData.resolutionX, windowData.resolutionY);
@@ -439,20 +439,6 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, timeManager->getDeltaTimeUnlimitedFPS());
-
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        std::cout << "Key pressed: R    Player1 plant" << std::endl;
-    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-        std::cout << "Key pressed: T    Player1 hit" << std::endl;
-    if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-        std::cout << "Key pressed: Y    Player1 time" << std::endl;
-
-    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-        std::cout << "Key pressed: M    Player2 time" << std::endl;
-    if (glfwGetKey(window, GLFW_KEY_COMMA) == GLFW_PRESS)
-        std::cout << "Key pressed: ,    Player2 hit" << std::endl;
-    if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS)
-        std::cout << "Key pressed: .    Player2 plant" << std::endl;
 
     if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
         gamma = gamma - 0.1;
