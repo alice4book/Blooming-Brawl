@@ -27,6 +27,7 @@
 #include "Tool.h"
 
 #include "TimeManager.h"
+#include "Menu.h"
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -63,6 +64,8 @@ float resizeY = 1.f;
 
 
 float gamma = 1;
+
+int ChosenButtonMenu = 1;
 
 int main()
 {
@@ -258,7 +261,6 @@ int main()
     player1.addComponent((Component*)&player1Collider);
     PlayerMovement playerMovement(window, &player1, &player2, &robot1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
-    
 
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
@@ -327,13 +329,39 @@ int main()
 
 #pragma endregion
 
+#pragma region Menu
+    Menu menu(&hudShader, &textShader);
+    skybox->addChild(&menu);
+#pragma endregion
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
-        timeManager->updateTime();
+        // input
+        processInput(window);
 
-
-        hud.setResize(resizeX, resizeY);
+        switch(ChosenButtonMenu)
+        {
+            case 0:
+                menu.setActiveButton(0);
+                hud.setHideHud(false);
+                hud.setResize(resizeX, resizeY);
+                timeManager->updateTime();
+                camera.setCameraRotation(0,-75.f);
+                break;
+            case 1:
+                menu.setActiveButton(1);
+                hud.setHideHud(true);
+                camera.setCameraRotation(0,0);
+                break;
+            case 2:
+                menu.setActiveButton(2);
+                hud.setHideHud(true);
+                break;
+            default:
+                // WTF how?
+                break;
+        }
 
         glfwPollEvents();
 
@@ -443,7 +471,6 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, timeManager->getDeltaTimeUnlimitedFPS());
-
     if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
         gamma = gamma - 0.1;
         std::cout << gamma << std::endl;
@@ -453,8 +480,29 @@ void processInput(GLFWwindow* window)
         std::cout << gamma << std::endl;
     }
 
-    //if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-        
+    if(ChosenButtonMenu == 0)
+        return;
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        ChosenButtonMenu = 1;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        ChosenButtonMenu = 2;
+    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS){
+        switch(ChosenButtonMenu){
+            case 1:
+                // start the game
+                ChosenButtonMenu = 0;
+                break;
+            case 2:
+                // end the game
+                glfwDestroyWindow(window);
+                glfwTerminate();
+                exit(EXIT_SUCCESS);
+            default:
+                break;
+        }
+    }
+
 
     /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {

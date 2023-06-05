@@ -32,6 +32,10 @@ private:
 	int player1Tiles;
 	int player2Tiles;
 
+    bool hideHUD;
+public:
+    void setHideHud(bool newHideHud);
+
 public:
 	HUD(Shader* shader, Shader* textShader);
 

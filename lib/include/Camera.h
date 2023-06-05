@@ -44,6 +44,8 @@ public:
 
     void setCameraPosition(float tilesSize, float hight, int tilesCountX, int tilesCountY);
 
+    void setCameraRotation(float newYaw, float newPitch);
+
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix();
 
