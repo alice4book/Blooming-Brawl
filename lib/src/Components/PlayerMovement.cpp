@@ -391,9 +391,7 @@ void PlayerMovement::handleSeenTile(){
 
 void PlayerMovement::reactToPunch(Entity* punchedParent)
 {
-    
-    //std::cout << forward.x << " " << forward.y << " " << forward.z << std::endl;
-    //rivalParent->transform->setLocalPosition(-forward * (speed * timeManager->getDeltaTime120FPS()));
+             
     std::vector<PlayerMovement*> playerMovement;
     punchedParent->getComponentsByType(&playerMovement);
     float prevSpeed = playerMovement[0]->getSpeed();
@@ -402,11 +400,8 @@ void PlayerMovement::reactToPunch(Entity* punchedParent)
     glm::vec3 myPosition = parent->transform->getGlobalPosition();
     glm::vec3 difference = rivalPosition - myPosition;
     glm::vec3 actualDifference = glm::vec3{ 5,0,5 } * difference;
-    //std::cout << difference.x << " " << difference.y << " " << difference.z << std::endl;
-    //glm::vec3 actualDifference = glm::vec3{1-difference.x,0,(1-difference.x)/(difference.x/difference.z)};
-    //actualDifference = glm::vec3{ 1,0,1 } * actualDifference;
-    //std::cout << actualDifference.x << " " << actualDifference.y << " " << actualDifference.z << std::endl;
     rivalParent->transform->setLocalPosition(rivalPosition + (actualDifference *(speed * timeManager->getDeltaTime120FPS())));
+    //tool[0]->PickedUp(None, rivalParent->transform);
     //playerMovement[0]->setSpeed(prevSpeed);
 }
 
@@ -419,10 +414,6 @@ void PlayerMovement::reactToPunchRobot()
     glm::vec3 difference = rivalPosition - myPosition;
     std::cout << difference.x << " " << difference.y << " " << difference.z << std::endl;
     glm::vec3 actualDifference = glm::vec3{ 5,0,5 } * difference;
-    //glm::vec3 actualDifference = glm::vec3{ 1 - difference.x,0,(1 - difference.x) * (difference.z / difference.x) };
-    //std::cout << (difference.z / difference.x) << std::endl;
-    //actualDifference = glm::vec3{ 1,0,1 } * actualDifference;
-    //std::cout << actualDifference.x << " " << actualDifference.y << " " << actualDifference.z << std::endl;
     robot->transform->setLocalPosition(rivalPosition + (actualDifference * (speed * timeManager->getDeltaTime120FPS())));
     //robot->transform->addToLocalPosition(actualDifference);
     //robotMovement[0]->findClosestNode(ID);

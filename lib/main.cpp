@@ -356,6 +356,8 @@ int main()
         mapManager.renderEntity(&depthShader);
         tool1.renderEntity(&depthShader);
         tool2.renderEntity(&depthShader);
+        house1.renderEntity(&depthShader);
+        house2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glViewport(0, 0, windowData.resolutionX, windowData.resolutionY);
