@@ -12,6 +12,8 @@ class TimeManager;
 class DynamicColliderComponent;
 class StaticColliderComponent;
 class PickUp;
+class Player;
+class RobotMovement;
 
 class PlayerMovement : public Component {
 private:
@@ -26,6 +28,8 @@ private:
 	DynamicColliderComponent* frontCollider;
 	StaticColliderComponent* lastSeenTile = nullptr;
 	EPlayerID ID;
+	Entity* rivalParent;
+	Entity* robot;
 
 	int axisCount;
 	const float* axes;
@@ -40,8 +44,13 @@ private:
     void checkInput();
     void handleSeenTile();
 
+	void reactToPunch(Entity* punchedParent);
+
+	void reactToPunchRobot();
+
 public:
-	PlayerMovement(GLFWwindow* window, Entity* parent, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
+	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
     void update() override;
 	void setSpeed(float newSpeed);
+	float getSpeed();
 };
