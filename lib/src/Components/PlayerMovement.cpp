@@ -307,11 +307,35 @@ float PlayerMovement::getSpeed()
     return speed;
 }
 
+void PlayerMovement::dropTool()
+{
+    if (tool) {
+        tool->PickedUp(None, parent->transform);
+    }
+}
+
 void PlayerMovement::checkInput(){
     switch(ID){
         case Player1:
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS){
                 frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+            }
+            if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+                for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
+
+                    //std::cout << "parent 1 " << parent << std::endl;
+                    //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
+                    if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                        std::cout << "punch" << std::endl;
+                        reactToPunch(rivalParent);
+                        break;
+                    }
+                    if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                        std::cout << "punch robot" << std::endl;
+                        reactToPunchRobot();
+                        break;
+                    }
+                }
             }
             if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
                 GLFWgamepadstate state;
@@ -349,6 +373,21 @@ void PlayerMovement::checkInput(){
             if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
                 frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
             }
+            if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+                for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
+
+                    if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                        std::cout << "punch" << std::endl;
+                        reactToPunch(rivalParent);
+                        break;
+                    }
+                    if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                        std::cout << "punch robot" << std::endl;
+                        reactToPunchRobot();
+                        break;
+                    }
+                }
+            }
             if (glfwJoystickPresent(GLFW_JOYSTICK_2)) {
                 GLFWgamepadstate state;
                 if (glfwGetGamepadState(GLFW_JOYSTICK_2, &state))
@@ -362,8 +401,16 @@ void PlayerMovement::checkInput(){
                     {
                         for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
 
-                            std::cout << "parent 2 " << parent << std::endl;
-                            std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
+                            if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                                std::cout << "punch" << std::endl;
+                                reactToPunch(rivalParent);
+                                break;
+                            }
+                            if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                                std::cout << "punch robot" << std::endl;
+                                reactToPunchRobot();
+                                break;
+                            }
                         }
                     }
                 }
@@ -391,9 +438,10 @@ void PlayerMovement::handleSeenTile(){
 
 void PlayerMovement::reactToPunch(Entity* punchedParent)
 {
-             
+    //std::vector<Tool*> tools;
     std::vector<PlayerMovement*> playerMovement;
     punchedParent->getComponentsByType(&playerMovement);
+    playerMovement[0]->dropTool();
     float prevSpeed = playerMovement[0]->getSpeed();
     //playerMovement[0]->setSpeed(0);
     glm::vec3 rivalPosition = rivalParent->transform->getGlobalPosition();
@@ -416,5 +464,6 @@ void PlayerMovement::reactToPunchRobot()
     glm::vec3 actualDifference = glm::vec3{ 5,0,5 } * difference;
     robot->transform->setLocalPosition(rivalPosition + (actualDifference * (speed * timeManager->getDeltaTime120FPS())));
     //robot->transform->addToLocalPosition(actualDifference);
-    //robotMovement[0]->findClosestNode(ID);
+    robotMovement[0]->findClosestNode(ID);
+
 }

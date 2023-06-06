@@ -53,4 +53,5 @@ public:
     void update() override;
 	void setSpeed(float newSpeed);
 	float getSpeed();
+	void dropTool();
 };
