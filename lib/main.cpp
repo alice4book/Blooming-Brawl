@@ -28,6 +28,7 @@
 
 #include "TimeManager.h"
 #include "Menu.h"
+#include <soloud_wav.h>
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -168,8 +169,8 @@ int main()
 
     Model tileModels[8] = {
         Model("res/models/trawa.obj"),
-        Model("res/models/duzy_kwiat2.obj"),
-        Model("res/models/duzy_kwiat.obj"),
+        Model("res/models/maly_kwiat2.obj"),
+        Model("res/models/maly_kwiat.obj"),
         Model("res/models/duzy_kwiat2.obj"),
         Model("res/models/duzy_kwiat.obj"),
         Model("res/models/skaly.obj"),
@@ -209,7 +210,7 @@ int main()
    std::vector<glm::vec3> toolscord;
    toolscord = map.getToolsCord();
    for (int i = 0; i < toolscord.size(); i++) {
-       std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
+       //std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
        toolNr = std::rand() % toolstab.size();
        std::vector<Tool*> vectorTool;
        toolstab[toolNr].getComponentsByType(&vectorTool);
@@ -280,13 +281,6 @@ int main()
     float rimLight = 0.5f;
 #pragma endregion
 
-#pragma region Audio   
-//    Audio audio1(&robot1);
-//    audio1.openAudio("res/audio/background.mp3", "mp3");
-//    audio1.playLoop("mp3");
-//    int b = 0;
-#pragma endregion
-
 #pragma region HUD
     Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
@@ -334,11 +328,17 @@ int main()
     skybox->addChild(&menu);
 #pragma endregion
 
+#pragma region Audio   
+    Audio audioBackground(&robot1);
+    audioBackground.playMusic("res/audio/x.wav", true);
+#pragma endregion
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
         // input
         processInput(window);
+
 
         switch(ChosenButtonMenu)
         {

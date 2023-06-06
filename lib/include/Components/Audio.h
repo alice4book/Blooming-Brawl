@@ -2,17 +2,19 @@
 #include <mmsystem.h>
 #include <string>
 #include "Component.h"
+#include "soloud.h"
 
 class Entity;
-class Audio : public Component{
+class Audio : public Component {
 public:
-	Audio(Entity* parent);
-	void openAudio(std::string path, std::string alias);
-	void closeAudio(std::string alias);
-	void playAudio(std::string alias);
-	void stopAudio(std::string alias);
-	void pauseAudio(std::string alias);
-	void resumeAudio(std::string alias);
-	void playLoop(std::string alias);
-};
+    Audio(Entity* parent);
 
+    ~Audio();
+
+    void playMusic(const char* filePath, bool isLooped);
+
+    void stopMusic();
+
+private:
+    SoLoud::Soloud* gSoloud; // SoLoud engine
+};
