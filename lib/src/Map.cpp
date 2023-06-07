@@ -154,7 +154,8 @@ void Map::GenerateMap(int mapNr)
 				spawners.back()->transform->setLocalPosition(tiles[tileNr].transform->getLocalPosition());
 			}
 
-            tilesComp.push_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j), this));
+            tilesComp.emplace_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j), this));
+			tilesComp.back().attachToTimeManager();
             collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable, &tilesComp.back()));
 
 			tiles[tileNr].addComponent(&tilesComp.back());

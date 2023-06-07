@@ -133,7 +133,7 @@ void RobotMovement::update() {
 			newPositions.pop();
 			if (newPositions.size() > 0)
 			{
-				std::cout << "Rotate" << std::endl;
+				//std::cout << "Rotate" << std::endl;
 				rotate(oldPos, newPositions.front());
 			}
 			else

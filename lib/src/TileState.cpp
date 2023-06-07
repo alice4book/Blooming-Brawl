@@ -8,12 +8,25 @@
 
 TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map)
  : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition), map(map)
-{}
+{
+    timeManager = TimeManager::getInstance();
+}
+
+void TileState::attachToTimeManager()
+{
+    timeManager->attachUnlimitedFPS(this);
+}
+
+
 
 void TileState::setState(EState newState)
 {
 	state = newState;
 	parent->model = tileModels + state;
+    if (state == EState::Growing || state == EState::Growing2)
+        setTimerGrow();
+    else if (state == EState::Burned)
+        setTimerBurn();
 }
 
 void TileState::changeTileState(EPlayerID playerID) {
@@ -73,4 +86,49 @@ void TileState::changeTileState(EPlayerID playerID) {
 EPlayerID TileState::getOwner()
 {
     return ownerID;
+}
+
+void TileState::update()
+{
+    if (state == EState::Burned)
+    {
+        timerBurn -= timeManager->getDeltaTimeUnlimitedFPS();
+        if (timerBurn <= 0)
+        {
+            setState(EState::Empty);
+            timerBurn = 0;
+            watered = false;
+        }
+    }
+    else if (state == EState::Growing || state == EState::Growing2)
+    {
+        timerGrow -= timeManager->getDeltaTimeUnlimitedFPS();
+        if (timerGrow <= 0)
+        {
+            if (ownerID == EPlayerID::Player1)
+                setState(EState::Grown);
+            else setState(EState::Grown2);
+            timerGrow = 0;
+            watered = false;
+        }
+    }
+}
+
+void TileState::setTimerGrow()
+{
+    timerGrow = currentGrowTime;
+}
+
+void TileState::setTimerBurn()
+{
+    timerBurn = currentBurnTime;
+}
+
+void TileState::water()
+{
+    if (!watered)
+    {
+        watered = true;
+        timerGrow -= currentGrowTime * 0.5;
+    }
 }

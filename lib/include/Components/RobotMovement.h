@@ -18,7 +18,7 @@ private:
 	glm::vec3 startForward;
 
 	float side;
-	float speed = 0.005f;
+	float speed = 0.002f;
 	Transform* transform;
 	DynamicColliderComponent* colliderBody;
 	DynamicColliderComponent* colliderFront;
