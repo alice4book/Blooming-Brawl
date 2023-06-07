@@ -147,7 +147,7 @@ void RobotMovement::update() {
 		wonder();
 }
 
-bool RobotMovement::findClosestNode()
+bool RobotMovement::findClosestNode(EPlayerID playerID)
 {
 	glm::vec2 currentPos = getSnappedPosition();
 
@@ -158,6 +158,8 @@ bool RobotMovement::findClosestNode()
 	int closestDistance = 0;
 	bool firstFound = false;
 	int sight;
+	
+	//std::cout << "findClosestNode "<< playerID << std::endl;
 	/*
 	switch (alpha)
 	{
@@ -264,7 +266,7 @@ bool RobotMovement::findClosestNode()
 	{
 		for (int j = 0; j < mapWidth; j++)
 		{
-			checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound);
+			checkIfClosest(i, j, currentPos, map, closestDistance, closestNode, firstFound, playerID);
 		}
 	}
 	if (closestNode) {
@@ -297,20 +299,53 @@ void RobotMovement::wonder()
 }
 
 
-void RobotMovement::checkIfClosest(int i, int j, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound)
+void RobotMovement::checkIfClosest(int i, int j, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound, EPlayerID playerID)
 {
 	EState state = map->allTilesComp[i][j]->state;
-	if (state == EState::Growing || state == EState::Growing2 ||
-		state == EState::Grown || state == EState::Grown2)
-	{
-		int distance = glm::length(currentPos - glm::vec2(i, j));
-		if ((distance < closestDistance) || !firstFound)
+	if (playerID == Player1) {
+		//std::cout << "Player1" << std::endl;
+		//std::cout << "state " << state << std::endl;
+		if (state == EState::Growing2 ||
+			state == EState::Grown2)
 		{
-			closestNode = map->nodes[i][j];
-			closestDistance = distance;
-			firstFound = true;
+			int distance = glm::length(currentPos - glm::vec2(i, j));
+			if ((distance < closestDistance) || !firstFound)
+			{
+				closestNode = map->nodes[i][j];
+				closestDistance = distance;
+				firstFound = true;
+			}
 		}
 	}
+	else if (playerID == Player2) {
+		//std::cout << "Player2" << std::endl;
+		if (state == EState::Growing ||
+			state == EState::Grown)
+		{
+			int distance = glm::length(currentPos - glm::vec2(i, j));
+			if ((distance < closestDistance) || !firstFound)
+			{
+				closestNode = map->nodes[i][j];
+				closestDistance = distance;
+				firstFound = true;
+			}
+		}
+	}
+	else {
+		//std::cout << "PlayerNone" << std::endl;
+		if (state == EState::Growing || state == EState::Growing2 ||
+			state == EState::Grown || state == EState::Grown2)
+		{
+			int distance = glm::length(currentPos - glm::vec2(i, j));
+			if ((distance < closestDistance) || !firstFound)
+			{
+				closestNode = map->nodes[i][j];
+				closestDistance = distance;
+				firstFound = true;
+			}
+		}
+	}
+
 }
 
 /*

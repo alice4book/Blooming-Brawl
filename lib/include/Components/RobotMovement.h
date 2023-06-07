@@ -5,6 +5,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "GLFW/glfw3.h"
 #include "RobotMovementType.h"
+#include "PlayerIDType.h"
 #include <queue>
 #include "PathFinding.h"
 
@@ -39,7 +40,7 @@ private:
 	void rotate(glm::vec2 oldPos, glm::vec2 newPos);
 	glm::vec2 getSnappedPosition();
 	int alpha = 0;
-	void checkIfClosest(int x, int y, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound);
+	void checkIfClosest(int x, int y, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound, EPlayerID playerID);
 
 	bool isWondering;
 
@@ -51,7 +52,8 @@ public:
 	//void turnLeft(float dTime);	
 	//void noMove(float dTime);
 	void update() override;
-	bool findClosestNode();
+	bool findClosestNode(EPlayerID playerID = None);
+	//bool findClosestNode();
 	//WIP
 	void wonder();
 };

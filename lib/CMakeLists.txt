@@ -23,7 +23,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 												  ${CMAKE_CURRENT_SOURCE_DIR}/src/Components/
 												  ${glad_SOURCE_DIR}
 												  ${stb_image_SOURCE_DIR}
-												  ${imgui_SOURCE_DIR})
+												  ${imgui_SOURCE_DIR}
+												  soloud
+												  )
 
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} glad)
@@ -34,6 +36,7 @@ target_link_libraries(${PROJECT_NAME} imgui)
 target_link_libraries(${PROJECT_NAME} spdlog)
 target_link_libraries(${PROJECT_NAME} glm::glm)
 target_link_libraries(${PROJECT_NAME} freetype)
+target_link_libraries(${PROJECT_NAME} soloud)
 link_directories(${CMAKE_BINARY_DIR}/res)
 target_link_libraries(${PROJECT_NAME} winMM.Lib)
 

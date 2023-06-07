@@ -16,6 +16,10 @@ set(stb_image_SOURCE_DIR ${STB_IMAGE_DIR} CACHE INTERNAL "")
 add_library(stb_image STATIC ${STB_IMAGE_DIR}/stb_image.cpp)
 target_include_directories(stb_image PRIVATE ${STB_IMAGE_DIR})
 
+# SoLoud
+INCLUDE(SoLoud.cmake)
+target_include_directories(soloud PUBLIC ${soloud_SOURCE_DIR}/include)
+
 # other
 CPMAddPackage("gh:assimp/assimp@5.2.5")
 CPMAddPackage("gh:glfw/glfw#3.3.8")
@@ -37,7 +41,8 @@ set_target_properties(glad
                       glfw 
                       glm 
                       imgui 
-		      freetype
+					  freetype
+					  soloud
                       spdlog PROPERTIES FOLDER "thirdparty")
 
 if (TARGET zlibstatic)

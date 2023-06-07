@@ -1,33 +1,32 @@
 #include "Audio.h"
+#include <iostream>
+#include <soloud_wav.h>
 
-Audio::Audio(Entity* parent) : Component(parent) {
-
+Audio::Audio(Entity* parent): Component(parent) {
+    // Initialize SoLoud
+    gSoloud = new SoLoud::Soloud;
+    gSoloud->init();
 }
 
-void Audio::playAudio(std::string alias) {
-	mciSendString(("play " + alias).c_str(), NULL, 0, NULL);
+Audio::~Audio(){
+    // Deinitialize SoLoud
+    gSoloud->deinit();
 }
 
-void Audio::stopAudio(std::string alias) {
-	mciSendString(("stop " + alias).c_str(), NULL, 0, NULL);
+void Audio::playMusic(const char* filePath, bool isLooped = false) {
+    // Load the music file
+    SoLoud::Wav* music = new SoLoud::Wav;
+    if (music->load(filePath) != 0) {
+        // Failed to load the music file
+        std::cout << "Failed to load the music fil" << std::endl;
+        return;
+    }
+    music->setLooping(isLooped);
+    // Play the music
+    int handle = gSoloud->play(*music);         // Play the sound
 }
 
-void Audio::pauseAudio(std::string alias) {
-	mciSendString(("pause " + alias).c_str(), NULL, 0, NULL);
-}
-
-void Audio::resumeAudio(std::string alias) {
-	mciSendString(("resume " + alias).c_str(), NULL, 0, NULL);
-}
-
-void Audio::playLoop(std::string alias) {
-	mciSendString(("play " + alias +" repeat").c_str(), NULL, 0, NULL);
-}
-
-void Audio::openAudio(std::string path, std::string alias) {
-	mciSendString(("open " + path + " type mpegvideo alias "+ alias).c_str(), NULL, 0, NULL);
-}
-
-void Audio::closeAudio(std::string alias) {
-	mciSendString(("close " + alias).c_str(), NULL, 0, NULL);
+void Audio::stopMusic() {
+    // Stop all playing sounds
+    gSoloud->stopAll();
 }

@@ -27,6 +27,8 @@
 #include "Tool.h"
 
 #include "TimeManager.h"
+#include "Menu.h"
+#include <soloud_wav.h>
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -63,6 +65,8 @@ float resizeY = 1.f;
 
 
 float gamma = 1;
+
+int ChosenButtonMenu = 1;
 
 int main()
 {
@@ -206,7 +210,7 @@ int main()
    std::vector<glm::vec3> toolscord;
    toolscord = map.getToolsCord();
    for (int i = 0; i < toolscord.size(); i++) {
-       std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
+       //std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
        toolNr = std::rand() % toolstab.size();
        std::vector<Tool*> vectorTool;
        toolstab[toolNr].getComponentsByType(&vectorTool);
@@ -247,24 +251,25 @@ int main()
 
     Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
     skybox->addChild(&player1);
+    Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
+    skybox->addChild(&player2);
+
     Player playerP1(&player1, Player1);
     player1.addComponent((Component*)&playerP1);
     DynamicColliderComponent player1Collider(&player1, 0.05f, false);
     player1.addComponent((Component*)&player1Collider);
     DynamicColliderComponent player1ColliderFront(&player1, 0.2f, true, {0.15f,0});
     player1.addComponent((Component*)&player1Collider);
-    PlayerMovement playerMovement(window, &player1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
+    PlayerMovement playerMovement(window, &player1, &player2, &robot1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
     player1.addComponent((Component*)&playerMovement);
-    
-    Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
-    skybox->addChild(&player2);
+
     Player playerP2(&player2, Player2);
     player2.addComponent((Component*)&playerP2);
     DynamicColliderComponent player2Collider(&player2, 0.05f, false);
     player2.addComponent((Component*)&player2Collider);
     DynamicColliderComponent player2ColliderFront(&player2, 0.2f, true, {0.15f,0});
     player2.addComponent((Component*)&player2ColliderFront);
-    PlayerMovement playerMovement2(window, &player2, player2.transform, &player2Collider, &player2ColliderFront, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
+    PlayerMovement playerMovement2(window, &player2, &player1, &robot1, player2.transform, &player2Collider, &player2ColliderFront, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
     player2.addComponent((Component*)&playerMovement2);
 
     player2.transform->setLocalPosition({ 0.6, 0, 2.4 });
@@ -274,13 +279,6 @@ int main()
 
 #pragma region Power Up Setting
     float rimLight = 0.5f;
-#pragma endregion
-
-#pragma region Audio   
-//    Audio audio1(&robot1);
-//    audio1.openAudio("res/audio/background.mp3", "mp3");
-//    audio1.playLoop("mp3");
-//    int b = 0;
 #pragma endregion
 
 #pragma region HUD
@@ -325,13 +323,45 @@ int main()
 
 #pragma endregion
 
+#pragma region Menu
+    Menu menu(&hudShader, &textShader);
+    skybox->addChild(&menu);
+#pragma endregion
+
+#pragma region Audio   
+    Audio audioBackground(&robot1);
+    audioBackground.playMusic("res/audio/x.wav", true);
+#pragma endregion
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
-        timeManager->updateTime();
+        // input
+        processInput(window);
 
 
-        hud.setResize(resizeX, resizeY);
+        switch(ChosenButtonMenu)
+        {
+            case 0:
+                menu.setActiveButton(0);
+                hud.setHideHud(false);
+                hud.setResize(resizeX, resizeY);
+                timeManager->updateTime();
+                camera.setCameraRotation(0,-75.f);
+                break;
+            case 1:
+                menu.setActiveButton(1);
+                hud.setHideHud(true);
+                camera.setCameraRotation(0,0);
+                break;
+            case 2:
+                menu.setActiveButton(2);
+                hud.setHideHud(true);
+                break;
+            default:
+                // WTF how?
+                break;
+        }
 
         glfwPollEvents();
 
@@ -354,6 +384,8 @@ int main()
         mapManager.renderEntity(&depthShader);
         tool1.renderEntity(&depthShader);
         tool2.renderEntity(&depthShader);
+        house1.renderEntity(&depthShader);
+        house2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glViewport(0, 0, windowData.resolutionX, windowData.resolutionY);
@@ -439,7 +471,6 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, timeManager->getDeltaTimeUnlimitedFPS());
-
     if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
         gamma = gamma - 0.1;
         std::cout << gamma << std::endl;
@@ -449,8 +480,29 @@ void processInput(GLFWwindow* window)
         std::cout << gamma << std::endl;
     }
 
-    //if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-        
+    if(ChosenButtonMenu == 0)
+        return;
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        ChosenButtonMenu = 1;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        ChosenButtonMenu = 2;
+    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS){
+        switch(ChosenButtonMenu){
+            case 1:
+                // start the game
+                ChosenButtonMenu = 0;
+                break;
+            case 2:
+                // end the game
+                glfwDestroyWindow(window);
+                glfwTerminate();
+                exit(EXIT_SUCCESS);
+            default:
+                break;
+        }
+    }
+
 
     /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
