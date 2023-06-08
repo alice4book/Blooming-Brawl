@@ -4,7 +4,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "GLFW/glfw3.h"
-#include "RobotMovementType.h"
 #include "PlayerIDType.h"
 #include <queue>
 #include "PathFinding.h"
@@ -25,11 +24,10 @@ private:
 	DynamicColliderComponent* colliderFront;
 	float offset;
 	//Tells what kind of movement
-	RobotMovementType moveType = eStop;
 	void (RobotMovement::*moveRob)(float);
     TimeManager* timeManager;
 
-	float TILE_SIZE;;
+	float TILE_SIZE;
 	std::queue<glm::vec2> newPositions;
 	PathFinding pathFinding;
 	float height;
@@ -46,14 +44,11 @@ private:
 
 public:
 	RobotMovement(Entity* parent, Transform* transform, DynamicColliderComponent* colliderBody,
-		DynamicColliderComponent* colliderFront, float speed, 
-		RobotMovementType type, PathFinding& pathFinding, float TILE_SIZE, glm::vec3 forward = { 1, 0, 0 }, float offset = 0.04f );
-	//void turnRight(float dTime);
-	//void turnLeft(float dTime);	
-	//void noMove(float dTime);
+		DynamicColliderComponent* colliderFront, float speed, PathFinding& pathFinding, 
+		float TILE_SIZE, glm::vec3 forward = { 1, 0, 0 }, float offset = 0.04f );
+
 	void update() override;
 	bool findClosestNode(EPlayerID playerID = None);
-	//bool findClosestNode();
-	//WIP
+
 	void wonder();
 };

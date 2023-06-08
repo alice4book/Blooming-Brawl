@@ -28,7 +28,7 @@
 
 #include "TimeManager.h"
 #include "Menu.h"
-#include <soloud_wav.h>
+#include "Round.h"
 
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
@@ -168,31 +168,29 @@ int main()
     skybox->setShader(&skyboxShader);
 
     Model tileModels[8] = {
-        Model("res/models/trawa.obj"),
-        Model("res/models/maly_kwiat2.obj"),
-        Model("res/models/maly_kwiat.obj"),
-        Model("res/models/duzy_kwiat2.obj"),
-        Model("res/models/duzy_kwiat.obj"),
-        Model("res/models/skaly.obj"),
-        Model("res/models/krzak.obj"),
-        Model("res/models/spalony.obj")
+    Model("res/models/trawa.obj"),
+    Model("res/models/maly_kwiat2.obj"),
+    Model("res/models/maly_kwiat.obj"),
+    Model("res/models/duzy_kwiat2.obj"),
+    Model("res/models/duzy_kwiat.obj"),
+    Model("res/models/skaly.obj"),
+    Model("res/models/krzak.obj"),
+    Model("res/models/spalony.obj")
     };
 
     std::string mapFiles[3] = {
-        "res/maps/map1.txt",
-        "res/maps/map2.txt",
-        "res/maps/map3.txt"
+    "res/maps/map1.txt",
+    "res/maps/map2.txt",
+    "res/maps/map3.txt"
     };
+    Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader);
 
-    Entity mapManager(&directionalShader);
-    Map map(&mapManager, tileModels, mapFiles, TILE_SIZE, &pickupShader, &highlightShader, 0);
-    mapManager.addComponent(&map);
-    skybox->addChild(&mapManager);
-
-    camera.setCameraPosition(TILE_SIZE, 4.7f, map.MAX_COLUMNS, map.MAX_ROWS);
+   
+    camera.setCameraPosition(TILE_SIZE, 4.7f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
 #pragma endregion
 
 #pragma region Tool
+   /*
    std::vector<Entity> toolstab;
    Entity tool1("res/models/lopata.obj", &directionalShader);
    DynamicColliderComponent tool1_collision(&tool1, 0.05f, true);
@@ -201,14 +199,14 @@ int main()
    Entity tool2("res/models/motyka.obj", &directionalShader);
    DynamicColliderComponent tool2_collision(&tool2, 0.05f, true);
    tool2.addComponent((Component*)&tool2_collision);
-   mapManager.addChild(&tool1);
-   mapManager.addChild(&tool2);
+   //mapManager.addChild(&tool1);
+   //mapManager.addChild(&tool2);
    tool2.addComponent(new Tool(&tool2));
    toolstab.push_back(tool1);
    toolstab.push_back(tool2);
    int toolNr = 0;
    std::vector<glm::vec3> toolscord;
-   toolscord = map.getToolsCord();
+   //toolscord = map.getToolsCord();
    for (int i = 0; i < toolscord.size(); i++) {
        //std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
        toolNr = std::rand() % toolstab.size();
@@ -218,7 +216,7 @@ int main()
        toolstab[toolNr].transform->setLocalPosition(toolscord[i]);
        toolstab.erase(toolstab.begin() + toolNr);
    }
-
+   */
 #pragma endregion
 
 #pragma region House
@@ -233,50 +231,6 @@ int main()
     skybox->addChild(&house2);
 #pragma endregion
 
-#pragma region Collision & Robot test
-    
-    //add and move robot1 (version robot turns only right)
-    Entity robot1("res/models/robot.obj", &directionalShader);
-    skybox->addChild(&robot1);
-    robot1.transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
-    DynamicColliderComponent robotCollider1(&robot1, 0.1f, false, {0,0});
-    robot1.addComponent((Component*)&robotCollider1);
-    DynamicColliderComponent robotColliderFront1(&robot1, 0.1f, true, {0.01f, 0.0f});
-    robot1.addComponent((Component*)&robotColliderFront1);
-    PathFinding pathFinding(&map);
-    RobotMovement robotmovement(&robot1, robot1.transform, &robotCollider1, 
-       &robotColliderFront1, 0.4f, eRight, pathFinding, TILE_SIZE, {0,0,1});
-    robot1.addComponent((Component*)&robotmovement);
-    robotmovement.findClosestNode();
-
-    Entity player1("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
-    skybox->addChild(&player1);
-    Entity player2("res/models/postacie_zeskalowne/nizej_farmer.obj", &directionalShader);
-    skybox->addChild(&player2);
-
-    Player playerP1(&player1, Player1);
-    player1.addComponent((Component*)&playerP1);
-    DynamicColliderComponent player1Collider(&player1, 0.05f, false);
-    player1.addComponent((Component*)&player1Collider);
-    DynamicColliderComponent player1ColliderFront(&player1, 0.2f, true, {0.15f,0});
-    player1.addComponent((Component*)&player1Collider);
-    PlayerMovement playerMovement(window, &player1, &player2, &robot1, player1.transform, &player1Collider, &player1ColliderFront, playerP1.getSpeed(), playerP1.getID(), {1,0,0});
-    player1.addComponent((Component*)&playerMovement);
-
-    Player playerP2(&player2, Player2);
-    player2.addComponent((Component*)&playerP2);
-    DynamicColliderComponent player2Collider(&player2, 0.05f, false);
-    player2.addComponent((Component*)&player2Collider);
-    DynamicColliderComponent player2ColliderFront(&player2, 0.2f, true, {0.15f,0});
-    player2.addComponent((Component*)&player2ColliderFront);
-    PlayerMovement playerMovement2(window, &player2, &player1, &robot1, player2.transform, &player2Collider, &player2ColliderFront, playerP2.getSpeed(), playerP2.getID(), {1,0,0});
-    player2.addComponent((Component*)&playerMovement2);
-
-    player2.transform->setLocalPosition({ 0.6, 0, 2.4 });
-    player1.transform->setLocalPosition({ 0.5, 0, 2.4 });
-    robot1.transform->setLocalPosition({ 0.4, 0, 2.4 });
-#pragma endregion
-
 #pragma region Power Up Setting
     float rimLight = 0.5f;
 #pragma endregion
@@ -285,8 +239,8 @@ int main()
     Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     HUD hud(&hudShader, &textShader);
-    mapManager.addChild(&hud);
-    map.addHud(&hud);
+    //mapManager.addChild(&hud);
+    round.getMap()->addHud(&hud);
 #pragma endregion
 
 #pragma region Shadow
@@ -329,7 +283,7 @@ int main()
 #pragma endregion
 
 #pragma region Audio   
-    Audio audioBackground(&robot1);
+    Audio audioBackground(round.getRobot());
     audioBackground.playMusic("res/audio/x.wav", true);
 #pragma endregion
 
@@ -378,12 +332,12 @@ int main()
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
         glActiveTexture(GL_TEXTURE0);
-        player1.renderEntity(&depthShader);
-        player2.renderEntity(&depthShader);
-        robot1.renderEntity(&depthShader);
-        mapManager.renderEntity(&depthShader);
-        tool1.renderEntity(&depthShader);
-        tool2.renderEntity(&depthShader);
+        round.getRobot()->renderEntity(&depthShader);
+        round.getPlayer1()->renderEntity(&depthShader);
+        round.getPlayer2()->renderEntity(&depthShader);
+        round.getMapManager()->renderEntity(&depthShader);
+        //tool1.renderEntity(&depthShader);
+        //tool2.renderEntity(&depthShader);
         house1.renderEntity(&depthShader);
         house2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

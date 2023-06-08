@@ -55,7 +55,7 @@ glm::vec2 RobotMovement::getSnappedPosition()
 
 RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	DynamicColliderComponent* colliderBody, DynamicColliderComponent* colliderFront,
-	float speed, RobotMovementType type, PathFinding& pathFinding, float TILE_SIZE, glm::vec3 forward, float offset)
+	float speed, PathFinding& pathFinding, float TILE_SIZE, glm::vec3 forward, float offset)
 	: Component(parent)
 	, forward(forward)
 	, speed(speed)
@@ -73,20 +73,7 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	height = transform->getLocalPosition().y;
 
 	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
-	/*
-	switch (type) {
-	case eLeft:
-		moveRob = &RobotMovement::turnLeft;
-		break;
-	case eRight:
-		moveRob = &RobotMovement::turnRight;
-		break;
-	case eStop:
-		moveRob = &RobotMovement::noMove;
-		break;
-	default:
-		moveRob = &RobotMovement::noMove;
-	}*/
+
 }
 
 void RobotMovement::update() {
