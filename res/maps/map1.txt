@@ -2,11 +2,11 @@
 10
 10
 xxxxxxxxxxxxxxxxxxxx
-x.....x..........x.x
+x.....x.........rx.x
 x.x...x....s....x.xx
-x...t..............x
+x...t..b...........x
 x.....xxxxxxx......x
-x..xxxx...x.....t..x
+x..xxxx...x...m.t..x
 x.....x...xxxxx....x
 x..s..x............x
 x.....x....s......xx

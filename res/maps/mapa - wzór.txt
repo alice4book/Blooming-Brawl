@@ -6,6 +6,9 @@ x - skała
 o - krzew
 s - pickup spawner
 ? - losowo
+m - magenta / player1
+b - blue / player2
+r - robot
 t - narzędzie (nie może być więcej niż mamy narzędzi w grze obecnie 2)
 Ilość '?' musi być >= liczbie kamieni + krzewów
 Ilość znaków w wierszu - max 20

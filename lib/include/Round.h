@@ -2,6 +2,8 @@
 #include "GLFW/glfw3.h"
 #include <string>
 
+//WIP
+
 class World;
 class Entity;
 class Shader;
@@ -17,6 +19,7 @@ private:
 	Entity* player1;
 	Entity* player2;
 	Entity* robot;
+	Entity* allTools[2];
 
 	Map* map;
 
@@ -30,4 +33,6 @@ public:
 	Entity* getRobot();
 	Entity* getMapManager();
 	Map* getMap();
+	Entity** getTools();
+	int getToolsSize();
 };

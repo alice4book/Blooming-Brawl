@@ -51,17 +51,27 @@ private:
     std::list <TileState> tilesComp;
 
     HUD* hud;
+
+    glm::vec3 player1Cord;
+    glm::vec3 player2Cord;
+    glm::vec3 robotCord;
     
 public:
     TileState* allTilesComp[MAX_ROWS][MAX_COLUMNS] = {};
     std::vector <std::vector <StaticColliderComponent*>> colliders;
     Node* nodes[MAX_ROWS][MAX_COLUMNS] = {}; //for robot path finding
+
+    glm::vec3 getPlayer1Cord();
+    glm::vec3 getPlayer2Cord();
+    glm::vec3 getRobotCord();
+
 private:
     Model* tileModels;
 
     void LoadMapsFromFiles(std::string* files);
     MapData LoadMapFromFile(std::string file);
     void GenerateMap(int mapNr = -1);
+
 public:
     Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap = -1);
     void ChangeMap(int mapIndex);
@@ -72,6 +82,7 @@ public:
 
     void addHud(HUD* hud);
     std::vector<TileState*> getPlayerTiles(EPlayerID playerID);
+    
     //Tools
 private:
     std::vector<glm::vec3> toolscord;

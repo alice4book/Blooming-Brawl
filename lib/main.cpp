@@ -183,40 +183,10 @@ int main()
     "res/maps/map2.txt",
     "res/maps/map3.txt"
     };
+
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader);
 
-   
     camera.setCameraPosition(TILE_SIZE, 4.7f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
-#pragma endregion
-
-#pragma region Tool
-   /*
-   std::vector<Entity> toolstab;
-   Entity tool1("res/models/lopata.obj", &directionalShader);
-   DynamicColliderComponent tool1_collision(&tool1, 0.05f, true);
-   tool1.addComponent((Component*)&tool1_collision);
-   tool1.addComponent(new Tool(&tool1));
-   Entity tool2("res/models/motyka.obj", &directionalShader);
-   DynamicColliderComponent tool2_collision(&tool2, 0.05f, true);
-   tool2.addComponent((Component*)&tool2_collision);
-   //mapManager.addChild(&tool1);
-   //mapManager.addChild(&tool2);
-   tool2.addComponent(new Tool(&tool2));
-   toolstab.push_back(tool1);
-   toolstab.push_back(tool2);
-   int toolNr = 0;
-   std::vector<glm::vec3> toolscord;
-   //toolscord = map.getToolsCord();
-   for (int i = 0; i < toolscord.size(); i++) {
-       //std::cout << toolscord[i].x << toolscord[i].y << toolscord[i].z;
-       toolNr = std::rand() % toolstab.size();
-       std::vector<Tool*> vectorTool;
-       toolstab[toolNr].getComponentsByType(&vectorTool);
-       vectorTool[0]->setSpawn();
-       toolstab[toolNr].transform->setLocalPosition(toolscord[i]);
-       toolstab.erase(toolstab.begin() + toolNr);
-   }
-   */
 #pragma endregion
 
 #pragma region House
@@ -239,7 +209,7 @@ int main()
     Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     HUD hud(&hudShader, &textShader);
-    //mapManager.addChild(&hud);
+    round.getMapManager()->addChild(&hud);
     round.getMap()->addHud(&hud);
 #pragma endregion
 
@@ -336,8 +306,9 @@ int main()
         round.getPlayer1()->renderEntity(&depthShader);
         round.getPlayer2()->renderEntity(&depthShader);
         round.getMapManager()->renderEntity(&depthShader);
-        //tool1.renderEntity(&depthShader);
-        //tool2.renderEntity(&depthShader);
+        for (int i = 0; i < round.getToolsSize(); i++) {
+            round.getTools()[i]->renderEntity(&depthShader);
+        }
         house1.renderEntity(&depthShader);
         house2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

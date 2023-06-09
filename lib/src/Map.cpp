@@ -123,6 +123,24 @@ void Map::GenerateMap(int mapNr)
 				isPassable = true;
 				state = EState::Empty;
 				break;
+			case 'm':
+				tiles[tileNr].model = &tileModels[EState::Empty];
+				emptyTiles++;
+				isPassable = true;
+				state = EState::Empty;
+				break;
+			case 'b':
+				tiles[tileNr].model = &tileModels[EState::Empty];
+				emptyTiles++;
+				isPassable = true;
+				state = EState::Empty;
+				break;
+			case 'r':
+				tiles[tileNr].model = &tileModels[EState::Empty];
+				emptyTiles++;
+				isPassable = true;
+				state = EState::Empty;
+				break;
 			case 's':
 				tiles[tileNr].model = &tileModels[EState::Empty];
 				emptyTiles++;
@@ -147,11 +165,21 @@ void Map::GenerateMap(int mapNr)
 			tiles[tileNr].shader = parent->shader;
 			tiles[tileNr].isModel = true;
 			tiles[tileNr].transform->setLocalPosition({ tileSize * i, 0, tileSize * j }); //({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });//({ tileSize * i, 0, tileSize * j });
+			
 			if (row[j] == 't') {
 				toolscord.push_back(tiles[tileNr].transform->getLocalPosition());
 			}
 			if (row[j] == 's' && spawners.size() > 0) {
 				spawners.back()->transform->setLocalPosition(tiles[tileNr].transform->getLocalPosition());
+			}
+			if (row[j] == 'm') {
+				player1Cord = tiles[tileNr].transform->getLocalPosition();
+			}
+			if (row[j] == 'b') {
+				player2Cord = tiles[tileNr].transform->getLocalPosition();
+			}
+			if (row[j] == 'r') {
+				robotCord = tiles[tileNr].transform->getLocalPosition();
 			}
 
             tilesComp.emplace_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j), this));
@@ -271,6 +299,21 @@ std::vector<TileState*> Map::getPlayerTiles(EPlayerID playerID)
 		std::advance(iter_front, 1);
 	}
 	return playerTileStates;
+}
+
+glm::vec3 Map::getPlayer1Cord()
+{
+	return player1Cord;
+}
+
+glm::vec3 Map::getPlayer2Cord()
+{
+	return player2Cord;
+}
+
+glm::vec3 Map::getRobotCord()
+{
+	return robotCord;
 }
 
 void Map::LoadMapsFromFiles(std::string* files)
