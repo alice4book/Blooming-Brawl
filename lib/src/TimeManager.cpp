@@ -5,6 +5,7 @@
 #define DELTA_TIME_120FPS (7.5f/900.f)
 #define DELTA_TIME_60FPS (15.f/900.f)
 #define DELTA_TIME_2FPS 0.5f
+#define DELTA_TIME_1FPS 1.f
 
 // Define the static Singleton pointer
 TimeManager* TimeManager::inst_ = nullptr;
@@ -29,29 +30,37 @@ void TimeManager::updateTime(){
 
     notify(listObserverUnlimited);
 
-    time120FPS += deltaTime;
     deltaTime120FPS += deltaTime;
-    time60FPS += deltaTime;
     deltaTime60FPS += deltaTime;
-    time2FPS += deltaTime;
     deltaTime2FPS += deltaTime;
+    deltaTime1FPS += deltaTime;
+    time120FPS += deltaTime;
+    time60FPS += deltaTime;
+    time2FPS += deltaTime;
+    time1FPS += deltaTime;
 
     if(time120FPS >= DELTA_TIME_120FPS){
         notify(listObserver120FPS);
-        time120FPS = 0.f;
         deltaTime120FPS = 0.f;
+        time120FPS =- DELTA_TIME_120FPS;
     }
 
     if(time60FPS >= DELTA_TIME_60FPS){
         notify(listObserver60FPS);
-        time60FPS = 0.f;
         deltaTime60FPS = 0.f;
+        time60FPS -= DELTA_TIME_60FPS;
     }
 
     if(time2FPS >= DELTA_TIME_2FPS){
         notify(listObserver2FPS);;
-        time2FPS = 0.f;
         deltaTime2FPS = 0.f;
+        time2FPS -= DELTA_TIME_2FPS;
+    }
+
+    if(time1FPS >= DELTA_TIME_1FPS){
+        notify(listObserver1FPS);;
+        deltaTime1FPS = 0.f;
+        time1FPS -= DELTA_TIME_1FPS;
     }
 }
 
@@ -80,6 +89,10 @@ void TimeManager::attach2FPS(Component* observer) {
     listObserver2FPS.push_back(observer);
 }
 
+void TimeManager::attach1FPS(Component* observer) {
+    listObserver2FPS.push_back(observer);
+}
+
 void TimeManager::detach(Component *observer) {
     listObserverUnlimited.erase(
             std::remove_if(listObserverUnlimited.begin(), listObserverUnlimited.end(),
@@ -104,13 +117,17 @@ float TimeManager::getDeltaTimeUnlimitedFPS() const {
 }
 
 float TimeManager::getDeltaTime120FPS() const {
-    return deltaTime;
+    return deltaTime120FPS;
 }
 
 float TimeManager::getDeltaTime60FPS() const {
-    return deltaTime;
+    return deltaTime60FPS;
 }
 
 float TimeManager::getDeltaTime2FPS() const {
-    return deltaTime;
+    return deltaTime2FPS;
+}
+
+float TimeManager::getDeltaTime1FPS() const {
+    return deltaTime1FPS;
 }
