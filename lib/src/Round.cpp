@@ -30,7 +30,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robot->addComponent((Component*)robotColliderFront);
     PathFinding pathFinding((Map*)map);
     
-    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.0f, //0.2f, 
+    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.2f, 
         pathFinding, this->TILE_SIZE, { 0,0,1 });
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
