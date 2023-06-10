@@ -29,14 +29,22 @@ Entity::Entity(const std::string& path, Shader* s, Shader* altShader)
     transform = new Transform(this);
     model = new Model(path);//this, path);
     isModel = true;
+
 }
 
 Entity::~Entity()
 {
-    //for (auto component : components) {
-    //    delete component;
-    //}
+    delete transform;
+    
     /*
+    for (auto component : components) {
+       /delete component;
+    }
+    components.clear();
+    for (auto child : children) {
+        delete child;
+    }
+    children.clear();
     Need to add parent entity
     if (parent) {
         for (int i = 0; i < parent->children.size(); i++) {
@@ -54,6 +62,7 @@ Entity::~Entity()
     }
     std::cout << "deleted" << std::endl;
     */
+    //std::cout << " Deleted " << std::endl;
 }
 
 //add new component
@@ -73,7 +82,6 @@ void Entity::addChild(Entity* arg)
     children.push_back(arg);
     arg->parentTransform = this->transform;
 }
-
 
 //Update transform if it was changed
 void Entity::updateSelfAndChild()
@@ -138,4 +146,14 @@ const std::vector<Entity *> &Entity::getChildren() const {
 void Entity::switchShader(){
     if(altShader != nullptr)
         std::swap(shader, altShader);
+}
+
+void Entity::clearChildren() {
+    if (!children.empty())
+        children.clear();
+}
+
+void Entity::clearComponents(){
+    if(!components.empty())
+        components.clear();
 }

@@ -159,6 +159,10 @@ std::vector<StaticColliderComponent*> World::getStaticColliders(){
     return staticColComp;
 }
 
+void World::clearStaticColliders() {
+    staticColComp.clear();
+}
+
 std::vector<DynamicColliderComponent*> World::getDynamicColliders(){
     if(dynamicColComp.empty())
         reloadLists();

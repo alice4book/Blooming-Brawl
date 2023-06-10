@@ -42,11 +42,11 @@ private:
 
     void move();
     void checkInput();
-    void handleSeenTile();
 
 	void reactToPunch(Entity* punchedParent);
 
 	void reactToPunchRobot();
+    void handleSeenTile();
 
 public:
 	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
@@ -54,4 +54,5 @@ public:
 	void setSpeed(float newSpeed);
 	float getSpeed();
 	void dropTool();
+	void resetSeenTile();
 };

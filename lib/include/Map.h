@@ -51,6 +51,7 @@ private:
     std::list <TileState> tilesComp;
 
     HUD* hud;
+    Entity* wrap;
 
     glm::vec3 player1Cord;
     glm::vec3 player2Cord;

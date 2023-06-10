@@ -18,6 +18,7 @@ public:
     void renderEntity() override;
 
     std::vector<StaticColliderComponent*> getStaticColliders();
+    void clearStaticColliders();
     std::vector<DynamicColliderComponent*> getDynamicColliders();
 
     void reloadLists(Entity* e = nullptr);

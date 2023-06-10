@@ -68,6 +68,8 @@ float gamma = 1;
 
 int ChosenButtonMenu = 1;
 
+int roundNr = 1;
+
 int main()
 {
     // Setup window
@@ -178,10 +180,12 @@ int main()
     Model("res/models/spalony.obj")
     };
 
-    std::string mapFiles[3] = {
+    std::string mapFiles[5] = {
     "res/maps/map1.txt",
     "res/maps/map2.txt",
-    "res/maps/map3.txt"
+    "res/maps/map3.txt",
+    "res/maps/map4.txt",
+    "res/maps/map5.txt"
     };
 
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader);
@@ -256,13 +260,16 @@ int main()
     Audio audioBackground(round.getRobot());
     audioBackground.playMusic("res/audio/x.wav", true);
 #pragma endregion
-
+    
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        if (roundNr == 2) {
+            round.changeRound(2);
+            roundNr = 3;
+        }
         // input
         processInput(window);
-
 
         switch(ChosenButtonMenu)
         {
@@ -347,7 +354,6 @@ int main()
         highlightShader.setVec3("viewPos", camera.Position);
         highlightShader.setVec3("hlcolor", {0.5,0.5,0.5});
 
-        //shadow
         directionalShader.use();
         glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);
         directionalShader.setMat4("lightProjection",lightProjection);
@@ -404,6 +410,9 @@ void processInput(GLFWwindow* window)
         gamma = gamma + 0.1;
         std::cout << gamma << std::endl;
     }
+    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS && roundNr != 3) {
+        roundNr = 2;
+    }
 
     if(ChosenButtonMenu == 0)
         return;
@@ -427,8 +436,6 @@ void processInput(GLFWwindow* window)
                 break;
         }
     }
-
-
     /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
         //std::cout << "Joystick" << std::endl;

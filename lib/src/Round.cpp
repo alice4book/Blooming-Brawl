@@ -30,7 +30,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robot->addComponent((Component*)robotColliderFront);
     PathFinding pathFinding((Map*)map);
     
-    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.2f, 
+    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.0f, //0.2f, 
         pathFinding, this->TILE_SIZE, { 0,0,1 });
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
@@ -90,6 +90,42 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
         toolstab.erase(toolstab.begin() + toolNr);
     }
 
+}
+
+void Round::changeRound(int roundNr)
+{
+    map->ChangeMap(2);
+
+    robot->transform->setLocalPosition(map->getRobotCord());
+    std::vector<RobotMovement*> robotMovment;
+    robot->getComponentsByType(&robotMovment);
+    robotMovment[0]->findClosestNode();
+
+    std::vector<PlayerMovement*> playerMovment;
+
+    player1->getComponentsByType(&playerMovment);
+    playerMovment[0]->dropTool();
+    playerMovment[0]->resetSeenTile();
+    player1->transform->setLocalPosition(map->getPlayer2Cord());
+
+    player2->getComponentsByType(&playerMovment);
+    playerMovment[1]->dropTool();
+    playerMovment[1]->resetSeenTile();
+    player2->transform->setLocalPosition(map->getPlayer1Cord());
+    
+    int toolNr = 0;
+    std::vector<Entity*> toolstab;
+    toolstab.push_back(allTools[0]);
+    toolstab.push_back(allTools[1]);
+    std::vector<glm::vec3> toolscord = map->getToolsCord();
+    for (int i = 0; i < toolscord.size(); i++) {
+        toolNr = std::rand() % toolstab.size();
+        std::vector<Tool*> vectorTool;
+        toolstab[toolNr]->getComponentsByType(&vectorTool);
+        vectorTool[0]->setSpawn();
+        toolstab[toolNr]->transform->setLocalPosition(toolscord[i]);
+        toolstab.erase(toolstab.begin() + toolNr);
+    }
 }
 
 Entity* Round::getPlayer1()

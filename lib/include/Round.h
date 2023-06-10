@@ -10,6 +10,7 @@ class Shader;
 class Map;
 class Model;
 class PathFinding;
+class HUD;
 
 class Round {
 private:
@@ -27,6 +28,8 @@ private:
 public:
 	Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
 		Shader* pickupShader, Shader* highlightShader);
+
+	void changeRound(int roundNr);
 
 	Entity* getPlayer1();
 	Entity* getPlayer2();

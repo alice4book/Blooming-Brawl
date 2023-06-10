@@ -276,7 +276,9 @@ void RobotMovement::wonder()
 	int mapWidth = map->MAX_COLUMNS;
 	int i, j;
 	i = rand() % mapHeight;
-	j = rand() % mapWidth;
+	j = rand() % mapWidth;	
+	if (map->allTilesComp[i][j] == nullptr)
+		return;
 	EState state = map->allTilesComp[i][j]->state;
 	if (state == EState::Empty)
 	{
@@ -288,6 +290,8 @@ void RobotMovement::wonder()
 
 void RobotMovement::checkIfClosest(int i, int j, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound, EPlayerID playerID)
 {
+	if (map->allTilesComp[i][j] == nullptr)
+		return;
 	EState state = map->allTilesComp[i][j]->state;
 	if (playerID == Player1) {
 		//std::cout << "Player1" << std::endl;

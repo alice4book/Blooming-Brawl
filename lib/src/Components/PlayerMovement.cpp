@@ -433,8 +433,14 @@ void PlayerMovement::handleSeenTile(){
     else if(lastSeenTile != frontCollider->getTileColliderIAmOn()) {
         lastSeenTile->getParent()->switchShader();
         lastSeenTile = frontCollider->getTileColliderIAmOn();
-        lastSeenTile->getParent()->switchShader();
+        if(lastSeenTile != nullptr)
+            lastSeenTile->getParent()->switchShader();
     }
+}
+
+void PlayerMovement::resetSeenTile(){
+
+    lastSeenTile->getParent()->switchShader();
 }
 
 void PlayerMovement::reactToPunch(Entity* punchedParent)

@@ -29,6 +29,25 @@ MapData Map::LoadMapFromFile(std::string fileName)
 
 void Map::GenerateMap(int mapNr)
 {
+	// Function to clear variables used in GenerateMap function
+	for (int i = 0; i < MAX_ROWS; i++) {
+		for (int j = 0; j < MAX_COLUMNS; j++) {
+			allTiles[i][j] = nullptr;
+		}
+	}
+	tilesComp.clear();
+	wrap->clearChildren();
+	toolscord.clear();
+	emptyTiles = 0;
+	spawners.clear();
+	player1Cord = glm::vec3(0.0f);
+	player2Cord = glm::vec3(0.0f);
+	robotCord = glm::vec3(0.0f);
+	colliders.clear();
+	nrOfTiles = 0;
+	auto world = World::getInstance();
+	world->clearStaticColliders();
+	
 	if (mapNr == -1)
 	{
 		mapNr = rand() % NR_OF_MAPS;
@@ -38,6 +57,7 @@ void Map::GenerateMap(int mapNr)
 	glm::vec2 available[MAX_TILES];
 	int generationIndex = 0;
 
+	//find random tiles
 	for (int i = 0; i < codedMaps[mapNr].rows; i++)
 	{
 		std::string row = codedMaps[mapNr].codedRow[i];
@@ -82,7 +102,7 @@ void Map::GenerateMap(int mapNr)
 		int chosenColumn = available[generationIndex].y;
 		codedMaps[mapNr].codedRow[chosenRow][chosenColumn] = '.';
 	}
-	
+
 	//create all tiles
 	int tileNr = 0;
 	emptyTiles = 0;
@@ -107,7 +127,7 @@ void Map::GenerateMap(int mapNr)
 			case 'x':
 				tiles[tileNr].model = &tileModels[EState::Impassable];
 				rotataRand = rand() % 4;
-				tiles[tileNr].transform->rotateLocal({0,90 * rotataRand,0});
+				tiles[tileNr].transform->rotateLocal({ 0,90 * rotataRand,0 });
 				isPassable = false;
 				state = EState::Impassable;
 				break;
@@ -165,7 +185,7 @@ void Map::GenerateMap(int mapNr)
 			tiles[tileNr].shader = parent->shader;
 			tiles[tileNr].isModel = true;
 			tiles[tileNr].transform->setLocalPosition({ tileSize * i, 0, tileSize * j }); //({ tileSize * codedMaps[mapNr].rows - tileSize * i, 0, tileSize * j });//({ tileSize * i, 0, tileSize * j });
-			
+
 			if (row[j] == 't') {
 				toolscord.push_back(tiles[tileNr].transform->getLocalPosition());
 			}
@@ -182,14 +202,14 @@ void Map::GenerateMap(int mapNr)
 				robotCord = tiles[tileNr].transform->getLocalPosition();
 			}
 
-            tilesComp.emplace_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i,j), this));
+			tilesComp.emplace_back(TileState(&tiles[tileNr], state, tileModels, glm::vec2(i, j), this));
 			tilesComp.back().attachToTimeManager();
-            collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable, &tilesComp.back()));
+			collidersRow.push_back(new StaticColliderComponent(&tiles[tileNr], { tileSize, tileSize }, isPassable, &tilesComp.back()));
 
 			tiles[tileNr].addComponent(&tilesComp.back());
-			if(&collidersRow.back() != nullptr)
+			if (&collidersRow.back() != nullptr)
 				tiles[tileNr].addComponent(collidersRow.back());
-			parent->addChild(&tiles[tileNr]);
+			wrap->addChild(&tiles[tileNr]);
 			allTiles[i][j] = &tiles[tileNr];
 
 			nodes[i][j] = &tilesComp.back().node;
@@ -228,26 +248,17 @@ void Map::GenerateMap(int mapNr)
 				}
 			}
 		}
-		//write down neighbours
-		/*
-		std::cout << "tile " << tile.mapPosition.x << " " << tile.mapPosition.y << std::endl;
-		for (int i = 0; i < 8; i++)
-		{
-			std::vector<TileState*> neigh;
-			if (tile.neighbours[i])
-			{
-				tile.neighbours[i]->getComponentsByType(&neigh);
-				std::cout << "     " << i << " " << neigh[0]->mapPosition.x << " " << neigh[0]->mapPosition.y << std::endl ;
-			}
-			
-		}
-		*/
 	}
+
+	wrap;
 }
 
 Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap)
 	:Component(parent), tileModels(tileModels), tileSize(tileSize), altShader(altShader), spawnerShader(shader)
 {
+	wrap = new Entity();
+	parent->addChild(wrap);
+
 	LoadMapsFromFiles(mapFiles);
 	GenerateMap(firstMap);
 
@@ -259,7 +270,21 @@ Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSiz
 
 void Map::ChangeMap(int mapIndex)
 {
-	//...
+
+	for (int i = 0; i < MAX_ROWS; i++) {
+		for (int j = 0; j < MAX_COLUMNS; j++) {
+			if(allTiles[i][j] != nullptr)
+				allTiles[i][j]->clearComponents();
+		}
+	}
+
+	GenerateMap(mapIndex);
+	player1TilesCount = 0;
+	player2TilesCount = 0;
+	if (hud != nullptr) {
+		hud->setTilesCount(emptyTiles);
+		hud->barSize(player1TilesCount, player2TilesCount);
+	}
 }
 
 int Map::getTilesCount()
@@ -286,7 +311,6 @@ void Map::addHud(HUD* hud)
 		hud->setTilesCount(emptyTiles);
 }
 
-//WIP
 std::vector<TileState*> Map::getPlayerTiles(EPlayerID playerID)
 { 
 	// copy all the contents of one list to another

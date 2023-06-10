@@ -60,6 +60,10 @@ public:
     [[nodiscard]] const std::vector<Entity *> &getChildren() const;
 
     void switchShader();
+
+    void clearChildren();
+
+    void clearComponents();
 };
 
 template<typename T>

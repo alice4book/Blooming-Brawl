@@ -1,5 +1,6 @@
 #include "Component.h"
 #include "TimeManager.h"
+#include <iostream>
 
 Entity* Component::getParent()
 {
@@ -9,4 +10,6 @@ Entity* Component::getParent()
 Component::~Component() {
     extern TimeManager* timeManager;
     timeManager->detach(this);
+
+    //std::cout << " Component delete " << std::endl;
 }
