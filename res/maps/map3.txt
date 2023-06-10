@@ -3,7 +3,7 @@
 10
 xxxxxxxxxxxxxxxxxxxx
 x.....x.........rx.x
-x.x...x.........x.xx
+x.x...x.....s...x.xx
 x...t..b...........x
 x.....xxxxxxx......x
 x..xxxx...x...m.t..x

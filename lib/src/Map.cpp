@@ -29,9 +29,11 @@ MapData Map::LoadMapFromFile(std::string fileName)
 
 void Map::GenerateMap(int mapNr)
 {
+
 	// Function to clear variables used in GenerateMap function
 	for (int i = 0; i < MAX_ROWS; i++) {
 		for (int j = 0; j < MAX_COLUMNS; j++) {
+
 			allTiles[i][j] = nullptr;
 		}
 	}
@@ -168,7 +170,7 @@ void Map::GenerateMap(int mapNr)
 				state = EState::Empty;
 				if (spawnerShader != nullptr) {
 					spawners.push_back(new Entity(spawnerShader));
-					parent->addChild(spawners.back());
+					wrap->addChild(spawners.back());
 					spawners.back()->addComponent(new Spawner(spawners.back(), spawnerShader));
 				}
 				break;
