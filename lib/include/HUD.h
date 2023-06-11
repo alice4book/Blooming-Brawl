@@ -1,7 +1,10 @@
 #pragma once
 #include "Entity.h"
-#include "Shader.h"
-#include "Text.h"
+
+class Shader;
+class Text;
+class TimerManager;
+class Clock;
 
 class HUD : public Entity{
 
@@ -33,8 +36,15 @@ private:
 	int player2Tiles;
 
     bool hideHUD;
+
 public:
+	Clock* clock;
+
     void setHideHud(bool newHideHud);
+
+	void startTimer();
+
+	void stopTimer();
 
 public:
 	HUD(Shader* shader, Shader* textShader);

@@ -24,10 +24,12 @@ private:
 
 	Map* map;
 
+	HUD* hud;
+
 	float TILE_SIZE = 0.254f;
 public:
 	Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
-		Shader* pickupShader, Shader* highlightShader);
+		Shader* pickupShader, Shader* highlightShader, HUD* hud);
 
 	void changeRound(int roundNr);
 

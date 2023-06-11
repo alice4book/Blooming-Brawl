@@ -188,7 +188,13 @@ int main()
     "res/maps/map5.txt"
     };
 
-    Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader);
+    Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
+    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
+    HUD hud(&hudShader, &textShader);
+    //round.getMapManager()->addChild(&hud);
+    //round.getMap()->addHud(&hud);
+
+    Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud);
 
     camera.setCameraPosition(TILE_SIZE, 4.7f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
 #pragma endregion
@@ -207,14 +213,6 @@ int main()
 
 #pragma region Power Up Setting
     float rimLight = 0.5f;
-#pragma endregion
-
-#pragma region HUD
-    Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
-    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
-    HUD hud(&hudShader, &textShader);
-    round.getMapManager()->addChild(&hud);
-    round.getMap()->addHud(&hud);
 #pragma endregion
 
 #pragma region Shadow

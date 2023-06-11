@@ -1,5 +1,7 @@
 #include "HUD.h"
 #include "Transform.h"
+#include "Text.h"
+#include "Clock.h"
 
 HUD::HUD(Shader* shader, Shader* textShader)
 	: hudShader(shader)
@@ -71,9 +73,18 @@ void HUD::renderEntity() {
 	Entity::renderEntity();
 	score1->RenderText(std::to_string(player1Tiles), resizeX * 10, resizeY * 550, resizeX, { 1.f,1.f,1.f });
 	score2->RenderText(std::to_string(player2Tiles), resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
-	timer->RenderText(std::to_string(120), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
+	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
 }
 
 void HUD::setHideHud(bool newHideHud) {
     hideHUD = newHideHud;
+}
+
+
+void HUD::startTimer() {
+	//timerManager->attach(this);
+}
+
+void HUD::stopTimer() {
+
 }

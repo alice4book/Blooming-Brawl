@@ -90,7 +90,7 @@ void TimeManager::attach2FPS(Component* observer) {
 }
 
 void TimeManager::attach1FPS(Component* observer) {
-    listObserver2FPS.push_back(observer);
+    listObserver1FPS.push_back(observer);
 }
 
 void TimeManager::detach(Component *observer) {

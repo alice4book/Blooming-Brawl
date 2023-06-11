@@ -8,17 +8,25 @@
 #include "Map.h"
 #include "Model.h"
 #include "Tool.h"
+#include "HUD.h"
+#include "Clock.h"
 #include <iostream>
 
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
-    Shader* pickupShader, Shader* highlightShader)
+    Shader* pickupShader, Shader* highlightShader, HUD* hud)
 {
 	skybox = World::getInstance();
     
+    this->hud = hud;
+
     mapManager = new Entity(directionalShader);
     map = new Map(mapManager, tileModels, mapFiles, TILE_SIZE, pickupShader, highlightShader, 0);
     mapManager->addComponent((Component*)map);
     skybox->addChild(mapManager);
+
+    hud->addComponent(new Clock(hud));
+    mapManager->addChild(hud);
+    map->addHud(hud);
 
     robot = new Entity("res/models/robot.obj", directionalShader);
     skybox->addChild(robot);
@@ -89,7 +97,8 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
         toolstab[toolNr]->transform->setLocalPosition(toolscord[i]);
         toolstab.erase(toolstab.begin() + toolNr);
     }
-
+    hud->clock = new Clock(hud);
+    hud->clock->startClock(120);
 }
 
 void Round::changeRound(int roundNr)
@@ -126,6 +135,9 @@ void Round::changeRound(int roundNr)
         toolstab[toolNr]->transform->setLocalPosition(toolscord[i]);
         toolstab.erase(toolstab.begin() + toolNr);
     }
+
+    hud->clock = new Clock(hud);
+    hud->clock->startClock(120);
 }
 
 Entity* Round::getPlayer1()
