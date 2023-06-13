@@ -11,6 +11,7 @@
 class Transform;
 class DynamicColliderComponent;
 class TimeManager;
+class PlayerMovement;
 
 class RobotMovement : public Component{
 private:
@@ -42,13 +43,16 @@ private:
 
 	bool isWondering;
 
+	PlayerMovement* player1, *player2;
+
 public:
 	RobotMovement(Entity* parent, Transform* transform, DynamicColliderComponent* colliderBody,
 		DynamicColliderComponent* colliderFront, float speed, PathFinding& pathFinding, 
-		float TILE_SIZE, glm::vec3 forward = { 1, 0, 0 }, float offset = 0.04f );
+		float TILE_SIZE, glm::vec3 forward = { 1, 0, 0 }, float offset = 0.04f);
 
 	void update() override;
 	bool findClosestNode(EPlayerID playerID = None);
 
 	void wonder();
+	void setPlayers(PlayerMovement* player1, PlayerMovement* player2);
 };

@@ -8,6 +8,7 @@
 #include "TimeManager.h"
 #include <vector>
 #include "Map.h"
+#include "PlayerMovement.h"
 
 #include <iostream> //usuñ
 
@@ -114,7 +115,9 @@ void RobotMovement::update() {
 			glm::vec2 snappedPos = getSnappedPosition();
 			TileState* tileState = pathFinding.map->allTilesComp[(int)snappedPos.x][(int)snappedPos.y];
 
-			tileState->changeTileState(EPlayerID::RobotDestroyer);
+			tileState->changeTileState(EPlayerID::RobotDestroyer, EActionType::DestroyingFlower);
+			player1->cancelAction(tileState);
+			player2->cancelAction(tileState);
 
 			glm::vec2 oldPos = newPositions.front();
 			newPositions.pop();
@@ -144,7 +147,7 @@ bool RobotMovement::findClosestNode(EPlayerID playerID)
 	Node* closestNode = NULL;
 	int closestDistance = 0;
 	bool firstFound = false;
-	int sight;
+	int sight = 0;
 	
 	//std::cout << "findClosestNode "<< playerID << std::endl;
 	/*
@@ -285,6 +288,12 @@ void RobotMovement::wonder()
 		isWondering = true;
 		moveToPoint(map->nodes[i][j]);
 	}
+}
+
+void RobotMovement::setPlayers(PlayerMovement* player1, PlayerMovement* player2)
+{
+	this->player1 = player1;
+	this->player2 = player2;
 }
 
 

@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "Map.h"
+#include "ActionType.h"
 #include <iostream>
 
 TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map)
@@ -29,49 +30,11 @@ void TileState::setState(EState newState)
         setTimerBurn();
 }
 
-void TileState::changeTileState(EPlayerID playerID) {
-
-    if (ownerID == EPlayerID::None)
+void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
+{
+    if (playerID == EPlayerID::RobotDestroyer)
     {
-        if (playerID == Player1 || playerID == Player2)
-        {
-            if (state == EState::Overgrown)
-            {
-                setState(EState::Empty);
-                //SlingSeed(playerID);
-                //SlingSeed(playerID);
-            }
-            else if (state == EState::Empty)
-            {
-               ownerID = playerID;
-               if (playerID == EPlayerID::Player1){
-                    setState(EState::Growing);
-                    map->addToPlayer1TilesCount(1);
-               }
-               else {
-                    setState(EState::Growing2);
-                    map->addToPlayer2TilesCount(1);
-               }
-            }
-        }
-    }
-    else if (playerID == ownerID)   // Tile has owner. Owner of tile called.
-    {
-        if (playerID == EPlayerID::Player1 && state == EState::Grown)
-        {
-            //SlingSeed(playerID);
-            //SlingSeed(playerID);
-            setState(EState::Growing);
-        }
-        if (playerID == EPlayerID::Player2 && state == EState::Grown2)
-        {
-            //SlingSeed(playerID);
-            //SlingSeed(playerID);
-            setState(EState::Growing2);
-        }
-    }
-    else if (playerID == EPlayerID::Player1 || playerID == EPlayerID::Player2 || playerID == EPlayerID::RobotDestroyer)  // Tile has owner. Enemy player called.
-    {
+        if (state == Growing || state == Growing2 || state == Grown || state == Grown2)
         setState(EState::Burned);
         if (ownerID == EPlayerID::Player1) {
             map->addToPlayer1TilesCount(-1);
@@ -80,6 +43,57 @@ void TileState::changeTileState(EPlayerID playerID) {
             map->addToPlayer2TilesCount(-1);
         }
         ownerID = EPlayerID::None;
+    }
+    else
+    {
+        switch (actionType)
+        {
+        case Planting:
+            ownerID = playerID;
+            if (playerID == EPlayerID::Player1) {
+                setState(EState::Growing);
+                map->addToPlayer1TilesCount(1);
+            }
+            else {
+                setState(EState::Growing2);
+                map->addToPlayer2TilesCount(1);
+            }
+            break;
+        case DestroyingFlower:
+            setState(EState::Burned);
+            if (ownerID == EPlayerID::Player1) {
+                map->addToPlayer1TilesCount(-1);
+            }
+            else if (ownerID == EPlayerID::Player2) {
+                map->addToPlayer2TilesCount(-1);
+            }
+            ownerID = EPlayerID::None;
+            break;
+        case DestroyingOvergrown:
+            setState(EState::Empty);
+            //TODO: add seeds
+            break;
+        case Harvesting:
+            if (playerID == EPlayerID::Player1)
+            {
+                setState(EState::Growing);
+                //TODO: add seeds
+            }
+            else
+            {
+                setState(EState::Growing2);
+                //TODO: add seeds
+            }
+            break;
+        case Watering:
+            if (!watered)
+            {
+                watered = true;
+                timerGrow -= currentGrowTime * 0.5;
+                //TODO: show somehow that tile is watered
+            }
+            break;
+        }
     }
 }
 
@@ -132,3 +146,4 @@ void TileState::water()
         timerGrow -= currentGrowTime * 0.5;
     }
 }
+

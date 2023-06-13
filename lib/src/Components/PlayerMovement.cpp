@@ -295,6 +295,7 @@ void PlayerMovement::update() {
     move();
     checkInput();
     handleSeenTile();
+    handleActionTimer();
 }
 
 void PlayerMovement::setSpeed(float newSpeed)
@@ -319,7 +320,7 @@ void PlayerMovement::checkInput(){
     switch(ID){
         case Player1:
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS){
-                frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+                startAction(frontCollider->getTileColliderIAmOn()->getTileState());
             }
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
                 for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
@@ -344,7 +345,7 @@ void PlayerMovement::checkInput(){
                 {
                     if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
                     {
-                        frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+                        startAction(frontCollider->getTileColliderIAmOn()->getTileState());
                     }
 
                     if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
@@ -372,7 +373,7 @@ void PlayerMovement::checkInput(){
             break;
         case Player2:
             if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
-                frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+                startAction(frontCollider->getTileColliderIAmOn()->getTileState());
             }
             if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
                 for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
@@ -395,7 +396,7 @@ void PlayerMovement::checkInput(){
                 {
                     if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
                     {
-                        frontCollider->getTileColliderIAmOn()->getTileState()->changeTileState(ID);
+                        startAction(frontCollider->getTileColliderIAmOn()->getTileState());
                     }
 
                     if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
@@ -423,24 +424,148 @@ void PlayerMovement::checkInput(){
 }
 
 void PlayerMovement::handleSeenTile(){
-    if(lastSeenTile == nullptr){
-        lastSeenTile = frontCollider->getTileColliderIAmOn();
-        if(lastSeenTile == nullptr)
-            return;
+    if (!isTimerSet)
+    {
+        if (lastSeenTile == nullptr) {
+            lastSeenTile = frontCollider->getTileColliderIAmOn();
+            if (lastSeenTile == nullptr)
+                return;
 
-        lastSeenTile->getParent()->switchShader();
-    }
-    else if(lastSeenTile != frontCollider->getTileColliderIAmOn()) {
-        lastSeenTile->getParent()->switchShader();
-        lastSeenTile = frontCollider->getTileColliderIAmOn();
-        if(lastSeenTile != nullptr)
             lastSeenTile->getParent()->switchShader();
+        }
+        else if (lastSeenTile != frontCollider->getTileColliderIAmOn()) {
+            lastSeenTile->getParent()->switchShader();
+            lastSeenTile = frontCollider->getTileColliderIAmOn();
+            if (lastSeenTile != nullptr)
+                lastSeenTile->getParent()->switchShader();
+        }
+    }
+}
+
+void PlayerMovement::handleActionTimer()
+{
+    actionTimer -= timeManager->getDeltaTime120FPS();
+    if (isTimerSet && actionTimer <= 0)
+    {
+        actionTile->changeTileState(ID, currentAction);
+        cancelAction(actionTile);
+
     }
 }
 
 void PlayerMovement::resetSeenTile(){
 
     lastSeenTile->getParent()->switchShader();
+}
+
+void PlayerMovement::startAction(TileState* tile)
+{
+    if (currentAction == EActionType::Idle || currentAction == EActionType::Moving)
+    {
+        EActionType action;
+        EState state = tile->state;
+        switch (state)
+        {
+        case Empty:
+            if (rival->actionTile == tile) return;
+            action = Planting;
+            break;
+        case Growing:
+            if (ID == Player1)
+            {
+                if (rival->actionTile == tile) return;
+                if (tool->getType() == WateringCan)
+                    action = Watering;
+                else return;
+            }
+            else
+            {
+                rival->cancelAction(tile);
+                action = DestroyingFlower;
+            }
+            break;
+        case Growing2:
+            if (ID == Player2)
+            {
+                if (rival->actionTile == tile) return;
+                if (tool->getType() == WateringCan)
+                    action = Watering;
+                else return;
+            }
+            else
+            {
+                rival->cancelAction(tile);
+                action = DestroyingFlower;
+            }
+            break;
+        case Grown:
+            if (ID == Player1)
+            {
+                if (rival->actionTile == tile) return;
+                action = Harvesting;
+            }
+            else { 
+                rival->cancelAction(tile);
+                action = DestroyingFlower; 
+            }
+            break;
+        case Grown2:
+            if (ID == Player2)
+            {
+                if (rival->actionTile == tile) return;
+                action = Harvesting;
+            }
+            else {
+                rival->cancelAction(tile);
+                action = DestroyingFlower;
+            }
+        case Overgrown:
+            if (rival->actionTile == tile) return;
+            action = DestroyingOvergrown;
+            break;
+        case Burned:
+            return;
+        }
+        currentAction = action;
+        actionTile = tile;
+
+        switch (action)
+        {
+        case Planting:
+            actionTimer = currentPlantTime;
+            isTimerSet = true;
+            break;
+        case DestroyingFlower:
+        case DestroyingOvergrown:
+            actionTimer = currentDestroyTime;
+            isTimerSet = true;
+            break;
+        case Harvesting:
+            actionTimer = currentHarvestTime;
+            isTimerSet = true;
+            break;
+        case Watering:
+            actionTimer = currentWaterTime;
+            isTimerSet = true;
+            break;
+        }
+    }
+}
+
+void PlayerMovement::cancelAction(TileState* tile)
+{
+    if (tile == actionTile)
+    {
+        currentAction = EActionType::Idle;
+        actionTimer = 0;
+        isTimerSet = false;
+        actionTile = nullptr;
+    }
+}
+
+void PlayerMovement::setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement)
+{
+    this->rival = rivalPlayerMovement;
 }
 
 void PlayerMovement::reactToPunch(Entity* punchedParent)

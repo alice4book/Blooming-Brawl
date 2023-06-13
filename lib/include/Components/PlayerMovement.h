@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "PlayerIDType.h"
+#include "ActionType.h"
 #include "GLFW/glfw3.h"
 #include "glm/vec3.hpp"
 
@@ -14,6 +15,7 @@ class StaticColliderComponent;
 class PickUp;
 class Player;
 class RobotMovement;
+class TileState;
 
 class PlayerMovement : public Component {
 private:
@@ -30,6 +32,7 @@ private:
 	EPlayerID ID;
 	Entity* rivalParent;
 	Entity* robot;
+	PlayerMovement* rival;
 
 	int axisCount;
 	const float* axes;
@@ -40,6 +43,24 @@ private:
 	int axisCount2;
 	const float* axes2;
 
+	//timers
+	float actionTimer = 0;
+	bool isTimerSet = false;
+	TileState* actionTile;
+	EActionType currentAction = Idle;
+
+	float currentPlantTime = 1;
+	float currentDestroyTime = 1;
+	float currentHitTime = 1;
+	float currentWaterTime = 1;
+	float currentHarvestTime = 1;
+
+	float defaultPlantTime = 1;
+	float defaultDestroyTime = 1;
+	float defaultHitTime = 1;
+	float defaultWaterTime = 1;
+	float defaultHarvestTime = 1;
+
     void move();
     void checkInput();
 
@@ -47,6 +68,7 @@ private:
 
 	void reactToPunchRobot();
     void handleSeenTile();
+	void handleActionTimer();
 
 public:
 	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
@@ -55,4 +77,7 @@ public:
 	float getSpeed();
 	void dropTool();
 	void resetSeenTile();
+	void startAction(TileState* tile);
+	void cancelAction(TileState* tile);
+	void setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement);
 };

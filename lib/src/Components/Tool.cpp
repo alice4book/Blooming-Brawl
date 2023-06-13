@@ -37,6 +37,11 @@ void Tool::update() {
 	}
 }
 
+EToolType Tool::getType()
+{
+	return toolType;
+}
+
 bool Tool::isRestarting() {
 	return restarting;
 }
@@ -47,7 +52,7 @@ bool Tool::isPickedUp() {
 	}
 	return true;
 }
-Tool::Tool(Entity* parent) : Component(parent) {
+Tool::Tool(Entity* parent, EToolType toolType) : Component(parent), toolType(toolType) {
 	player = None;
 	timermax = 0;
 	timer = 0;

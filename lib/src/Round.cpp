@@ -68,6 +68,10 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
         player2ColliderFront, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
     player2->addComponent((Component*)playerMovement2);
     
+    playerMovement->setRivalPlayerMovement(playerMovement2);
+    playerMovement2->setRivalPlayerMovement(playerMovement);
+    robotmovement->setPlayers(playerMovement, playerMovement2);
+
     player1->transform->setLocalPosition(map->getPlayer2Cord());
     player2->transform->setLocalPosition(map->getPlayer1Cord());
     robot->transform->setLocalPosition(map->getRobotCord());
@@ -75,12 +79,12 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     allTools[0] = new Entity("res/models/lopata.obj", directionalShader);
     DynamicColliderComponent* tool1_collision = new DynamicColliderComponent(allTools[0], 0.05f, true);
     allTools[0]->addComponent((Component*)tool1_collision);
-    allTools[0]->addComponent(new Tool(allTools[0]));
+    allTools[0]->addComponent(new Tool(allTools[0], EToolType::Hoe));
 
     allTools[1] = new Entity("res/models/motyka.obj", directionalShader);
     DynamicColliderComponent* tool2_collision = new DynamicColliderComponent(allTools[1], 0.05f, true);
     allTools[1]->addComponent((Component*)tool2_collision);
-    allTools[1]->addComponent(new Tool(allTools[1]));
+    allTools[1]->addComponent(new Tool(allTools[1], EToolType::Shovel));
     
     mapManager->addChild(allTools[0]);
     mapManager->addChild(allTools[1]);

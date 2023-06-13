@@ -1,6 +1,7 @@
 #include "Component.h"
 #include "glm/glm.hpp"
 #include "PlayerIDType.h"
+#include "ToolType.h"
 
 class Entity;
 class Transform;
@@ -13,9 +14,10 @@ private:
 	float timer;
 	float timermax;
 	TimeManager* manager;
+	EToolType toolType;
 
 public:
-	Tool(Entity* parent);
+	Tool(Entity* parent, EToolType toolType);
 	bool isRestarting();
 	bool isSpawned();
 	void resetSpawn();
@@ -23,5 +25,6 @@ public:
 	void PickedUp(EPlayerID p, Transform*  t = nullptr);
 	bool isPickedUp();
 	void update() override;
+	EToolType getType();
 };
 

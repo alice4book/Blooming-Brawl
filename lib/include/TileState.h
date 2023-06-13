@@ -1,6 +1,7 @@
 #pragma once
 #include "Enums/PlayerIDType.h"
 #include "Enums/TileStateType.h"
+#include "Enums/ActionType.h"
 #include "Component.h"
 #include "glm/vec2.hpp"
 #include "Node.h"
@@ -22,6 +23,9 @@ private:
     float defaultGrowTime = 8;
     float defaultBurnTime = 6;
     float watered = false;
+    bool isActionPlayer1 = false; 
+    bool isActionPlayer2 = false;
+
 public:
     EState state = EState::Empty;
     glm::vec2 mapPosition;
@@ -32,7 +36,7 @@ public:
     TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map);
     void attachToTimeManager();
     void setState(EState newState);
-    void changeTileState(EPlayerID playerID);
+    void changeTileState(EPlayerID playerID, EActionType actionType);
     EPlayerID getOwner();
     void update() override;
     void setTimerGrow();
