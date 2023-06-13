@@ -49,17 +49,17 @@ private:
 	TileState* actionTile;
 	EActionType currentAction = Idle;
 
-	float currentPlantTime = 1;
-	float currentDestroyTime = 1;
-	float currentHitTime = 1;
-	float currentWaterTime = 1;
-	float currentHarvestTime = 1;
+	float currentPlantTime = 0.4;
+	float currentDestroyTime = 0.4;
+	float currentHitTime = 0.4;
+	float currentWaterTime = 0.4;
+	float currentHarvestTime = 0.4;
 
-	float defaultPlantTime = 1;
-	float defaultDestroyTime = 1;
-	float defaultHitTime = 1;
-	float defaultWaterTime = 1;
-	float defaultHarvestTime = 1;
+	float defaultPlantTime = 0.4;
+	float defaultDestroyTime = 0.4;
+	float defaultHitTime = 0.4;
+	float defaultWaterTime = 0.4;
+	float defaultHarvestTime = 0.4;
 
     void move();
     void checkInput();

@@ -474,7 +474,7 @@ void PlayerMovement::startAction(TileState* tile)
             if (ID == Player1)
             {
                 if (rival->actionTile == tile) return;
-                if (tool->getType() == WateringCan)
+                if (tool != nullptr && tool->getType() == WateringCan)
                     action = Watering;
                 else return;
             }
@@ -488,7 +488,7 @@ void PlayerMovement::startAction(TileState* tile)
             if (ID == Player2)
             {
                 if (rival->actionTile == tile) return;
-                if (tool->getType() == WateringCan)
+                if (tool != nullptr && tool->getType() == WateringCan)
                     action = Watering;
                 else return;
             }
