@@ -1,5 +1,6 @@
 #include "Clock.h"
 #include "TimeManager.h"
+#include "HUD.h"
 
 Clock::Clock(Entity* parent) : Component(parent)
 {
@@ -9,7 +10,7 @@ Clock::Clock(Entity* parent) : Component(parent)
 
 void Clock::update()
 {
-	if (seconds < 0) {
+	if (seconds <= 0) {
 		stopClock();
 		return;
 	}
@@ -25,6 +26,10 @@ void Clock::startClock(int seconds)
 void Clock::stopClock()
 {
 	timeManager->detach(this);
+	HUD* hud = dynamic_cast<HUD*>(parent);
+	if (hud != nullptr)
+		hud->nextMap();
+
 }
 
 int Clock::getSeconds()

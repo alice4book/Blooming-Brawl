@@ -46,10 +46,14 @@ void DynamicColliderComponent::checkAllCollisions(){
         int row = (int)(tileImOnPosition.y / 0.254f);
 
         for(int columnCounter = column - 1 ; columnCounter <= column + 1; columnCounter++){
-            if(columnCounter < 0 || columnCounter >= 10)
+            if(world->mapComponent->colliders.size() <= columnCounter || 
+                world->mapComponent->colliders.size() == 0 || 
+                columnCounter < 0 || columnCounter >= 10)
                 continue;
             for(int rowCounter = row - 1; rowCounter <= row + 1; rowCounter++){
-                if(rowCounter < 0 || rowCounter >= 20)
+                if(world->mapComponent->colliders[columnCounter].size() <= rowCounter ||
+                    world->mapComponent->colliders[columnCounter].size() == 0 ||
+                    rowCounter < 0 || rowCounter >= 20)
                     continue;
                 StaticColliderComponent* statComp = world->mapComponent->colliders[columnCounter][rowCounter];
                 if (statComp) {
@@ -190,6 +194,11 @@ const std::vector<StaticColliderComponent *> &DynamicColliderComponent::getTouch
 
 const std::vector<DynamicColliderComponent *> &DynamicColliderComponent::getTouchingDynamicComponents() const {
     return touchingDynamicComponents;
+}
+
+void DynamicColliderComponent::resetTileIAmOn()
+{
+    tileIAmOn = nullptr;
 }
 
 void DynamicColliderComponent::setTileColliderIAmOn() {

@@ -55,4 +55,6 @@ public:
 
 	void wonder();
 	void setPlayers(PlayerMovement* player1, PlayerMovement* player2);
+	void clearPath();
+	void setPathFinding(PathFinding& newPathFinding);
 };

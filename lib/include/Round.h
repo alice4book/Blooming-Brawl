@@ -14,18 +14,22 @@ class HUD;
 
 class Round {
 private:
-	World* skybox;
+	Entity* round;
 
-	Entity* mapManager;
+	Map* maps[5];
+	Entity* mapManagers[5];
+
+	Map* currentMap;
+	Entity* currentMapManager;
+
 	Entity* player1;
 	Entity* player2;
 	Entity* robot;
 	Entity* allTools[2];
 
-	Map* map;
-
 	HUD* hud;
 
+	int roundTime;
 	float TILE_SIZE = 0.254f;
 public:
 	Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,

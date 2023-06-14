@@ -296,6 +296,17 @@ void RobotMovement::setPlayers(PlayerMovement* player1, PlayerMovement* player2)
 	this->player2 = player2;
 }
 
+void RobotMovement::clearPath()
+{
+	std::queue<glm::vec2> emptyQueue;
+	newPositions.swap(emptyQueue);
+}
+
+void RobotMovement::setPathFinding(PathFinding& newPathFinding)
+{
+	pathFinding = newPathFinding;
+}
+
 
 void RobotMovement::checkIfClosest(int i, int j, glm::vec2 currentPos, Map* map, int& closestDistance, Node*& closestNode, bool& firstFound, EPlayerID playerID)
 {

@@ -258,13 +258,14 @@ int main()
     Audio audioBackground(round.getRobot());
     audioBackground.playMusic("res/audio/x.wav", true);
 #pragma endregion
-    
+    int currentRound = 0;
     // render loop
     while (!glfwWindowShouldClose(window))
     {
-        if (roundNr == 2) {
-            round.changeRound(2);
-            roundNr = 3;
+
+        if (currentRound < 4 && currentRound != hud.currentMap()) {
+            round.changeRound(hud.currentMap());
+            currentRound = hud.currentMap();
         }
         // input
         processInput(window);

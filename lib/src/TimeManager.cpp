@@ -110,6 +110,10 @@ void TimeManager::detach(Component *observer) {
             std::remove_if(listObserver2FPS.begin(), listObserver2FPS.end(),
                            [&observer](const Component* o) { return o == observer; }),
             listObserver2FPS.end());
+    listObserver1FPS.erase(
+            std::remove_if(listObserver1FPS.begin(), listObserver1FPS.end(),
+                           [&observer](const Component* o) { return o == observer; }),
+            listObserver1FPS.end());
 }
 
 float TimeManager::getDeltaTimeUnlimitedFPS() const {

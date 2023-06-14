@@ -34,7 +34,6 @@ public:
     void setCenterOffset(glm::vec2 newCenterOffset);
 
     [[nodiscard]] glm::vec2 getCenter() const;
-    void setCenter(glm::vec2 newCenter);
 
     [[nodiscard]] float getRadius() const;
     void setRadius(float newRadius);
@@ -42,6 +41,8 @@ public:
     StaticColliderComponent* getTileColliderIAmOn();
     
     bool enabled = true;
+
+    void resetTileIAmOn();
 private:
     void setTileColliderIAmOn();
 

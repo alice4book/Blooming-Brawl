@@ -43,6 +43,8 @@ HUD::HUD(Shader* shader, Shader* textShader)
 	this->addChild(bar2);
 
     hideHUD = false;
+
+	mapNr = 0;
 }
 
 void HUD::barSize(int player1, int player2)
@@ -76,15 +78,17 @@ void HUD::renderEntity() {
 	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
 }
 
+void HUD::nextMap()
+{
+	if(mapNr < 5)
+		mapNr++;
+}
+
+int HUD::currentMap()
+{
+	return mapNr;
+}
+
 void HUD::setHideHud(bool newHideHud) {
     hideHUD = newHideHud;
-}
-
-
-void HUD::startTimer() {
-	//timerManager->attach(this);
-}
-
-void HUD::stopTimer() {
-
 }

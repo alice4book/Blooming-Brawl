@@ -35,6 +35,8 @@ private:
 	int player1Tiles;
 	int player2Tiles;
 
+	int mapNr;
+
     bool hideHUD;
 
 public:
@@ -42,11 +44,6 @@ public:
 
     void setHideHud(bool newHideHud);
 
-	void startTimer();
-
-	void stopTimer();
-
-public:
 	HUD(Shader* shader, Shader* textShader);
 
 	//Size bars acording to score
@@ -57,4 +54,8 @@ public:
 	void setResize(float newResizeX, float newResizeY);
 
 	void renderEntity();
+
+	int currentMap();
+
+	void nextMap();
 };

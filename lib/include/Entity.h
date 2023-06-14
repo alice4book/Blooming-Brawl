@@ -69,12 +69,11 @@ public:
 template<typename T>
 bool Entity::getComponentsByType(std::vector<T*>* compType) {
     bool isEmpty = false;
+    if (compType == nullptr)
+        return false;
     for (Component* comp : components) {
         if (dynamic_cast<T*>(comp) != nullptr) {
             isEmpty = true;
-
-            if (compType == nullptr)
-                break;
 
             compType->push_back((T*) comp);
         }

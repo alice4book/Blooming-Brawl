@@ -47,8 +47,6 @@ void Map::GenerateMap(int mapNr)
 	robotCord = glm::vec3(0.0f);
 	colliders.clear();
 	nrOfTiles = 0;
-	auto world = World::getInstance();
-	world->clearStaticColliders();
 	
 	if (mapNr == -1)
 	{
@@ -262,17 +260,14 @@ Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSiz
 	parent->addChild(wrap);
 
 	LoadMapsFromFiles(mapFiles);
-	GenerateMap(firstMap);
 
-    auto world = World::getInstance();
-    world->mapComponent = this;
 	player1TilesCount = 0;
 	player2TilesCount = 0;
 }
 
 void Map::ChangeMap(int mapIndex)
 {
-
+	/*
 	for (int i = 0; i < MAX_ROWS; i++) {
 		for (int j = 0; j < MAX_COLUMNS; j++) {
 			if(allTiles[i][j] != nullptr)
@@ -287,6 +282,7 @@ void Map::ChangeMap(int mapIndex)
 		hud->setTilesCount(emptyTiles);
 		hud->barSize(player1TilesCount, player2TilesCount);
 	}
+	*/
 }
 
 int Map::getTilesCount()
@@ -309,8 +305,10 @@ void Map::addToPlayer2TilesCount(int p2)
 void Map::addHud(HUD* hud)
 {
 	this->hud = hud;
-	if(hud != nullptr)
+	if(hud != nullptr){
 		hud->setTilesCount(emptyTiles);
+		hud->barSize(player1TilesCount, player2TilesCount);
+	}
 }
 
 std::vector<TileState*> Map::getPlayerTiles(EPlayerID playerID)

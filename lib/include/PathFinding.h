@@ -11,6 +11,7 @@ private:
 	Node *startNode, *goalNode;
 	int getNeighbourDistance(Node* node1, Node* node2);
 	std::vector<Node*> calculatePath();
+	
 public:
 	Map* map;
 	PathFinding(Map* map);

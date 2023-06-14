@@ -15,18 +15,34 @@
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
     Shader* pickupShader, Shader* highlightShader, HUD* hud)
 {
-	skybox = World::getInstance();
+    roundTime = 120;
+
+	auto skybox = World::getInstance();
     
+    round = new Entity();
+    skybox->addChild(round);
+
     this->hud = hud;
 
-    mapManager = new Entity(directionalShader);
-    map = new Map(mapManager, tileModels, mapFiles, TILE_SIZE, pickupShader, highlightShader, 0);
-    mapManager->addComponent((Component*)map);
-    skybox->addChild(mapManager);
+    for (int i = 0; i < 5; i++) {
+        mapManagers[i] = new Entity(directionalShader);
+        maps[i] = new Map(mapManagers[i], tileModels, mapFiles, TILE_SIZE, pickupShader, highlightShader, i);
+        mapManagers[i]->addComponent(maps[i]);
+        maps[i]->GenerateMap(i);
+    }
 
-    hud->addComponent(new Clock(hud));
-    mapManager->addChild(hud);
-    map->addHud(hud);
+    currentMap = maps[0];
+    currentMapManager = mapManagers[0];
+    skybox->mapComponent = currentMap;
+
+    this->hud->clock = new Clock(hud);
+    this->hud->addComponent(hud->clock);
+    this->hud->clock->startClock(roundTime);
+    skybox->addChild(hud);
+    currentMap->addHud(hud);
+    skybox->mapComponent = currentMap;
+
+    round->addChild(currentMapManager);
 
     robot = new Entity("res/models/robot.obj", directionalShader);
     skybox->addChild(robot);
@@ -36,8 +52,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robot->addComponent((Component*)robotCollider);
     DynamicColliderComponent* robotColliderFront = new DynamicColliderComponent(robot, 0.1f, true, { 0.01f, 0.0f });
     robot->addComponent((Component*)robotColliderFront);
-    PathFinding pathFinding((Map*)map);
-    
+    PathFinding pathFinding((Map*)currentMap);
     RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.2f, 
         pathFinding, this->TILE_SIZE, { 0,0,1 });
     robot->addComponent((Component*)robotmovement);
@@ -72,9 +87,9 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     playerMovement2->setRivalPlayerMovement(playerMovement);
     robotmovement->setPlayers(playerMovement, playerMovement2);
 
-    player1->transform->setLocalPosition(map->getPlayer2Cord());
-    player2->transform->setLocalPosition(map->getPlayer1Cord());
-    robot->transform->setLocalPosition(map->getRobotCord());
+    player1->transform->setLocalPosition(currentMap->getPlayer2Cord());
+    player2->transform->setLocalPosition(currentMap->getPlayer1Cord());
+    robot->transform->setLocalPosition(currentMap->getRobotCord());
 
     allTools[0] = new Entity("res/models/lopata.obj", directionalShader);
     DynamicColliderComponent* tool1_collision = new DynamicColliderComponent(allTools[0], 0.05f, true);
@@ -86,13 +101,13 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     allTools[1]->addComponent((Component*)tool2_collision);
     allTools[1]->addComponent(new Tool(allTools[1], EToolType::Shovel));
     
-    mapManager->addChild(allTools[0]);
-    mapManager->addChild(allTools[1]);
+    skybox->addChild(allTools[0]);
+    skybox->addChild(allTools[1]);
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
     toolstab.push_back(allTools[1]);
-    std::vector<glm::vec3> toolscord = map->getToolsCord();
+    std::vector<glm::vec3> toolscord = currentMap->getToolsCord();
     for (int i = 0; i < toolscord.size(); i++) {
         toolNr = std::rand() % toolstab.size();
         std::vector<Tool*> vectorTool;
@@ -101,17 +116,22 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
         toolstab[toolNr]->transform->setLocalPosition(toolscord[i]);
         toolstab.erase(toolstab.begin() + toolNr);
     }
-    hud->clock = new Clock(hud);
-    hud->clock->startClock(120);
 }
 
-void Round::changeRound(int roundNr)
+void Round::changeRound(int mapNr)
 {
-    map->ChangeMap(2);
+    round->clearChildren();
+    currentMap = maps[mapNr];
+    currentMap->addHud(hud);
+    currentMapManager = mapManagers[mapNr];
+    round->addChild(currentMapManager);
 
-    robot->transform->setLocalPosition(map->getRobotCord());
+    robot->transform->setLocalPosition(currentMap->getRobotCord());
     std::vector<RobotMovement*> robotMovment;
     robot->getComponentsByType(&robotMovment);
+    PathFinding pathFinding((Map*)currentMap);
+    robotMovment[0]->setPathFinding(pathFinding);
+    robotMovment[0]->clearPath();
     robotMovment[0]->findClosestNode();
 
     std::vector<PlayerMovement*> playerMovment;
@@ -119,18 +139,18 @@ void Round::changeRound(int roundNr)
     player1->getComponentsByType(&playerMovment);
     playerMovment[0]->dropTool();
     playerMovment[0]->resetSeenTile();
-    player1->transform->setLocalPosition(map->getPlayer2Cord());
+    player1->transform->setLocalPosition(currentMap->getPlayer1Cord());
 
     player2->getComponentsByType(&playerMovment);
     playerMovment[1]->dropTool();
     playerMovment[1]->resetSeenTile();
-    player2->transform->setLocalPosition(map->getPlayer1Cord());
+    player2->transform->setLocalPosition(currentMap->getPlayer2Cord());
     
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
     toolstab.push_back(allTools[1]);
-    std::vector<glm::vec3> toolscord = map->getToolsCord();
+    std::vector<glm::vec3> toolscord = currentMap->getToolsCord();
     for (int i = 0; i < toolscord.size(); i++) {
         toolNr = std::rand() % toolstab.size();
         std::vector<Tool*> vectorTool;
@@ -140,8 +160,10 @@ void Round::changeRound(int roundNr)
         toolstab.erase(toolstab.begin() + toolNr);
     }
 
-    hud->clock = new Clock(hud);
-    hud->clock->startClock(120);
+    auto skybox = World::getInstance();
+    skybox->mapComponent = currentMap;
+    skybox->clearReloadLists();
+    hud->clock->startClock(roundTime);
 }
 
 Entity* Round::getPlayer1()
@@ -161,12 +183,12 @@ Entity* Round::getRobot()
 
 Entity* Round::getMapManager()
 {
-    return mapManager;
+    return currentMapManager;
 }
 
 Map* Round::getMap()
 {
-    return map;
+    return currentMap;
 }
 
 Entity** Round::getTools()

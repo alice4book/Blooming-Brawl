@@ -469,8 +469,8 @@ void PlayerMovement::handleActionTimer()
 }
 
 void PlayerMovement::resetSeenTile(){
-
-    lastSeenTile->getParent()->switchShader();
+    if (lastSeenTile)
+        lastSeenTile->getParent()->switchShader();
 }
 
 void PlayerMovement::startAction(TileState* tile)
