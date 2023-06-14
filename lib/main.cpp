@@ -239,10 +239,10 @@ int main()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     float near_plane = 1.0f, far_plane = 100.0f;
-    glm::mat4 orthogonalProjection = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, near_plane, far_plane);
-    glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 2.0f, -1.0f),
-                                    glm::vec3(0.0f, 0.0f, 0.0f),
-                                       glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 orthogonalProjection = glm::ortho(-7.0f, 7.0f, -7.0f, 7.0f, near_plane, far_plane);
+    glm::mat4 lightView = glm::lookAt(glm::vec3(-1.0f, 2.0f, -1.0f), //eye
+                                    glm::vec3(0.0f, 0.0f, 0.0f), //center
+                                       glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
     glm::mat4 lightProjection = orthogonalProjection * lightView;
 
     //glEnable(GL_FRAMEBUFFER_SRGB);
