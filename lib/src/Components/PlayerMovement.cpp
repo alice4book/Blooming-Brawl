@@ -138,7 +138,7 @@ void PlayerMovement::move()
                     forward = glm::vec3{ forward.x,0,forward.z };
                     forward = glm::normalize(forward);
                     transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
-                    std::cout << forward.x << " " << forward.z << std::endl;
+                    //std::cout << forward.x << " " << forward.z << std::endl;
                     if (previousForward != forward) {
                         //w miare plynny obrot
                         float angle = atan2(setForward.x * forward.z - forward.x * setForward.z, forward.x * forward.z + setForward.x * setForward.z) * (180.0 / M_PI);
@@ -296,6 +296,15 @@ void PlayerMovement::update() {
     checkInput();
     handleSeenTile();
     handleActionTimer();
+    if(rivalPunched && rivalPunchTimer < punchTime) {
+        updateRivalAfterPunch(punchedDistance);
+    }
+    else if (rivalPunchTimer >= punchTime) {
+        rivalPunched = false;
+        std::vector<PlayerMovement*> playerMovement;
+        rivalParent->getComponentsByType(&playerMovement);
+        playerMovement[0]->setSpeed(1.0f);
+    }
 }
 
 void PlayerMovement::setSpeed(float newSpeed)
@@ -570,21 +579,34 @@ void PlayerMovement::setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement)
 
 void PlayerMovement::reactToPunch(Entity* punchedParent)
 {
-    //std::vector<Tool*> tools;
+    rivalPunched = true;
+    rivalPunchTimer = 0.0f;
+
     std::vector<PlayerMovement*> playerMovement;
     punchedParent->getComponentsByType(&playerMovement);
     playerMovement[0]->dropTool();
-    float prevSpeed = playerMovement[0]->getSpeed();
-    //playerMovement[0]->setSpeed(0);
+
+    //float prevSpeed = playerMovement[0]->getSpeed();
+    playerMovement[0]->setSpeed(0);
+
     glm::vec3 rivalPosition = rivalParent->transform->getGlobalPosition();
     glm::vec3 myPosition = parent->transform->getGlobalPosition();
     glm::vec3 difference = rivalPosition - myPosition;
     difference = glm::normalize(difference);
-    glm::vec3 actualDifference = glm::vec3{ 3,0,3 } * difference;
-    //std::cout << actualDifference.x << std::endl;
-    rivalParent->transform->setLocalPosition(rivalPosition + (actualDifference *(speed * timeManager->getDeltaTime120FPS())));
-    //tool[0]->PickedUp(None, rivalParent->transform);
-    //playerMovement[0]->setSpeed(prevSpeed);
+    glm::vec3 actualDifference = glm::vec3{ 3,0,3 } *difference;
+    //std::cout << actualDifference.x << " " << actualDifference.z << std::endl;
+
+    actualDifference.x = actualDifference.x / (punchTime / (timeManager->getDeltaTime120FPS()));
+    actualDifference.z = actualDifference.z / (punchTime / (timeManager->getDeltaTime120FPS()));
+
+    punchedDistance = actualDifference;
+
+}
+
+void PlayerMovement::updateRivalAfterPunch(glm::vec3 distance) {
+
+    rivalParent->transform->addToLocalPosition(distance * timeManager->getDeltaTime120FPS());
+    rivalPunchTimer += timeManager->getDeltaTime120FPS();
 }
 
 void PlayerMovement::reactToPunchRobot()
