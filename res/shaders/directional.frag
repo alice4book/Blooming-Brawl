@@ -55,7 +55,7 @@ void main()
 		float currentDepth = lightCoords.z;
 		float bias = 0.0005f;
 		if (currentDepth > closestDepth+bias)
-			shadow += 1.0f;
+			shadow += 0.5f;
 		
 		
 		/*
