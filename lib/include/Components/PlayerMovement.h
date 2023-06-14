@@ -43,10 +43,15 @@ private:
 	int axisCount2;
 	const float* axes2;
 
+	//punching
 	bool rivalPunched = false;
 	float rivalPunchTimer = 0.0f;
-	float punchTime = 0.2f;
-	glm::vec3 punchedDistance;
+	float rivalPunchTime = 0.2f;
+	glm::vec3 rivalPunchedDistance;
+	bool robotPunched = false;
+	float robotPunchTimer = 0.0f;
+	float robotPunchTime = 0.2f;
+	glm::vec3 robotPunchedDistance = glm::vec3(0.1,0,0.1);
 
 	//timers
 	float actionTimer = 0;
@@ -72,6 +77,8 @@ private:
 	void reactToPunch(Entity* punchedParent);
 
 	void updateRivalAfterPunch(glm::vec3 distance);
+
+	void updateRobotAfterPunch(glm::vec3 distance);
 
 	void reactToPunchRobot();
     void handleSeenTile();

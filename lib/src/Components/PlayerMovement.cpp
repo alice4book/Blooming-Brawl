@@ -296,14 +296,20 @@ void PlayerMovement::update() {
     checkInput();
     handleSeenTile();
     handleActionTimer();
-    if(rivalPunched && rivalPunchTimer < punchTime) {
-        updateRivalAfterPunch(punchedDistance);
+    if(rivalPunched && rivalPunchTimer < rivalPunchTime) {
+        updateRivalAfterPunch(rivalPunchedDistance);
     }
-    else if (rivalPunchTimer >= punchTime) {
+    else if (rivalPunchTimer >= rivalPunchTime) {
         rivalPunched = false;
         std::vector<PlayerMovement*> playerMovement;
         rivalParent->getComponentsByType(&playerMovement);
         playerMovement[0]->setSpeed(1.0f);
+    }
+    if (robotPunched && robotPunchTimer < robotPunchTime) {
+        updateRobotAfterPunch(robotPunchedDistance);
+    }
+    else if (robotPunchTimer >= robotPunchTime) {
+        robotPunched = false;
     }
 }
 
@@ -596,10 +602,10 @@ void PlayerMovement::reactToPunch(Entity* punchedParent)
     glm::vec3 actualDifference = glm::vec3{ 3,0,3 } *difference;
     //std::cout << actualDifference.x << " " << actualDifference.z << std::endl;
 
-    actualDifference.x = actualDifference.x / (punchTime / (timeManager->getDeltaTime120FPS()));
-    actualDifference.z = actualDifference.z / (punchTime / (timeManager->getDeltaTime120FPS()));
+    actualDifference.x = actualDifference.x / (rivalPunchTime / (timeManager->getDeltaTime120FPS()));
+    actualDifference.z = actualDifference.z / (rivalPunchTime / (timeManager->getDeltaTime120FPS()));
 
-    punchedDistance = actualDifference;
+    rivalPunchedDistance = actualDifference;
 
 }
 
@@ -609,18 +615,27 @@ void PlayerMovement::updateRivalAfterPunch(glm::vec3 distance) {
     rivalPunchTimer += timeManager->getDeltaTime120FPS();
 }
 
+void PlayerMovement::updateRobotAfterPunch(glm::vec3 distance) {
+
+    robot->transform->addToLocalPosition(distance * timeManager->getDeltaTime120FPS());
+    robotPunchTimer += timeManager->getDeltaTime120FPS();
+}
+
 void PlayerMovement::reactToPunchRobot()
 {
+    robotPunched = true;
+    robotPunchTimer = 0.0f;
+
     std::vector<RobotMovement*> robotMovement;
     robot->getComponentsByType(&robotMovement);
     glm::vec3 rivalPosition = robot->transform->getGlobalPosition();
     glm::vec3 myPosition = parent->transform->getGlobalPosition();
     glm::vec3 difference = rivalPosition - myPosition;
     difference = glm::normalize(difference);
-    //std::cout << difference.x << " " << difference.y << " " << difference.z << std::endl;
     glm::vec3 actualDifference = glm::vec3{ 3,0,3 } * difference;
-    robot->transform->setLocalPosition(rivalPosition + (actualDifference * (speed * timeManager->getDeltaTime120FPS())));
-    //robot->transform->addToLocalPosition(actualDifference);
-    robotMovement[0]->findClosestNode(ID);
 
+    actualDifference.x = actualDifference.x / (robotPunchTime / (timeManager->getDeltaTime120FPS()));
+    actualDifference.z = actualDifference.z / (robotPunchTime / (timeManager->getDeltaTime120FPS()));
+
+    robotPunchedDistance = actualDifference;
 }
