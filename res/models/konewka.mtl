@@ -1,0 +1,50 @@
+# Blender 3.5.1 MTL File: 'wybuchy.blend'
+# www.blender.org
+
+newmtl chwyt
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/konewka/konekwa_chwyt_BaseColor.png
+map_Ns ../textures/konewka/konekwa_chwyt_Roughness.png
+map_refl ../textures/konewka/konekwa_chwyt_Metallic.png
+map_Bump -bm 1.000000 ../textures/konewka/konekwa_chwyt_Normal.png
+
+newmtl deszcz
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/konewka/konekwa_deszcz_BaseColor.png
+map_Ns ../textures/konewka/konekwa_deszcz_Roughness.png
+map_refl ../textures/konewka/konekwa_deszcz_Metallic.png
+map_Bump -bm 1.000000 ../textures/konewka/konekwa_deszcz_Normal.png
+
+newmtl lacznik
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/konewka/konekwa_lacznik_BaseColor.png
+map_Ns ../textures/konewka/konekwa_lacznik_Roughness.png
+map_refl ../textures/konewka/konekwa_lacznik_Metallic.png
+map_Bump -bm 1.000000 ../textures/konewka/konekwa_lacznik_Normal.png
+
+newmtl zbiornik
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/konewka/konekwa_zbiornik_BaseColor.png
+map_Ns ../textures/konewka/konekwa_zbiornik_Roughness.png
+map_refl ../textures/konewka/konekwa_zbiornik_Metallic.png
+map_Bump -bm 1.000000 ../textures/konewka/konekwa_zbiornik_Normal.png
