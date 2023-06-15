@@ -1,4 +1,4 @@
-# Blender 3.5.1 MTL File: 'kwiatek_nowy wstawiony.blend'
+# Blender 3.5.1 MTL File: 'lopata.blend'
 # www.blender.org
 
 newmtl chwyt
@@ -22,17 +22,6 @@ illum 2
 map_Kd ../textures/lopata/lopata_dol_BaseColor.png
 map_Ns ../textures/lopata/lopata_dol_Roughness.png
 map_refl ../textures/lopata/lopata_dol_Metalic.png
-
-newmtl podstawa.004
-Ka 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.520000
-d 1.000000
-illum 2
-map_Kd ../textures/spalony_kwiatek/DUZY_KWIATEK_podstawa_BaseColor.png
-map_Ns ../textures/spalony_kwiatek/DUZY_KWIATEK_podstawa_Roughness.png
-map_refl ../textures/spalony_kwiatek/DUZY_KWIATEK_podstawa_Metalic.png
 
 newmtl trzon
 Ka 1.000000 1.000000 1.000000

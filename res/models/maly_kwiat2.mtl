@@ -1,35 +1,50 @@
-# Blender 3.4.1 MTL File: 'duzy i mlay kwiatek na trawach.blend'
+# Blender 3.5.1 MTL File: 'farma_przenoszenie.blend'
 # www.blender.org
 
-newmtl lsicie_lodyga.003
+newmtl Material.823
 Ka 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 3
-map_Kd ../textures/niebieski kwiatek/kwio_lsicie lodyga_BaseColor.png
-map_Ns ../textures/niebieski kwiatek/kwio_lsicie lodyga_Roughness.png
-map_refl ../textures/niebieski kwiatek/kwio_lsicie lodyga_Metallic.png
+illum 2
+map_Kd ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_Normal.png
 
-newmtl platki.004
+newmtl Material.824
 Ka 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 3
-map_Kd ../textures/niebieski kwiatek/kwio_platki_BaseColor.png
-map_Ns ../textures/niebieski kwiatek/kwio_platki_Roughness.png
-map_refl ../textures/niebieski kwiatek/kwio_platki_Metallic.png
+illum 2
+map_Kd ../textures/duzy_kwiatek2/DUZY_KWIATEK_platki_duze_BaseColor.png
+map_Ns ../textures/duzy_kwiatek2/DUZY_KWIATEK_platki_duze_Roughness.png
+map_refl ../textures/duzy_kwiatek2/DUZY_KWIATEK_platki_duze_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek2/DUZY_KWIATEK_platki_duze_Normal.png
 
-newmtl podstawa.048
+newmtl Material.825
 Ka 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 3
-map_Kd ../textures/niebieski kwiatek/kwio_podstawa_BaseColor.png
-map_Ns ../textures/niebieski kwiatek/kwio_podstawa_Roughness.png
-map_refl ../textures/niebieski kwiatek/kwio_podstawa_Metallic.png
+illum 2
+map_Kd ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek2/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+
+newmtl podstawa.001
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.520000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek2/DUZY_KWIATEK_podstawa_BaseColor.png
+map_Ns ../textures/duzy_kwiatek2/DUZY_KWIATEK_podstawa_Roughness.png
+map_refl ../textures/duzy_kwiatek2/DUZY_KWIATEK_podstawa_Metalic.png

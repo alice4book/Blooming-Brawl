@@ -1,52 +1,86 @@
-# Blender 3.3.1 MTL File: 'None'
+# Blender 3.5.1 MTL File: 'farma_od_nowa.blend'
 # www.blender.org
 
-newmtl Sphere001
-Ns 0.000000
+newmtl kapelusz_dol.002
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 1
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_kapelusz_dol_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_kapelusz_dol_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_kapelusz_dol_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_kapelusz_dol_Normal.png
 
-newmtl okoo
-Ns 0.000000
+newmtl kapelusz_gora.002
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 1
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_kapelusz_gora_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_kapelusz_gora_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_kapelusz_gora_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_kapelusz_gora_Normal.png
 
-newmtl okoo3_1
-Ns 0.000000
+newmtl nos.002
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 1
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_nos_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_nos_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_nos_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_nos_Normal.png
 
-newmtl okoo_copy1
-Ns 0.000000
+newmtl oczy.003
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 1
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_oczy_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_oczy_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_oczy_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_oczy_Normal.png
 
-newmtl wire_086086086
-Ns 0.000000
+newmtl tlow.002
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 1
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_tlow_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_tlow_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_tlow_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_tlow_Normal.png
+
+newmtl twarz.002
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_twarz_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_twarz_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_twarz_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_twarz_Normal.png
+
+newmtl uszy.002
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/farmer/farmerunio_1_uszy_BaseColor.png
+map_Ns ../textures/farmer/farmerunio_1_uszy_Roughness.png
+map_refl ../textures/farmer/farmerunio_1_uszy_Metallic.png
+map_Bump -bm 1.000000 ../textures/farmer/farmerunio_1_uszy_Normal.png
