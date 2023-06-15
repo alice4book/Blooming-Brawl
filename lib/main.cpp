@@ -3,8 +3,6 @@
 #include "stb_image.h"
 #include <iostream>
 #include "imgui.h"
-#include "imgui_impl/imgui_impl_glfw.h"
-#include "imgui_impl/imgui_impl_opengl3.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -12,14 +10,8 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "World.h"
-#include "RobotMovement.h"
 #include "StaticColliderComponent.h"
 #include "DynamicColliderComponent.h"
-#include "PickUp.h"
-#include "Spawner.h"
-
-#include "Player.h"
-#include "PlayerMovement.h"
 
 #include "Model.h"
 #include "Map.h"
@@ -39,12 +31,13 @@
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void processInput(GLFWwindow* window);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void set_window_size_callback(GLFWwindow* window, int x, int y);
 
 // camera
-Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, -75.0f);
+Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, 0);
 float lastX;
 float lastY;
 bool firstMouse = true;
@@ -52,6 +45,8 @@ bool firstMouse = true;
 // timing
 TimeManager* timeManager = TimeManager::getInstance();
 bool click = false;
+
+Menu* menu;
 
 //gamepad
 int axisCount;
@@ -66,9 +61,10 @@ float resizeY = 1.f;
 
 float gamma = 1;
 
-int ChosenButtonMenu = 1;
-
 int roundNr = 1;
+
+bool executeMenu = false;
+bool windowSizeChanged = false;
 
 int main()
 {
@@ -76,7 +72,7 @@ int main()
     if (!glfwInit())
         return 1;
 
-    std::srand(time(NULL));
+    std::srand(time(nullptr));
 
 #pragma region GL_version
 #if __APPLE__
@@ -190,13 +186,20 @@ int main()
 
     Shader hudShader("res/shaders/HUD.vert", "res/shaders/HUD.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
+
     HUD hud(&hudShader, &textShader);
-    //round.getMapManager()->addChild(&hud);
-    //round.getMap()->addHud(&hud);
+    hud.setHideHud(true);
+
+    menu = new Menu(&hudShader, &textShader);
+    skybox->addChild(menu);
+    menu->setResize(resizeX, resizeY);
+    int menuActiveButton;
 
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud);
 
     camera.setCameraPosition(TILE_SIZE, 4.7f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
+
+    glfwSetKeyCallback(window, key_callback);
 #pragma endregion
 
 #pragma region House
@@ -249,49 +252,64 @@ int main()
 
 #pragma endregion
 
-#pragma region Menu
-    Menu menu(&hudShader, &textShader);
-    skybox->addChild(&menu);
-#pragma endregion
-
 #pragma region Audio   
     Audio audioBackground(round.getRobot());
     audioBackground.playMusic("res/audio/x.wav", true);
 #pragma endregion
+
+
     int currentRound = 0;
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        if(windowSizeChanged){
+            windowSizeChanged = false;
+
+            hud.setResize(resizeX, resizeY);
+            menu->setResize(resizeX, resizeY);
+        }
 
         if (currentRound < 4 && currentRound != hud.currentMap()) {
             round.changeRound(hud.currentMap());
             currentRound = hud.currentMap();
         }
-        // input
-        processInput(window);
 
-        switch(ChosenButtonMenu)
-        {
-            case 0:
-                menu.setActiveButton(0);
-                hud.setHideHud(false);
-                hud.setResize(resizeX, resizeY);
-                timeManager->updateTime();
-                camera.setCameraRotation(0,-75.f);
-                break;
-            case 1:
-                menu.setActiveButton(1);
-                hud.setHideHud(true);
-                camera.setCameraRotation(0,0);
-                break;
-            case 2:
-                menu.setActiveButton(2);
-                hud.setHideHud(true);
-                break;
-            default:
-                // WTF how?
-                break;
+        menuActiveButton = menu->getActiveButton();
+
+        // You are in menu and you pressed Enter
+        if(executeMenu) {
+            executeMenu = false;
+
+            switch (menuActiveButton) {
+                case 1:
+                    // start the game
+                    menu->setActiveButton(0);
+                    hud.setHideHud(false);
+                    camera.setCameraRotation(0,-75.f);
+                    glfwSetKeyCallback(window, nullptr);
+                    break;
+                case 2:
+                    // end the game
+                    glfwDestroyWindow(window);
+                    glfwTerminate();
+                    exit(EXIT_SUCCESS);
+                default:
+                    break;
+            }
         }
+
+        // Menu has no button chosen, so it's inactive
+        if(menuActiveButton == 0) {
+            processInput(window);
+            timeManager->updateTime();
+        }
+        else{
+            double x, y;
+            glfwGetCursorPos(window, &x, &y);
+            menu->setCursorPos(x, y);
+            menu->isCursorOnButtons();
+        }
+
 
         glfwPollEvents();
 
@@ -388,11 +406,25 @@ int main()
     glfwTerminate();
 }
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+        menu->arrowInput(1);
+        return;
+    }
+    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
+        menu->arrowInput(-1);
+        return;
+    }
+    if (key == GLFW_KEY_ENTER && action == GLFW_PRESS){
+        executeMenu = true;
+    }
+}
+
 void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    
+
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, timeManager->getDeltaTimeUnlimitedFPS());
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
@@ -413,28 +445,6 @@ void processInput(GLFWwindow* window)
         roundNr = 2;
     }
 
-    if(ChosenButtonMenu == 0)
-        return;
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        ChosenButtonMenu = 1;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        ChosenButtonMenu = 2;
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS){
-        switch(ChosenButtonMenu){
-            case 1:
-                // start the game
-                ChosenButtonMenu = 0;
-                break;
-            case 2:
-                // end the game
-                glfwDestroyWindow(window);
-                glfwTerminate();
-                exit(EXIT_SUCCESS);
-            default:
-                break;
-        }
-    }
     /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
         //std::cout << "Joystick" << std::endl;
@@ -506,10 +516,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
-        double xpos, ypos;
-        //getting cursor position
-        glfwGetCursorPos(window, &xpos, &ypos);
-//        std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
+        if(menu->getActiveButton() != 0 && menu->isCursorOnButtons())
+            executeMenu = true;
     }
 }
 
@@ -526,4 +534,5 @@ void set_window_size_callback(GLFWwindow* window, int x, int y)
     localWindowData->resolutionX = x;
     localWindowData->resolutionY = y;
     glViewport(0, 0, x, y);
+    windowSizeChanged = true;
 }

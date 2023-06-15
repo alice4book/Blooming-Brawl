@@ -8,9 +8,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
-[Bb]uild/
+[Build]
 
-cmake-build-debug/
 .idea/
-/cmake-build-debug-mingw/
-/cmake-build-debug-visual-studio/
+/cmake-*/

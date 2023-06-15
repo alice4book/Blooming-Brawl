@@ -14,11 +14,23 @@ private:
     Model* enabledModel;
     Model* disabledModel;
 
-    Shader* textShader;
     Shader* hudShader;
 
-    Text* score1;
-    Text* score2;
+    Text* startText;
+    Text* exitText;
+
+    float cursorX{}, cursorY{};
+
+    float buttonsRegionLeft{};
+    float buttonsRegionRight{};
+
+    float startRegionTop{};
+    float startRegionBottom{};
+
+    float exitRegionTop{};
+    float exitRegionBottom{};
+
+    float resizeX = 1.f, resizeY = 1.f;
 
     // 0 == no menu
     int activeButton;
@@ -26,9 +38,19 @@ private:
 public:
     Menu(Shader* shader, Shader* textShader);
 
-    void renderEntity();
+    void renderEntity() override;
 
     void setActiveButton(int NewActiveButton);
+
+    void setResize(float newResizeX, float newResizeY);
+
+    void arrowInput(int input);
+
+    [[nodiscard]] int getActiveButton() const;
+
+    void setCursorPos(double x, double y);
+
+    bool isCursorOnButtons();
 };
 
 
