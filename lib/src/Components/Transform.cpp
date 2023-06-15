@@ -31,11 +31,13 @@ glm::mat4 Transform::getLocalModelMatrix()
 void Transform::computeModelMatrix()
 {
     m_modelMatrix = getLocalModelMatrix();
+    m_isDirty = false;
 }
 
 void Transform::computeModelMatrix(const glm::mat4& parentGlobalModelMatrix)
 {
     m_modelMatrix = parentGlobalModelMatrix * getLocalModelMatrix();
+    m_isDirty = false;
 }
 
 void Transform::setLocalPosition(const glm::vec3& newPosition)
