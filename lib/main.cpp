@@ -197,7 +197,7 @@ int main()
 
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud);
 
-    camera.setCameraPosition(TILE_SIZE, 4.7f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
+    camera.setCameraPosition(TILE_SIZE, 4.2f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
 
     glfwSetKeyCallback(window, key_callback);
 #pragma endregion
@@ -285,7 +285,7 @@ int main()
                     // start the game
                     menu->setActiveButton(0);
                     hud.setHideHud(false);
-                    camera.setCameraRotation(0,-75.f);
+                    camera.setCameraRotation(0,-60.f);
                     glfwSetKeyCallback(window, nullptr);
                     break;
                 case 2:

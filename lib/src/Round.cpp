@@ -140,12 +140,14 @@ void Round::changeRound(int mapNr)
     playerMovment[0]->dropTool();
     playerMovment[0]->resetSeenTile();
     player1->transform->setLocalPosition(currentMap->getPlayer1Cord());
+    playerMovment[0]->cancelAction();
 
     player2->getComponentsByType(&playerMovment);
     playerMovment[1]->dropTool();
     playerMovment[1]->resetSeenTile();
     player2->transform->setLocalPosition(currentMap->getPlayer2Cord());
-    
+    playerMovment[1]->cancelAction();
+
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
