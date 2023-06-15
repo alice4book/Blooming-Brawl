@@ -92,6 +92,6 @@ public:
 	void dropTool();
 	void resetSeenTile();
 	void startAction(TileState* tile);
-	void cancelAction(TileState* tile);
+	void cancelAction(TileState* tile = nullptr);
 	void setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement);
 };
