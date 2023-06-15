@@ -539,6 +539,7 @@ void PlayerMovement::startAction(TileState* tile)
                 rival->cancelAction(tile);
                 action = DestroyingFlower;
             }
+            break;
         case Overgrown:
             if (rival->actionTile == tile) return;
             action = DestroyingOvergrown;
