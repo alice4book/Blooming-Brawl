@@ -205,7 +205,7 @@ int main()
 #pragma region House
     Entity background("res/models/background_trawa.obj", &directionalShader);
     Entity house1("res/models/dom.obj", &directionalShader);
-    Entity house2("res/models/dom.obj", &directionalShader);
+    Entity house2("res/models/dom_czerwony.obj", &directionalShader);
     background.transform->setLocalPosition({2.f,-0.5f,2.f});
     house2.transform->setLocalRotation({0.f,180.f,0.f});
     house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f});

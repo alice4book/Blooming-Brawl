@@ -1,6 +1,6 @@
 # Blender 3.5.1
 # www.blender.org
-mtllib maly_kwiat2.mtl
+mtllib maly_kwiat.mtl
 o Circle.027
 v -0.010257 0.011717 -0.034798
 v -0.006716 0.006466 -0.017382

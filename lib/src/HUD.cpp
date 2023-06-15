@@ -16,7 +16,7 @@ HUD::HUD(Shader* shader, Shader* textShader)
 	hudIcon1 = new Entity("res/models/HUD/player1_icon.obj", hudShader);
 	hudIcon1->transform->setLocalPosition({ -1.4, 0, -0.7 });
 
-	hudIcon2 = new Entity("res/models/HUD/player1_icon.obj", hudShader);
+	hudIcon2 = new Entity("res/models/HUD/player2_icon.obj", hudShader);
 	hudIcon2->transform->setLocalPosition({ 1.4, 0, -0.7 });
 
 	barBack = new Entity("res/models/HUD/barBack.obj", hudShader);

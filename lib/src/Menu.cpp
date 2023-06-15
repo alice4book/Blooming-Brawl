@@ -6,7 +6,7 @@ Menu::Menu(Shader* shader, Shader* textShader) : hudShader(shader) {
     this->transform->setLocalPosition({ 0,0,-2.4 });
     this->transform->setLocalRotation({ 90,0,0 });
 
-    enabledModel = new Model("res/models/HUD/player1_icon.obj");
+    enabledModel = new Model("res/models/HUD/player2_icon.obj");
     disabledModel = new Model("res/models/HUD/barBack.obj");
 
     activeButton = 1;

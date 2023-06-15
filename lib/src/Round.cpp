@@ -60,7 +60,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     
     player1 = new Entity ("res/models/postacie_zeskalowne/nizej_farmer.obj", directionalShader);
     skybox->addChild(player1);
-    player2 = new Entity("res/models/postacie_zeskalowne/nizej_farmer.obj", directionalShader);
+    player2 = new Entity("res/models/postacie_zeskalowne/nizej_farmer_czerwony.obj", directionalShader);
     skybox->addChild(player2);
     
     Player* playerP1 =  new Player(player1, Player1);
