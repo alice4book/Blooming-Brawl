@@ -369,7 +369,7 @@ int main()
         highlightShader.setMat4("projection", projection);
         highlightShader.setMat4("view", view);
         highlightShader.setVec3("viewPos", camera.Position);
-        highlightShader.setVec3("hlcolor", {0.5,0.5,0.5});
+        highlightShader.setVec3("hlcolor", {0.01,0.02,0.01});
 
         directionalShader.use();
         glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);

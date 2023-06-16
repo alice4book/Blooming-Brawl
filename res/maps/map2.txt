@@ -1,12 +1,12 @@
 9
 3
 3
-      xxxxxxx
-      xo???ox
-      x?m..?x
-      x?.r.?x
-      xt..b?x
-      xt???ox
-      xxxxxxx
+    xxxxxxxxx
+    xo??..?ox
+    x?m....?x
+    x?...r.?x
+    xt....b?x
+    xt??..?ox
+    xxxxxxxxx
              
               
