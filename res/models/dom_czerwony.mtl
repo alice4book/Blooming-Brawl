@@ -1,7 +1,7 @@
 # Blender 3.5.1 MTL File: 'mroczna_farma.blend'
 # www.blender.org
 
-newmtl drzwi
+newmtl drzwi.002
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -11,7 +11,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 
-newmtl duza_krawedz
+newmtl duza_krawedz.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -23,7 +23,7 @@ map_Ns ../textures/dom_czerwony/domcio_duza_krawedz_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_duza_krawedz_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_duza_krawedz_Normal.png
 
-newmtl ganek
+newmtl ganek.002
 Ka 1.000000 1.000000 1.000000
 Kd 0.210150 0.210150 0.210150
 Ks 0.500000 0.500000 0.500000
@@ -36,7 +36,7 @@ map_Ns ../textures/dom_czerwony/domcio_ganek_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_ganek_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_ganek_Normal.png
 
-newmtl krawedz
+newmtl krawedz.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -48,7 +48,7 @@ map_Ns ../textures/dom_czerwony/domcio_krawedz_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_krawedz_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_krawedz_Normal.png
 
-newmtl nad_drzwiami
+newmtl nad_drzwiami.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -60,7 +60,7 @@ map_Ns ../textures/dom_czerwony/domcio_nad_drzwiami_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_nad_drzwiami_Metallic.png
 map_Bump ../textures/dom_czerwony/domcio_nad_drzwiami_Normal.png
 
-newmtl obramowanie_drzwi
+newmtl obramowanie_drzwi.002
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -70,7 +70,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 
-newmtl okno_dol
+newmtl okno_dol.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -82,7 +82,7 @@ map_Ns ../textures/dom_czerwony/domcio_okno_dol_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_okno_dol_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_okno_dol_Normal.png
 
-newmtl okno_gora_lewo
+newmtl okno_gora_lewo.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -94,7 +94,7 @@ map_Ns ../textures/dom_czerwony/domcio_okno_gora_lewo_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_okno_gora_lewo_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_okno_gora_lewo_Normal.png
 
-newmtl okno_gora_prawo
+newmtl okno_gora_prawo.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -106,7 +106,7 @@ map_Ns ../textures/dom_czerwony/domcio_okno_gora_prawo_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_okno_gora_prawo_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_okno_gora_prawo_Normal.png
 
-newmtl pod_slup
+newmtl pod_slup.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -118,7 +118,7 @@ map_Ns ../textures/dom_czerwony/domcio_pod_slup_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_pod_slup_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_pod_slup_Normal.png
 
-newmtl schody
+newmtl schody.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -130,7 +130,7 @@ map_Ns ../textures/dom_czerwony/domcio_schody_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_schody_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_schody_Normal.png
 
-newmtl sciana_dol
+newmtl sciana_dol.002
 Ka 1.000000 1.000000 1.000000
 Kd 0.258914 0.362650 0.597202
 Ks 0.500000 0.500000 0.500000
@@ -143,7 +143,7 @@ map_Ns ../textures/dom_czerwony/domcio_sciana_dol_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_sciana_dol_Metallic.png
 map_Bump -bm 1.100000 ../textures/dom_czerwony/domcio_sciana_dol_Normal.png
 
-newmtl sciana_gora_lewo
+newmtl sciana_gora_lewo.002
 Ka 1.000000 1.000000 1.000000
 Kd 0.423268 0.462077 0.603828
 Ks 0.500000 0.500000 0.500000
@@ -156,7 +156,7 @@ map_Ns ../textures/dom_czerwony/domcio_sciana_gora_lewo_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_sciana_gora_lewo_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_sciana_gora_lewo_Normal.png
 
-newmtl sciana_gora_prawo
+newmtl sciana_gora_prawo.002
 Ka 1.000000 1.000000 1.000000
 Kd 0.415214 0.453599 0.593911
 Ks 0.500000 0.500000 0.500000
@@ -181,7 +181,7 @@ map_Kd ../textures/skaly/skaly_skaly_BaseColor.png
 map_Ns ../textures/skaly/skaly_skaly_Roughness.png
 map_refl ../textures/skaly/skaly_skaly_Metalic.png
 
-newmtl slup
+newmtl slup.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
@@ -193,7 +193,7 @@ map_Ns ../textures/dom_czerwony/domcio_slup_Roughness.png
 map_refl ../textures/dom_czerwony/domcio_slup_Metallic.png
 map_Bump -bm 1.000000 ../textures/dom_czerwony/domcio_slup_Normal.png
 
-newmtl szyba
+newmtl szyba.002
 Ka 1.000000 1.000000 1.000000
 Kd 0.953715 0.855918 1.000000
 Ks 0.000000 0.000000 0.000000
