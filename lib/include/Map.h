@@ -67,6 +67,8 @@ public:
     glm::vec3 getRobotCord();
     void GenerateMap(int mapNr = -1);
 
+    std::vector<Entity*> tilesShadows;
+
 private:
     Model* tileModels;
 
@@ -83,6 +85,8 @@ public:
 
     void addHud(HUD* hud);
     std::vector<TileState*> getPlayerTiles(EPlayerID playerID);
+
+    std::vector<Entity*> getShadowTiles();
     
     //Tools
 private:
