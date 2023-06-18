@@ -11,9 +11,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd ../textures/krzak/krzak_BaseColor.png
-map_Ns ../textures/krzak/krzak_Roughness.png
-map_refl ../textures/krzak/krzak_Metallic.png
-map_Bump -bm 1.000000 ../textures/krzakkrzak_Normal.png
 
 newmtl Material.115
 Ns 250.000000
@@ -25,9 +22,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd ../textures/krzak/krzak_BaseColor.png
-map_Ns ../textures/krzak/krzak_Roughness.png
-map_refl ../textures/krzak/krzak_Metallic.png
-map_Bump -bm 1.000000 ../textures/krzakkrzak_Normal.png
 
 newmtl Material.181
 Ns 250.000000
@@ -41,7 +35,6 @@ illum 2
 map_Kd ../textures/krzak/lisc_BaseColor.png
 map_Ns ../textures/krzak/lisc_Roughness.png
 map_refl ../textures/krzak/lisc_Metalic.png
-map_Bump -bm 1.000000 ../textures/krzak/lisc_Normal.png
 
 newmtl podstawa.001
 Ka 1.000000 1.000000 1.000000
