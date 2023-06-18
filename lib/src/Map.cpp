@@ -128,12 +128,14 @@ void Map::GenerateMap(int mapNr)
 				tiles[tileNr].model = &tileModels[EState::Impassable];
 				rotataRand = rand() % 4;
 				tiles[tileNr].transform->rotateLocal({ 0,90 * rotataRand,0 });
+				tilesShadows.push_back(&tiles[tileNr]);
 				isPassable = false;
 				state = EState::Impassable;
 				break;
 			case 'o':
 				tiles[tileNr].model = &tileModels[EState::Overgrown];
 				emptyTiles++;
+				tilesShadows.push_back(&tiles[tileNr]);
 				isPassable = true;
 				state = EState::Overgrown;
 				break;
@@ -323,6 +325,11 @@ std::vector<TileState*> Map::getPlayerTiles(EPlayerID playerID)
 		std::advance(iter_front, 1);
 	}
 	return playerTileStates;
+}
+
+std::vector<Entity*> Map::getShadowTiles()
+{
+	return tilesShadows;
 }
 
 glm::vec3 Map::getPlayer1Cord()

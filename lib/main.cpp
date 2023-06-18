@@ -329,7 +329,10 @@ int main()
         round.getRobot()->renderEntity(&depthShader);
         round.getPlayer1()->renderEntity(&depthShader);
         round.getPlayer2()->renderEntity(&depthShader);
-        round.getMapManager()->renderEntity(&depthShader);
+        //round.getMapManager()->renderEntity(&depthShader);
+        for (int i = 0; i < round.getMap()->getShadowTiles().size(); i++) {
+            round.getMap()->getShadowTiles()[i]->renderEntity(&depthShader);
+        }
         for (int i = 0; i < round.getToolsSize(); i++) {
             round.getTools()[i]->renderEntity(&depthShader);
         }
