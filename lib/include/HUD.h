@@ -24,8 +24,8 @@ private:
 
 	std::string str_timer;
 
-	Text* score1;
-	Text* score2;
+	Text* seeds1;
+	Text* seeds2;
 	Text* timer;
 
 	Shader* textShader;
@@ -34,6 +34,9 @@ private:
 	int tilesCount;
 	int player1Tiles;
 	int player2Tiles;
+
+	int seedsCount1;
+	int seedsCount2;
 
 	int mapNr;
 
@@ -48,6 +51,8 @@ public:
 
 	//Size bars acording to score
 	void barSize(int player1, int player2);
+
+	void setSeedCount(int seeds1, int seeds2);
 
 	void setTilesCount(int newTilesCount);
 

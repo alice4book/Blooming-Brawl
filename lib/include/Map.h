@@ -40,6 +40,8 @@ private:
     int emptyTiles;
     int player1TilesCount;
     int player2TilesCount;
+    int player1Seeds;
+    int player2Seeds;
 
     //spawners
     std::vector <Entity*> spawners;
@@ -77,11 +79,15 @@ private:
 
 public:
     Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap = -1);
-    void ChangeMap(int mapIndex);
 
     int getTilesCount();
     void addToPlayer1TilesCount(int p1);
     void addToPlayer2TilesCount(int p2);
+
+    //seeds func
+    void addSeedsFromPlants(EPlayerID playerID);
+    void subSeedsForPlanting(EPlayerID playerID);
+    int getSeedCount(EPlayerID playerID);
 
     void addHud(HUD* hud);
     std::vector<TileState*> getPlayerTiles(EPlayerID playerID);

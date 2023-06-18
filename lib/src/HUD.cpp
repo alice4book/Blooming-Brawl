@@ -9,6 +9,8 @@ HUD::HUD(Shader* shader, Shader* textShader)
 	, tilesCount(0)
 	, player1Tiles(0)
 	, player2Tiles(0)
+	, seedsCount1(0)
+	, seedsCount2(0)
 {
 	this->transform->setLocalPosition({ 0,0,-2.4 });
 	this->transform->setLocalRotation({ 90,0,0 });
@@ -32,8 +34,8 @@ HUD::HUD(Shader* shader, Shader* textShader)
 	bar2->transform->setLocalRotation({ 0, 90, 0 });
 	bar2->transform->setLocalPosition({ 1.1, 0, -0.84 });
 
-	score1 = new Text(textShader, "res/font/arial.ttf");
-	score2 = new Text(textShader, "res/font/arial.ttf");
+	seeds1 = new Text(textShader, "res/font/arial.ttf");
+	seeds2 = new Text(textShader, "res/font/arial.ttf");
 	timer = new Text(textShader, "res/font/arial.ttf");
 
 	this->addChild(hudIcon1);
@@ -57,6 +59,12 @@ void HUD::barSize(int player1, int player2)
 	}
 }
 
+void HUD::setSeedCount(int seeds1, int seeds2)
+{
+	seedsCount1 = seeds1;
+	seedsCount2 = seeds2;
+}
+
 void HUD::setTilesCount(int newTilesCount) 
 {
 	tilesCount = newTilesCount;
@@ -73,8 +81,8 @@ void HUD::renderEntity() {
         return;
 
 	Entity::renderEntity();
-	score1->RenderText(std::to_string(player1Tiles), resizeX * 10, resizeY * 550, resizeX, { 1.f,1.f,1.f });
-	score2->RenderText(std::to_string(player2Tiles), resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
+	seeds1->RenderText(std::to_string(seedsCount1), resizeX * 10, resizeY * 550, resizeX, { 1.f,1.f,1.f });
+	seeds2->RenderText(std::to_string(seedsCount2), resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
 	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
 }
 

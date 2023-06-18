@@ -256,35 +256,20 @@ void Map::GenerateMap(int mapNr)
 }
 
 Map::Map(Entity* parent, Model* tileModels, std::string* mapFiles, float tileSize, Shader* shader, Shader* altShader, int firstMap)
-	:Component(parent), tileModels(tileModels), tileSize(tileSize), altShader(altShader), spawnerShader(shader)
+	:Component(parent)
+	, tileModels(tileModels)
+	, tileSize(tileSize)
+	, altShader(altShader)
+	, spawnerShader(shader)
+	, player1TilesCount(0)
+	, player2TilesCount(0)
+	, player1Seeds(5)
+	, player2Seeds(5)
 {
 	wrap = new Entity();
 	parent->addChild(wrap);
 
 	LoadMapsFromFiles(mapFiles);
-
-	player1TilesCount = 0;
-	player2TilesCount = 0;
-}
-
-void Map::ChangeMap(int mapIndex)
-{
-	/*
-	for (int i = 0; i < MAX_ROWS; i++) {
-		for (int j = 0; j < MAX_COLUMNS; j++) {
-			if(allTiles[i][j] != nullptr)
-				allTiles[i][j]->clearComponents();
-		}
-	}
-
-	GenerateMap(mapIndex);
-	player1TilesCount = 0;
-	player2TilesCount = 0;
-	if (hud != nullptr) {
-		hud->setTilesCount(emptyTiles);
-		hud->barSize(player1TilesCount, player2TilesCount);
-	}
-	*/
 }
 
 int Map::getTilesCount()
@@ -304,12 +289,45 @@ void Map::addToPlayer2TilesCount(int p2)
 	hud->barSize(player1TilesCount, player2TilesCount);
 }
 
+void Map::addSeedsFromPlants(EPlayerID playerID)
+{
+	if (playerID == Player1) {
+		player1Seeds += 3;
+	}
+	else if(playerID == Player2){
+		player2Seeds += 3;
+	}
+	hud->setSeedCount(player1Seeds, player2Seeds);
+}
+
+void Map::subSeedsForPlanting(EPlayerID playerID)
+{
+	if (playerID == Player1) {
+		player1Seeds --;
+	}
+	else if (playerID == Player2) {
+		player2Seeds --;
+	}
+	hud->setSeedCount(player1Seeds, player2Seeds);
+}
+
+int Map::getSeedCount(EPlayerID playerID)
+{
+	if (playerID == Player1) {
+		return player1Seeds;
+	}
+	else if (playerID == Player2) {
+		return player2Seeds;
+	}
+}
+
 void Map::addHud(HUD* hud)
 {
 	this->hud = hud;
 	if(hud != nullptr){
 		hud->setTilesCount(emptyTiles);
 		hud->barSize(player1TilesCount, player2TilesCount);
+		hud->setSeedCount(player1Seeds, player2Seeds);
 	}
 }
 

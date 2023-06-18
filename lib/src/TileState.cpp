@@ -49,14 +49,17 @@ void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
         {
         case Planting:
             ownerID = playerID;
-            if (playerID == EPlayerID::Player1) {
-                setState(EState::Growing);
-                map->addToPlayer1TilesCount(1);
-            }
-            else {
-                setState(EState::Growing2);
-                map->addToPlayer2TilesCount(1);
-            }
+            if(map->getSeedCount(playerID) > 0){
+                map->subSeedsForPlanting(playerID);
+                    if (playerID == EPlayerID::Player1) {
+                        setState(EState::Growing);
+                        map->addToPlayer1TilesCount(1);
+                    }
+                    else {
+                        setState(EState::Growing2);
+                        map->addToPlayer2TilesCount(1);
+                    }
+                }
             break;
         case DestroyingFlower:
             setState(EState::Burned);
@@ -70,18 +73,17 @@ void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
             break;
         case DestroyingOvergrown:
             setState(EState::Empty);
-            //TODO: add seeds
+            map->addSeedsFromPlants(playerID);
             break;
         case Harvesting:
+            map->addSeedsFromPlants(playerID);
             if (playerID == EPlayerID::Player1)
             {
                 setState(EState::Growing);
-                //TODO: add seeds
             }
             else
             {
                 setState(EState::Growing2);
-                //TODO: add seeds
             }
             break;
         case Watering:
