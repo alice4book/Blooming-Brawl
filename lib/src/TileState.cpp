@@ -5,7 +5,6 @@
 #include "Model.h"
 #include "Map.h"
 #include "ActionType.h"
-#include <iostream>
 
 TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map)
  : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition), map(map)
@@ -18,16 +17,16 @@ void TileState::attachToTimeManager()
     timeManager->attachUnlimitedFPS(this);
 }
 
-
-
 void TileState::setState(EState newState)
 {
 	state = newState;
 	parent->model = tileModels + state;
-    if (state == EState::Growing || state == EState::Growing2)
+    if (state == EState::Growing || state == EState::Growing2) {
         setTimerGrow();
-    else if (state == EState::Burned)
+    }
+    else if (state == EState::Burned) {
         setTimerBurn();
+    }
 }
 
 void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
@@ -116,7 +115,7 @@ void TileState::update()
     }
     else if (state == EState::Growing || state == EState::Growing2)
     {
-        timerGrow -= timeManager->getDeltaTimeUnlimitedFPS();
+        timerGrow -= timeManager->getDeltaTimeUnlimitedFPS() * growingSpeed;
         if (timerGrow <= 0)
         {
             if (ownerID == EPlayerID::Player1)
@@ -126,6 +125,10 @@ void TileState::update()
             watered = false;
         }
     }
+}
+
+void TileState::resetGrowingSpeed() {
+    growingSpeed = 1.0f;
 }
 
 void TileState::setTimerGrow()

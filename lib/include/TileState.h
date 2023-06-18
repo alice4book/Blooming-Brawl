@@ -31,6 +31,8 @@ public:
     glm::vec2 mapPosition;
     Entity* neighbours[8] = {}; //neighbouring tiles or NULL
     Node node;
+    void resetGrowingSpeed();
+    float growingSpeed = 1;
     float currentGrowTime = 8;
     float currentBurnTime = 6;
     TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map);

@@ -9,8 +9,8 @@
 #include "World.h"
 #include "Shader.h"
 #include "Map.h"
-#include <iostream>
-#include <Player.h>
+#include "Player.h"
+#include "TileState.h"
 
 
 PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* collider, glm::vec3 color, EPickUp type)
@@ -66,23 +66,33 @@ void PickUp::use(Entity* player)
 				player->getComponentsByType(&playerCom);
 				tileStateCom = mapCom->getPlayerTiles(playerCom[0]->getID());
 				for (auto tile : tileStateCom) {
-					
+					tile->growingSpeed = 1.5f;
 				}
 				break;
 			case Locust:
+				int randomTilesCount = 0;
 				player->getComponentsByType(&playerCom);
 				if (playerCom[0]->getID() == Player1) {
 					tileStateCom = mapCom->getPlayerTiles(Player2);
+					randomTilesCount = tileStateCom.size() * 30 / 100;
 				}
 				else if (playerCom[0]->getID() == Player2) {
 					tileStateCom = mapCom->getPlayerTiles(Player1);
+					randomTilesCount = tileStateCom.size() * 30 / 100;
 				}
-				int randomTilesCount = tileStateCom.size() * 30 / 100;
-				int randomTilesNr;
+				int randomTilesNr, randomIter;
+				
+				std::vector<int> randomNrToUse;
+				for (int i = 0; i < tileStateCom.size(); i++) {
+					randomNrToUse.push_back(i);
+				}
 				for (int i = 0; i < randomTilesCount; i++) {
-					randomTilesNr = rand() % randomTilesCount;
-					tileStateCom[randomTilesNr]->setState(Burned);
+					randomIter = rand() % randomNrToUse.size();
+					randomTilesNr = randomNrToUse[randomIter];
+					randomNrToUse.erase(randomNrToUse.begin() + randomIter);
+					tileStateCom[randomTilesNr]->changeTileState(playerCom[0]->getID(), EActionType::DestroyingFlower);
 				}
+				
 				break;
 		}
 		parent->isModel = false;
@@ -92,13 +102,21 @@ void PickUp::use(Entity* player)
 
 void PickUp::endUse()
 {
-	std::vector<PlayerMovement*> playerCom;
+	auto world = World::getInstance();
+	Map* mapCom = world->mapComponent;
+	std::vector<Player*> playerCom;
+	std::vector<TileState*> tileStateCom;
 	switch (type) {
 	case Speed:
 		player->getComponentsByType(&playerCom);
 		playerCom[0]->setSpeed(1.0f);
 		break;
 	case Rain:
+		player->getComponentsByType(&playerCom);
+		tileStateCom = mapCom->getPlayerTiles(playerCom[0]->getID());
+		for (auto tile : tileStateCom) {
+			tile->resetGrowingSpeed();
+		}
 		break;
 	}
 	timeManager->detach(this);
