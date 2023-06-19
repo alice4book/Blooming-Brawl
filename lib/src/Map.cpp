@@ -293,9 +293,15 @@ void Map::addSeedsFromPlants(EPlayerID playerID)
 {
 	if (playerID == Player1) {
 		player1Seeds += 3;
+		if (player1Seeds > 15) {
+			player1Seeds = 15;
+		}
 	}
 	else if(playerID == Player2){
 		player2Seeds += 3;
+		if (player2Seeds > 15) {
+			player2Seeds = 15;
+		}
 	}
 	hud->setSeedCount(player1Seeds, player2Seeds);
 }

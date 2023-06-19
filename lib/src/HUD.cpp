@@ -81,8 +81,8 @@ void HUD::renderEntity() {
         return;
 
 	Entity::renderEntity();
-	seeds1->RenderText(std::to_string(seedsCount1), resizeX * 10, resizeY * 550, resizeX, { 1.f,1.f,1.f });
-	seeds2->RenderText(std::to_string(seedsCount2), resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
+	seeds1->RenderText(std::to_string(seedsCount1) + "/15", resizeX * 10, resizeY * 550, resizeX, {1.f,1.f,1.f});
+	seeds2->RenderText(std::to_string(seedsCount2) + "/15", resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
 	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
 }
 
