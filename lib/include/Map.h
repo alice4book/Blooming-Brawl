@@ -93,6 +93,8 @@ public:
     std::vector<TileState*> getPlayerTiles(EPlayerID playerID);
 
     std::vector<Entity*> getShadowTiles();
+
+    std::vector<Entity*> getPlayerShadowTiles();
     
     //Tools
 private:

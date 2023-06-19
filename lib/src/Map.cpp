@@ -350,6 +350,19 @@ std::vector<Entity*> Map::getShadowTiles()
 	return tilesShadows;
 }
 
+std::vector<Entity*> Map::getPlayerShadowTiles()
+{
+	std::vector<Entity*> playerTiles;
+	auto iter_front = tilesComp.begin();
+	for (int i = 0; i < tilesComp.size(); i++) {
+		if (Player1 == iter_front->getOwner() || Player2 == iter_front->getOwner() || Burned == iter_front->state) {
+			playerTiles.push_back(&(*iter_front->getParent()));
+		}
+		std::advance(iter_front, 1);
+	}
+	return playerTiles;
+}
+
 glm::vec3 Map::getPlayer1Cord()
 {
 	return player1Cord;
