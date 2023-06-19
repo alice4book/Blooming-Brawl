@@ -190,7 +190,7 @@ int main()
     HUD hud(&hudShader, &textShader);
     hud.setHideHud(true);
 
-    menu = new Menu(&hudShader, &textShader);
+    menu = new Menu(&hudShader);
     skybox->addChild(menu);
     menu->setResize(resizeX, resizeY);
     int menuActiveButton;

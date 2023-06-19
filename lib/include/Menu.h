@@ -8,16 +8,19 @@ class Text;
 
 class Menu : public Entity {
 private:
+    Entity* background;
+    Entity* title;
     Entity* button1;
     Entity* button2;
+    Entity* bestBears;
 
-    Model* enabledModel;
-    Model* disabledModel;
+    Model* exitEnabledModel;
+    Model* exitDisabledModel;
+
+    Model* startEnabledModel;
+    Model* startDisabledModel;
 
     Shader* hudShader;
-
-    Text* startText;
-    Text* exitText;
 
     float cursorX{}, cursorY{};
 
@@ -36,7 +39,7 @@ private:
     int activeButton;
 
 public:
-    Menu(Shader* shader, Shader* textShader);
+    explicit Menu(Shader* shader);
 
     void renderEntity() override;
 
