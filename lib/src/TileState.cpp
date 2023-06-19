@@ -48,8 +48,8 @@ void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
         switch (actionType)
         {
         case Planting:
-            ownerID = playerID;
             if(map->getSeedCount(playerID) > 0){
+                ownerID = playerID;
                 map->subSeedsForPlanting(playerID);
                     if (playerID == EPlayerID::Player1) {
                         setState(EState::Growing);

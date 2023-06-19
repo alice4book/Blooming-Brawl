@@ -26,7 +26,11 @@ std::vector<Node*> RobotMovement::findPath(Node* node)
 
 bool RobotMovement::moveToPoint(Node* node)
 {
-	if (node->pos == getSnappedPosition()) return true;
+	if (node->pos == getSnappedPosition()) { 
+		TileState* tileState = pathFinding.map->allTilesComp[(int)getSnappedPosition().x][(int)getSnappedPosition().y];
+		tileState->changeTileState(EPlayerID::RobotDestroyer, EActionType::DestroyingFlower);
+		return true; 
+	}
 	std::vector<Node*> nodes = findPath(node);
 	if (nodes.size() == 0) return false;
 	for (int i = 0; i < nodes.size(); i++)
@@ -98,6 +102,9 @@ void RobotMovement::update() {
 	{
 		if (isWondering) {
 			findClosestNode();
+			if (newPositions.size() == 0) {
+				return;
+			}
 		}
 		float step = speed * timeManager->getDeltaTime120FPS();
 		glm::vec3 currentPosition = transform->getLocalPosition();
@@ -358,39 +365,3 @@ void RobotMovement::checkIfClosest(int i, int j, glm::vec2 currentPos, Map* map,
 	}
 
 }
-
-/*
-// turns robot right (only with right angle)
-void RobotMovement::turnRight(float dTime) {
-	side += 90.f;
-	if(side > 270.f)
-		side = 0.0f;
-	//transform->addToLocalPosition(forward * -(speed * dTime));
-	transform->rotateLocal(glm::vec3(0.0f, -90.0f, 0.0f));
-	glm::vec3 front;
-	front.x = cos(glm::radians(side));
-	front.y = 0.f;
-	front.z = sin(glm::radians(side));
-	forward = glm::normalize(front);
-	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
-}
-
-// turns robot left (only with right angle)
-void RobotMovement::turnLeft(float dTime) {
-	side -= 90.f;
-	if (side < 0.f)
-		side = 270.0f;
-	//transform->addToLocalPosition(forward * -(speed * dTime));
-	transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
-	glm::vec3 front;
-	front.x = cos(glm::radians(side));
-	front.y = 0.f;
-	front.z = sin(glm::radians(side));
-	forward = glm::normalize(front);
-	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
-}
-
-void RobotMovement::noMove(float dTime) {
-	transform->addToLocalPosition(forward * -(speed * dTime));
-}
-*/
