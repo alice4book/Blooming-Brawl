@@ -64,11 +64,27 @@ void PlayerMovement::move()
                             if (this->tool == nullptr) {
                                 this->tool = tool;
                                 tool->PickedUp(Player1);
+                                if (tool->getType() == EToolType::Hoe) {
+                                    currentPlantTime = 0;
+                                    currentDestroyTime = defaultDestroyTime;
+                                }
+                                if (tool->getType() == EToolType::Shovel) {
+                                    currentPlantTime = defaultPlantTime;
+                                    currentDestroyTime = 0;
+                                }
                             }
                             else {
                                 this->tool->PickedUp(None, parent->transform);
                                 this->tool = tool;
                                 tool->PickedUp(Player1);
+                                if (tool->getType() == EToolType::Hoe) {
+                                    currentPlantTime = 0;
+                                    currentDestroyTime = defaultDestroyTime;
+                                }
+                                if (tool->getType() == EToolType::Shovel) {
+                                    currentPlantTime = defaultPlantTime;
+                                    currentDestroyTime = 0;
+                                }
 
                             }
                         }
@@ -188,11 +204,27 @@ void PlayerMovement::move()
                         if (this->tool == nullptr) {
                             this->tool = tool;
                             tool->PickedUp(Player2);
+                            if (tool->getType() == EToolType::Hoe) {
+                                currentPlantTime = 0;
+                                currentDestroyTime = defaultDestroyTime;
+                            }
+                            if (tool->getType() == EToolType::Shovel) {
+                                currentPlantTime = defaultPlantTime;
+                                currentDestroyTime = 0;
+                            }
                         }
                         else {
                             this->tool->PickedUp(None, parent->transform);
                             this->tool = tool;
                             tool->PickedUp(Player2);
+                            if (tool->getType() == EToolType::Hoe) {
+                                currentPlantTime = 0;
+                                currentDestroyTime = defaultDestroyTime;
+                            }
+                            if (tool->getType() == EToolType::Shovel) {
+                                currentPlantTime = defaultPlantTime;
+                                currentDestroyTime = 0;
+                            }
 
                         }
                     }

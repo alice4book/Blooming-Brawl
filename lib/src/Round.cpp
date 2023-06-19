@@ -94,12 +94,12 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     allTools[0] = new Entity("res/models/lopata.obj", directionalShader);
     DynamicColliderComponent* tool1_collision = new DynamicColliderComponent(allTools[0], 0.05f, true);
     allTools[0]->addComponent((Component*)tool1_collision);
-    allTools[0]->addComponent(new Tool(allTools[0], EToolType::Hoe));
+    allTools[0]->addComponent(new Tool(allTools[0], EToolType::Shovel));
 
     allTools[1] = new Entity("res/models/motyka.obj", directionalShader);
     DynamicColliderComponent* tool2_collision = new DynamicColliderComponent(allTools[1], 0.05f, true);
     allTools[1]->addComponent((Component*)tool2_collision);
-    allTools[1]->addComponent(new Tool(allTools[1], EToolType::Shovel));
+    allTools[1]->addComponent(new Tool(allTools[1], EToolType::Hoe));
     
     skybox->addChild(allTools[0]);
     skybox->addChild(allTools[1]);
