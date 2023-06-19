@@ -333,6 +333,9 @@ int main()
         for (int i = 0; i < round.getMap()->getShadowTiles().size(); i++) {
             round.getMap()->getShadowTiles()[i]->renderEntity(&depthShader);
         }
+        for (int i = 0; i < round.getMap()->getPlayerShadowTiles().size(); i++) {
+            round.getMap()->getPlayerShadowTiles()[i]->renderEntity(&depthShader);
+        }
         for (int i = 0; i < round.getToolsSize(); i++) {
             round.getTools()[i]->renderEntity(&depthShader);
         }
