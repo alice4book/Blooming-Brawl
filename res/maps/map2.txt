@@ -1,12 +1,13 @@
-9
-3
-3
-    xxxxxxxxx
-    xo??..?ox
-    x?m....?x
-    x?...r.?x
-    xt....b?x
-    xt??..?ox
-    xxxxxxxxx
-             
-              
+10
+7
+0
+xxxxxxxxxxxxxxxxxxxx
+xoooo.?.oooo.?.oooox
+xoooo.?.oooo.?.oooox
+xoooob?.oooo.?moooox
+xoooo.?.oooo.?.oooox
+xoooo.?.oooo.?.oooox
+xoooo.?.oooo.?.oooox
+xoooo.?.oooo.?.oooox
+xoooo.?.ooro.?.oooox
+xxxxxxxxxxxxxxxxxxxx

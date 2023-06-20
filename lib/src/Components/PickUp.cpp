@@ -45,6 +45,17 @@ void PickUp::update()
 	}
 }
 
+void PickUp::enable(bool value) {
+	if (enabled) {
+		TimeManager::getInstance()->detach(this);
+		enabled = false;
+	}
+	if (value) {
+		TimeManager::getInstance()->attach120FPS(this);
+		enabled = true;
+	}
+}
+
 void PickUp::use(Entity* player)
 {
 	if (player != nullptr) {
@@ -96,7 +107,7 @@ void PickUp::use(Entity* player)
 				break;
 		}
 		parent->isModel = false;
-		colliderBody->enabled = false;
+		colliderBody->enable(false);
 	}
 }
 
@@ -125,7 +136,7 @@ void PickUp::endUse()
 	spawn->disablePickUp();
 
 	parent->isModel = true;
-	colliderBody->enabled = true;
+	colliderBody->enable(true);
 }
 
 

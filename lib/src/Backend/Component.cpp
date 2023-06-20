@@ -7,6 +7,9 @@ Entity* Component::getParent()
     return parent;
 }
 
+void Component::enable(bool value)
+{}
+
 Component::~Component() {
     extern TimeManager* timeManager;
     timeManager->detach(this);

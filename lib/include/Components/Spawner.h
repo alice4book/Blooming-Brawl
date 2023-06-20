@@ -38,6 +38,7 @@ public:
 	Spawner(Entity* parent, Shader* shader);
 
 	void update() override;
+	void enable(bool value) override;
 
 	Entity* createPickUp(glm::vec3 color, EPickUp type = EPickUp::NoPower);
 

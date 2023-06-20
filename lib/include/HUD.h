@@ -63,4 +63,6 @@ public:
 	int currentMap();
 
 	void nextMap();
+
+	void resetHUD();
 };

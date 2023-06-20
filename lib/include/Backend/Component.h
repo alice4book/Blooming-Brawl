@@ -6,12 +6,15 @@ class Component
 {
 protected:
     Entity* parent;
+	bool enabled;
 public:
-	explicit Component(Entity* parent) : parent(parent) { };
+	explicit Component(Entity* parent) : parent(parent), enabled(true) { };
 
 	virtual void update(){ };
 
 	Entity* getParent();
+
+	virtual void enable(bool value);
 
     ~Component();
 };

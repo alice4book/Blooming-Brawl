@@ -76,7 +76,8 @@ void HUD::setResize(float newResizeX, float newResizeY)
 	resizeY = newResizeY;
 }
 
-void HUD::renderEntity() {
+void HUD::renderEntity() 
+{
     if(hideHUD)
         return;
 
@@ -92,6 +93,17 @@ void HUD::nextMap()
 		mapNr++;
 }
 
+void HUD::resetHUD()
+{
+	hideHUD = true;
+	mapNr = 0;
+	seedsCount1 = 5;
+	seedsCount2 = 5;
+	tilesCount = 0;
+	player1Tiles = 0;
+	player2Tiles = 0;
+}
+
 int HUD::currentMap()
 {
 	return mapNr;
@@ -100,3 +112,4 @@ int HUD::currentMap()
 void HUD::setHideHud(bool newHideHud) {
     hideHUD = newHideHud;
 }
+

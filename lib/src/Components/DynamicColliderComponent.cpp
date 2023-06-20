@@ -15,8 +15,18 @@ DynamicColliderComponent::DynamicColliderComponent(Entity *parent, float radius,
 }
 
 void DynamicColliderComponent::update() {
-    if(enabled)
-        checkAllCollisions();
+    checkAllCollisions();
+}
+
+void DynamicColliderComponent::enable(bool value){
+    if(enabled){
+        TimeManager::getInstance()->detach(this);
+        enabled = false;
+    }
+    if(value){
+        TimeManager::getInstance()->attachUnlimitedFPS(this);
+        enabled = true;
+    }
 }
 
 void DynamicColliderComponent::checkAllCollisions(){

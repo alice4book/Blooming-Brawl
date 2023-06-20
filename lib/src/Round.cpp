@@ -15,7 +15,7 @@
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
     Shader* pickupShader, Shader* highlightShader, HUD* hud)
 {
-    roundTime = 120;
+    roundTime = 3;
 
 	auto skybox = World::getInstance();
     
@@ -45,7 +45,6 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     round->addChild(currentMapManager);
 
     robot = new Entity("res/models/robot.obj", directionalShader);
-    skybox->addChild(robot);
     robot->transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
     
     DynamicColliderComponent* robotCollider = new DynamicColliderComponent(robot, 0.1f, false, { 0,0 });
@@ -59,9 +58,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robotmovement->findClosestNode();
     
     player1 = new Entity ("res/models/postacie_zeskalowne/nizej_farmer.obj", directionalShader);
-    skybox->addChild(player1);
     player2 = new Entity("res/models/postacie_zeskalowne/nizej_farmer_czerwony.obj", directionalShader);
-    skybox->addChild(player2);
     
     Player* playerP1 =  new Player(player1, Player1);
     player1->addComponent((Component*)playerP1);
@@ -95,14 +92,14 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     DynamicColliderComponent* tool1_collision = new DynamicColliderComponent(allTools[0], 0.05f, true);
     allTools[0]->addComponent((Component*)tool1_collision);
     allTools[0]->addComponent(new Tool(allTools[0], EToolType::Shovel));
+    allTools[0]->enableAllComponents(false);
 
     allTools[1] = new Entity("res/models/motyka.obj", directionalShader);
     DynamicColliderComponent* tool2_collision = new DynamicColliderComponent(allTools[1], 0.05f, true);
     allTools[1]->addComponent((Component*)tool2_collision);
     allTools[1]->addComponent(new Tool(allTools[1], EToolType::Hoe));
+    allTools[1]->enableAllComponents(false);
     
-    skybox->addChild(allTools[0]);
-    skybox->addChild(allTools[1]);
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
@@ -114,8 +111,25 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
         toolstab[toolNr]->getComponentsByType(&vectorTool);
         vectorTool[0]->setSpawn();
         toolstab[toolNr]->transform->setLocalPosition(toolscord[i]);
+        toolstab[toolNr]->enableAllComponents(true);
         toolstab.erase(toolstab.begin() + toolNr);
     }
+
+    //check if it is on the map
+    if (robot->transform->getLocalPosition() != glm::vec3(0.f, 0.f, 0.f)) {
+        round->addChild(robot);
+        robot->enableAllComponents(true);
+    }
+    else
+        robot->enableAllComponents(false);
+
+    currentToolSize = toolscord.size();
+    for (int i = 0; i < toolscord.size(); i++) {
+        round->addChild(allTools[i]);
+        allTools[i]->enableAllComponents(true);
+    }
+    round->addChild(player1);
+    round->addChild(player2);
 }
 
 void Round::changeRound(int mapNr)
@@ -127,6 +141,7 @@ void Round::changeRound(int mapNr)
     round->addChild(currentMapManager);
 
     robot->transform->setLocalPosition(currentMap->getRobotCord());
+
     std::vector<RobotMovement*> robotMovment;
     robot->getComponentsByType(&robotMovment);
     PathFinding pathFinding((Map*)currentMap);
@@ -148,6 +163,8 @@ void Round::changeRound(int mapNr)
     player2->transform->setLocalPosition(currentMap->getPlayer2Cord());
     playerMovment[1]->cancelAction();
 
+    allTools[0]->enableAllComponents(false);
+    allTools[1]->enableAllComponents(false);
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
@@ -159,13 +176,44 @@ void Round::changeRound(int mapNr)
         toolstab[toolNr]->getComponentsByType(&vectorTool);
         vectorTool[0]->setSpawn();
         toolstab[toolNr]->transform->setLocalPosition(toolscord[i]);
+        toolstab[toolNr]->enableAllComponents(true);
         toolstab.erase(toolstab.begin() + toolNr);
     }
 
     auto skybox = World::getInstance();
     skybox->mapComponent = currentMap;
     skybox->clearReloadLists();
+
+    this->hud->clock->detachClock();
     hud->clock->startClock(roundTime);
+
+    //check if it is on the map
+    if (robot->transform->getLocalPosition() != glm::vec3(0.f, 0.f, 0.f)) {
+        round->addChild(robot);
+        robot->enableAllComponents(true);
+    }
+    else
+    robot->enableAllComponents(false);
+
+    currentToolSize = toolscord.size();
+    for (int i = 0; i < toolscord.size(); i++) {
+        round->addChild(allTools[i]);
+        allTools[i]->enableAllComponents(true);
+    }
+    round->addChild(player1);
+    round->addChild(player2);
+}
+
+void Round::regenerateMaps(Model* tileModels, std::string* mapFiles, Shader* directionalShader,
+    Shader* pickupShader, Shader* highlightShader)
+{
+    for (int i = 0; i < 5; i++) {
+        mapManagers[i] = new Entity(directionalShader);
+        maps[i] = new Map(mapManagers[i], tileModels, mapFiles, TILE_SIZE, pickupShader, highlightShader, i);
+        mapManagers[i]->addComponent(maps[i]);
+        maps[i]->GenerateMap(i);
+    }
+    changeRound(0);
 }
 
 Entity* Round::getPlayer1()
@@ -180,6 +228,8 @@ Entity* Round::getPlayer2()
 
 Entity* Round::getRobot()
 {
+    if (robot->transform->getLocalPosition() == glm::vec3(0, 0, 0))
+        return nullptr;
     return robot;
 }
 
@@ -193,12 +243,19 @@ Map* Round::getMap()
     return currentMap;
 }
 
-Entity** Round::getTools()
-{
-    return allTools;
-}
-
 int Round::getToolsSize()
 {
     return 2;
+}
+
+Entity** Round::getTools()
+{
+    Entity* tmp[2];
+    for (int i = 0; i < 2; i++) {
+        if (allTools[i]->transform->getLocalPosition() != glm::vec3(0, 0, 0))
+            tmp[i] = allTools[i];
+        else
+            tmp[i] = nullptr;
+    }
+    return tmp;
 }

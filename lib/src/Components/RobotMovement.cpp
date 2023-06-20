@@ -144,6 +144,17 @@ void RobotMovement::update() {
 		wonder();
 }
 
+void RobotMovement::enable(bool value){
+	if (enabled) {
+		TimeManager::getInstance()->detach(this);
+		enabled = false;
+	}
+	if (value) {
+		TimeManager::getInstance()->attach120FPS(this);
+		enabled = true;
+	}
+}
+
 bool RobotMovement::findClosestNode(EPlayerID playerID)
 {
 	glm::vec2 currentPos = getSnappedPosition();

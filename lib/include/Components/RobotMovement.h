@@ -51,6 +51,7 @@ public:
 		float TILE_SIZE, glm::vec3 forward = { 1, 0, 0 }, float offset = 0.04f);
 
 	void update() override;
+	void enable(bool value) override;
 	bool findClosestNode(EPlayerID playerID = None);
 
 	void wonder();

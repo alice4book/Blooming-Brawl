@@ -206,7 +206,7 @@ int main()
     Entity background("res/models/background_trawa.obj", &directionalShader);
     Entity house1("res/models/dom.obj", &directionalShader);
     Entity house2("res/models/dom_czerwony.obj", &directionalShader);
-    background.transform->setLocalPosition({2.f,-0.5f,2.f});
+    background.transform->setLocalPosition({2.2f,-0.5f,2.2f});
     house2.transform->setLocalRotation({0.f,180.f,0.f});
     house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
     skybox->addChild(&background);
@@ -264,7 +264,6 @@ int main()
     {
         if(windowSizeChanged){
             windowSizeChanged = false;
-
             hud.setResize(resizeX, resizeY);
             menu->setResize(resizeX, resizeY);
         }
@@ -272,6 +271,14 @@ int main()
         if (currentRound < 4 && currentRound != hud.currentMap()) {
             round.changeRound(hud.currentMap());
             currentRound = hud.currentMap();
+        }
+        else if (hud.currentMap() == 5) {
+            currentRound = 0;
+            executeMenu = false;
+            menu->setActiveButton(1);
+            hud.resetHUD();
+            round.regenerateMaps(tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader);
+            camera.setCameraRotation(0, 0.f);
         }
 
         menuActiveButton = menu->getActiveButton();
@@ -326,10 +333,12 @@ int main()
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
         glActiveTexture(GL_TEXTURE0);
-        round.getRobot()->renderEntity(&depthShader);
+        if (round.getRobot() != nullptr) {
+            round.getRobot()->renderEntity(&depthShader);
+        }
+
         round.getPlayer1()->renderEntity(&depthShader);
         round.getPlayer2()->renderEntity(&depthShader);
-        //round.getMapManager()->renderEntity(&depthShader);
         for (int i = 0; i < round.getMap()->getShadowTiles().size(); i++) {
             round.getMap()->getShadowTiles()[i]->renderEntity(&depthShader);
         }
@@ -337,7 +346,9 @@ int main()
             round.getMap()->getPlayerShadowTiles()[i]->renderEntity(&depthShader);
         }
         for (int i = 0; i < round.getToolsSize(); i++) {
-            round.getTools()[i]->renderEntity(&depthShader);
+            if (round.getTools()[i] != nullptr) {
+                round.getTools()[i]->renderEntity(&depthShader);
+            }
         }
         house1.renderEntity(&depthShader);
         house2.renderEntity(&depthShader);

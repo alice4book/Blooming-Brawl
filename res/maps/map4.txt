@@ -1,8 +1,13 @@
-5
+10
+7
 0
-0
-   xxxxxxxx
-   xoootoox
-   xroomobx
-   xoootoox
-   xxxxxxxx
+      xxxxxxxx
+      x.b..m.x
+      x......x
+xxxxxxx......xxxxxxx
+x...s..........s...x
+x........tt........x
+xxxxxxx......xxxxxxx
+      x......x
+      x...r..x
+      xxxxxxxx

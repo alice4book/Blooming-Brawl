@@ -42,6 +42,17 @@ void Spawner::update() {
 	}
 }
 
+void Spawner::enable(bool value) {
+	if (enabled) {
+		TimeManager::getInstance()->detach(this);
+		enabled = false;
+	}
+	if (value) {
+		TimeManager::getInstance()->attach120FPS(this);
+		enabled = true;
+	}
+}
+
 Entity* Spawner::createPickUp(glm::vec3 color, EPickUp type) {
 	Entity* spawndItem = new Entity("res/models/powerUp.obj", shader);
 	spawndItem->transform->addToLocalPosition({ 0.0,0.1,0.0 });

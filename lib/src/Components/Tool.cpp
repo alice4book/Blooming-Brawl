@@ -37,6 +37,17 @@ void Tool::update() {
 	}
 }
 
+void Tool::enable(bool value) {
+	if (enabled) {
+		TimeManager::getInstance()->detach(this);
+		enabled = false;
+	}
+	if (value) {
+		TimeManager::getInstance()->attach120FPS(this);
+		enabled = true;
+	}
+}
+
 EToolType Tool::getType()
 {
 	return toolType;

@@ -25,6 +25,7 @@ public:
 	void PickedUp(EPlayerID p, Transform*  t = nullptr);
 	bool isPickedUp();
 	void update() override;
+	void enable(bool value) override;
 	EToolType getType();
 };
 

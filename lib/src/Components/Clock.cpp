@@ -11,7 +11,7 @@ Clock::Clock(Entity* parent) : Component(parent)
 void Clock::update()
 {
 	if (seconds <= 0) {
-		stopClock();
+		endLevelClock();
 		return;
 	}
 	seconds--;
@@ -23,13 +23,20 @@ void Clock::startClock(int seconds)
 	timeManager->attach1FPS(this);
 }
 
-void Clock::stopClock()
+
+
+void Clock::endLevelClock()
 {
 	timeManager->detach(this);
 	HUD* hud = dynamic_cast<HUD*>(parent);
 	if (hud != nullptr)
 		hud->nextMap();
 
+}
+
+void Clock::detachClock()
+{
+	timeManager->detach(this);
 }
 
 int Clock::getSeconds()

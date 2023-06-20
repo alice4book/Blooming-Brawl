@@ -23,6 +23,8 @@ public:
 
     void update() override;
 
+    void enable(bool value) override;
+
     void checkAllCollisions();
 
     [[nodiscard]] const std::vector<StaticColliderComponent *> &getTouchingStaticComponents() const;
@@ -39,9 +41,7 @@ public:
     void setRadius(float newRadius);
 
     StaticColliderComponent* getTileColliderIAmOn();
-    
-    bool enabled = true;
-
+   
     void resetTileIAmOn();
 private:
     void setTileColliderIAmOn();

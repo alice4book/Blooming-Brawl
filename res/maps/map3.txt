@@ -1,10 +1,13 @@
-7
+10
 0
-7
-xxxxx   xxxxx
-xoooxxxxxooox
-xxs???t????xx
- x..?m?b?.?x
-xx.r??t???sxx
-xoooxxxxxooox
-xxxxx   xxxxx
+0
+xxxxxxxxxxxxxxxxxxxx
+xoooooooooooooooooox
+xoooooooooooooooooox
+xxxx...........mxxxx
+   x....bttm....x
+   x............x
+xxxx.....r......xxxx
+xoooooooooooooooooox
+xoooooooooooooooooox
+xxxxxxxxxxxxxxxxxxxx

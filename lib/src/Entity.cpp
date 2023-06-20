@@ -70,6 +70,13 @@ void Entity::addComponent(Component* comp) {
     components.push_back(comp);
 }
 
+void Entity::enableAllComponents(bool value)
+{
+    for (auto comp : components) {
+        comp->enable(value);
+    }
+}
+
 void Entity::updateComponents()
 {
     for (Component* comp : components) {

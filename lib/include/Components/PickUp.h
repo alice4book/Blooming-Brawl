@@ -30,7 +30,7 @@ public:
 		DynamicColliderComponent* collider, glm::vec3 color, EPickUp type = EPickUp::NoPower);
 
 	void update() override;
-
+	void enable(bool value)override;
 	void use(Entity* player);
 	void endUse();
 

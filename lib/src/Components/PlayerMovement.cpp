@@ -345,6 +345,17 @@ void PlayerMovement::update() {
     }
 }
 
+void PlayerMovement::enable(bool value) {
+    if (enabled) {
+        TimeManager::getInstance()->detach(this);
+        enabled = false;
+    }
+    if (value) {
+        TimeManager::getInstance()->attach120FPS(this);
+        enabled = true;
+    }
+}
+
 void PlayerMovement::setSpeed(float newSpeed)
 {
     speed = newSpeed;

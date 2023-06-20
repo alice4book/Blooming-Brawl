@@ -19,7 +19,9 @@ public:
 
 	void startClock(int seconds);
 
-	void stopClock();
+	void endLevelClock();
+
+	void detachClock();
 
 	int getSeconds();
 };

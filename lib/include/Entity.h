@@ -35,6 +35,8 @@ public:
     //add new component
     void addComponent(Component* comp);
 
+    void enableAllComponents(bool value);
+
     //get component from vector by type
     template<typename T>
     bool getComponentsByType(std::vector<T*>* compType = nullptr);

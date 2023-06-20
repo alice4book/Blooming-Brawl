@@ -30,12 +30,15 @@ private:
 	HUD* hud;
 
 	int roundTime;
+	int currentToolSize;
 	float TILE_SIZE = 0.254f;
 public:
 	Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
 		Shader* pickupShader, Shader* highlightShader, HUD* hud);
 
 	void changeRound(int roundNr);
+	void regenerateMaps(Model* tileModels, std::string* mapFiles, Shader* directionalShader,
+		Shader* pickupShader, Shader* highlightShader);
 
 	Entity* getPlayer1();
 	Entity* getPlayer2();
