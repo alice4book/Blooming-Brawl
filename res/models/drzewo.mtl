@@ -1,0 +1,530 @@
+# Blender 3.5.1 MTL File: 'farma_16.06_piatek.blend'
+# www.blender.org
+
+newmtl Material.338
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.211569 0.132697 0.071132
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.339
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.211569 0.132697 0.071132
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.340
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.211569 0.132697 0.071132
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.341
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.342
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.343
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.344
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.345
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.346
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.347
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.348
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.349
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.350
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.351
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.352
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.353
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.354
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.355
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.356
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.357
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.358
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.359
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.360
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.361
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.362
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.363
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.364
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.365
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.366
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.367
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.368
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.369
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.370
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.371
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.372
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.373
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.374
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.375
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.376
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.377
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.378
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.379
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.381
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.382
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.383
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_BaseColor.png
+map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Roughness.png
+map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Metallic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_lodyga_liscie_Normal.png
+
+newmtl Material.384
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.385
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.099681 0.426208 0.049504
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
