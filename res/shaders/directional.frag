@@ -38,7 +38,8 @@ void main()
 	
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 lightDir = normalize(vec3(-(-0.2f, -1.0f, -0.3f)));
+	//vec3 lightDir = normalize(vec3(-(-0.2f, -1.0f, -0.3f)));
+	vec3 lightDir = -normalize(vec3(1,  -1, 1));
     // diffuse shading
     float diff = max(dot(norm, lightDir), 0.0);
     // specular shading
