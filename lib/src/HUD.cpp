@@ -15,22 +15,22 @@ HUD::HUD(Shader* shader, Shader* textShader)
 	this->transform->setLocalPosition({ 0,0,-2.4 });
 	this->transform->setLocalRotation({ 90,0,0 });
 
-	hudIcon1 = new Entity("res/models/HUD/player1_icon.obj", hudShader);
+	hudIcon1 = new Entity("res/interface/player1_icon.obj", hudShader);
 	hudIcon1->transform->setLocalPosition({ -1.4, 0, -0.7 });
 
-	hudIcon2 = new Entity("res/models/HUD/player2_icon.obj", hudShader);
+	hudIcon2 = new Entity("res/interface/player2_icon.obj", hudShader);
 	hudIcon2->transform->setLocalPosition({ 1.4, 0, -0.7 });
 
-	barBack = new Entity("res/models/HUD/barBack.obj", hudShader);
+	barBack = new Entity("res/interface/barBack.obj", hudShader);
 	barBack->transform->setLocalRotation({ 0, 90, 0 });
 	barBack->transform->setLocalPosition({ 0, 0, -0.84 });
 	barBack->transform->scaleEntity({ 1, 1, 2050 });
 
-	bar1 = new Entity("res/models/HUD/bar1.obj", hudShader);
+	bar1 = new Entity("res/interface/bar1.obj", hudShader);
 	bar1->transform->setLocalRotation({ 0, -90, 0 });
 	bar1->transform->setLocalPosition({ -1.1, 0, -0.84 });
 
-	bar2 = new Entity("res/models/HUD/bar2.obj", hudShader);
+	bar2 = new Entity("res/interface/bar2.obj", hudShader);
 	bar2->transform->setLocalRotation({ 0, 90, 0 });
 	bar2->transform->setLocalPosition({ 1.1, 0, -0.84 });
 
@@ -82,8 +82,8 @@ void HUD::renderEntity()
         return;
 
 	Entity::renderEntity();
-	seeds1->RenderText(std::to_string(seedsCount1) + "/15", resizeX * 10, resizeY * 550, resizeX, {1.f,1.f,1.f});
-	seeds2->RenderText(std::to_string(seedsCount2) + "/15", resizeX * 1190, resizeY * 550, resizeX, { 1.f,1.f,1.f });
+	seeds1->RenderText(std::to_string(seedsCount1) + "/15", resizeX * 10, resizeY * 670, 0.8 * resizeX, {1.f,1.f,1.f});
+	seeds2->RenderText(std::to_string(seedsCount2) + "/15", resizeX * 1190, resizeY * 670, 0.8 * resizeX, { 1.f,1.f,1.f });
 	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
 }
 
