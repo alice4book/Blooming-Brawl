@@ -213,6 +213,8 @@ void Round::regenerateMaps(Model* tileModels, std::string* mapFiles, Shader* dir
         mapManagers[i]->addComponent(maps[i]);
         maps[i]->GenerateMap(i);
     }
+    allTools[0]->transform->setLocalPosition(glm::vec3(0.f,0.f,0.f));
+    allTools[1]->transform->setLocalPosition(glm::vec3(0.f,0.f,0.f));
     changeRound(0);
 }
 
