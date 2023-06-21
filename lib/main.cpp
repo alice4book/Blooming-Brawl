@@ -215,7 +215,7 @@ int main()
 #pragma endregion
 
 #pragma region Power Up Setting
-    float rimLight = 0.5f;
+    float rimLight = 0.6f;
 #pragma endregion
 
 #pragma region Shadow
@@ -253,8 +253,8 @@ int main()
 #pragma endregion
 
 #pragma region Audio   
-    //Audio audioBackground(round.getRobot());
-    //audioBackground.playMusic("res/audio/x.wav", true);
+    Audio audioBackground(round.getRobot());
+    audioBackground.playMusic("res/audio/x.wav", true);
 #pragma endregion
 
 
