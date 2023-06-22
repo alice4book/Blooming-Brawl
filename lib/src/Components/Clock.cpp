@@ -11,11 +11,6 @@ Clock::Clock(Entity* parent) : Component(parent)
 void Clock::update()
 {
 	if (seconds <= 0) {
-		HUD* hud = dynamic_cast<HUD*>(parent);
-		if (hud->getShowBanner()) {
-			endBreakClock();
-			return;
-		}
 		endLevelClock();
 		return;
 	}
@@ -29,25 +24,14 @@ void Clock::startClock(int seconds)
 }
 
 
-void Clock::endBreakClock()
-{
-	timeManager->detach(this);
-	HUD* hud = dynamic_cast<HUD*>(parent);
-	if (hud != nullptr) {
-		hud->setShowBanner(false);
-		hud->nextMap();
-	}
-}
 
 void Clock::endLevelClock()
 {
 	timeManager->detach(this);
 	HUD* hud = dynamic_cast<HUD*>(parent);
-	if (hud != nullptr) {
-		hud->setShowBanner(true);
-		hud->decideWinner();
-		startClock(3);
-	}
+	if (hud != nullptr)
+		hud->nextMap();
+
 }
 
 void Clock::detachClock()

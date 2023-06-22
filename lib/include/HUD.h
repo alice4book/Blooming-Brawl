@@ -1,12 +1,10 @@
 #pragma once
 #include "Entity.h"
-#include "Model.h"
 
 class Shader;
 class Text;
 class TimerManager;
 class Clock;
-class Model;
 
 class HUD : public Entity{
 
@@ -24,19 +22,6 @@ private:
 	Entity* bar1;
 	Entity* bar2;
 
-	bool showBanner;
-	Entity* scoreBaner;
-	Text* score1;
-	Text* score2;
-	Text* roundsWon1;
-	Text* roundsWon2;
-
-	Model winningBanners[3] = {
-		Model("res/interface/score_baner.obj"),
-		Model("res/interface/score_baner_blue.obj"),
-		Model("res/interface/score_baner_red.obj")
-	};
-
 	std::string str_timer;
 
 	Text* seeds1;
@@ -49,8 +34,6 @@ private:
 	int tilesCount;
 	int player1Tiles;
 	int player2Tiles;
-	int player1RoundsWon;
-	int player2RoundsWon;
 
 	int seedsCount1;
 	int seedsCount2;
@@ -82,10 +65,4 @@ public:
 	void nextMap();
 
 	void resetHUD();
-
-	void setShowBanner(bool value);
-
-	bool getShowBanner();
-
-	void decideWinner();
 };

@@ -19,8 +19,6 @@ public:
 
 	void startClock(int seconds);
 
-	void endBreakClock();
-
 	void endLevelClock();
 
 	void detachClock();
