@@ -367,7 +367,10 @@ int main()
 //         glm::mat4 projection = glm::ortho(aspectRatio * -size, aspectRatio * size,  -size,  size, 0.1f, 100.f);
 
         // perspective
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float) windowData.resolutionX / (float) windowData.resolutionY, 0.1f, 100.0f);
+        glm::mat4 projection;
+        if (windowData.resolutionX != 0 && windowData.resolutionY != 0) {
+            projection = glm::perspective(glm::radians(camera.Zoom), (float)windowData.resolutionX / (float)windowData.resolutionY, 0.1f, 100.0f);
+        }
         glm::mat4 view = camera.GetViewMatrix();
         
         // activate shader
