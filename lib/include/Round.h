@@ -47,4 +47,8 @@ public:
 	Map* getMap();
 	Entity** getTools();
 	int getToolsSize();
+
+	int getRoundTime();
+	int getClockSeconds();
+
 };

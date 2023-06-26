@@ -15,7 +15,9 @@
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
     Shader* pickupShader, Shader* highlightShader, HUD* hud)
 {
-    roundTime = 12;
+
+    roundTime = 20;
+
 
 	auto skybox = World::getInstance();
     
@@ -249,6 +251,16 @@ Map* Round::getMap()
 int Round::getToolsSize()
 {
     return 2;
+}
+
+int Round::getRoundTime()
+{
+    return roundTime;
+}
+
+int Round::getClockSeconds()
+{
+    return this->hud->clock->getSeconds();
 }
 
 Entity** Round::getTools()

@@ -48,6 +48,11 @@ bool click = false;
 
 Menu* menu;
 
+float angleSun = 0.0f;
+int currentSecond = 0.0f;
+int previousSecond = 0.0f;
+int roundTime = 1.0f;
+
 //gamepad
 int axisCount;
 
@@ -160,7 +165,7 @@ int main()
 //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
 //    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
 
-    glm::vec3 dirLightColor(1.0f, 1.0f, 1.0f);
+    glm::vec3 dirLightColor(1.0f, 1.0f, 0.5f);
 
     World* skybox = World::getInstance();
     skybox->setShader(&skyboxShader);
@@ -243,8 +248,8 @@ int main()
 
     float near_plane = 1.0f, far_plane = 100.0f;
     glm::mat4 orthogonalProjection = glm::ortho(-7.0f, 7.0f, -7.0f, 7.0f, near_plane, far_plane);
-    glm::mat4 lightView = glm::lookAt(glm::vec3(-1.0f, 2.0f, -1.0f), //eye
-                                    glm::vec3(0.0f, 0.0f, 0.0f), //center
+    glm::mat4 lightView = glm::lookAt(glm::vec3(1.0f, 2.0f, 0.0f), //eye
+                                    glm::vec3(2.0f, 0.0f, 3.0f), //center
                                        glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
     glm::mat4 lightProjection = orthogonalProjection * lightView;
 
@@ -255,11 +260,15 @@ int main()
 #pragma region Audio   
     Audio audioBackground(skybox);
     skybox->addComponent(&audioBackground);
-    audioBackground.playBackgroundMusic("res/audio/x.wav");
+    //audioBackground.playBackgroundMusic("res/audio/x.wav");
 #pragma endregion
 
 
     int currentRound = 0;
+
+    roundTime = round.getRoundTime();
+    angleSun = 5.0f / round.getRoundTime(); // *M_PI / 180;
+    previousSecond = round.getRoundTime();
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -272,6 +281,13 @@ int main()
         if (currentRound < 4 && currentRound != hud.currentMap()) {
             round.changeRound(hud.currentMap());
             currentRound = hud.currentMap();
+
+            lightView = glm::lookAt(glm::vec3(1.0f, 2.0f, 0.0f), //eye
+                glm::vec3(2.0f, 0.0f, 3.0f), //center
+                glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
+            dirLightColor = glm::vec3(1.0f, 1.0f, 0.5f);
+            previousSecond = round.getRoundTime();
+
         }
         else if (hud.currentMap() == 5) {
             currentRound = 0;
@@ -320,6 +336,22 @@ int main()
 
 
         glfwPollEvents();
+        //std::cout << cos((360 / 120)) * timeManager->getDeltaTime120FPS() << std::endl;
+        //std::cout << round.getRoundTime() << std::endl;
+        //std::cout << round.getClockSeconds() << std::endl;
+        currentSecond = round.getClockSeconds();
+        if (previousSecond > currentSecond) {
+            previousSecond = currentSecond;
+            lightView = glm::lookAt(glm::vec3(1.0f, 2.0f, angleSun * (roundTime - currentSecond)), //eye
+                glm::vec3(2.0f, 0.0f, 3.0f), //center
+                glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
+            lightProjection = orthogonalProjection * lightView;
+            dirLightColor.r -= 1.0f/roundTime;
+            dirLightColor.g -= 1.0f / roundTime;
+            std::cout << dirLightColor.r << std::endl;
+        }
+        
+
 
         // input
         processInput(window);
@@ -403,6 +435,7 @@ int main()
         directionalShader.setMat4("projection", projection);
         directionalShader.setMat4("view", view);
         directionalShader.setVec4("aColor", glm::vec4(dirLightColor, 0.0f));
+        directionalShader.setVec3("dirLightColor", (dirLightColor));
         directionalShader.setVec3("viewPos", camera.Position);
 
         hudShader.use();
