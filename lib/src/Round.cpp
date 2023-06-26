@@ -18,7 +18,6 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
 
     roundTime = 20;
 
-
 	auto skybox = World::getInstance();
     
     round = new Entity();
@@ -185,7 +184,7 @@ void Round::changeRound(int mapNr)
 
     auto skybox = World::getInstance();
     skybox->mapComponent = currentMap;
-    skybox->clearReloadLists();
+    skybox->clearStaticReloadLists();
 
     this->hud->clock->detachClock();
     hud->clock->startClock(roundTime);

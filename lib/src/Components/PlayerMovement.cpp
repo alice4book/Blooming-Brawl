@@ -348,6 +348,9 @@ void PlayerMovement::update() {
     else if (robotPunchTimer >= robotPunchTime) {
         robotPunched = false;
     }
+    if (cooldownTimer > 0) {
+        cooldownTimer -= timeManager->getDeltaTime120FPS();
+    }
 }
 
 void PlayerMovement::enable(bool value) {
@@ -390,20 +393,19 @@ void PlayerMovement::checkInput(){
             }
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
                 for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
-
-                    //std::cout << "parent 1 " << parent << std::endl;
-                    //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
-                    if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                        //std::cout << "punch" << std::endl;
-                        reactToPunch(rivalParent);
-                        audio->playMusic("res/audio/punch.wav");
-                        break;
-                    }
-                    if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                        //std::cout << "punch robot" << std::endl;
-                        reactToPunchRobot();
-                        audio->playMusic("res/audio/punch.wav");
-                        break;
+                    if(cooldownTimer <= 0.f ){
+                        //std::cout << "parent 1 " << parent << std::endl;
+                        //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
+                        if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                            //std::cout << "punch" << std::endl;
+                            reactToPunch(rivalParent);
+                            break;
+                        }
+                        if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                            //std::cout << "punch robot" << std::endl;
+                            reactToPunchRobot();
+                            break;
+                        }
                     }
                 }
             }
@@ -421,19 +423,19 @@ void PlayerMovement::checkInput(){
                     {
                         for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
 
-                            //std::cout << "parent 1 " << parent << std::endl;
-                            //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
-                            if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                                //std::cout << "punch" << std::endl;
-                                reactToPunch(rivalParent);
-                                audio->playMusic("res/audio/punch.wav");
-                                break;
-                            }
-                            if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                                //std::cout << "punch robot" << std::endl;
-                                reactToPunchRobot();
-                                audio->playMusic("res/audio/punch.wav");
-                                break;
+                            if (cooldownTimer <= 0.f) {
+                                //std::cout << "parent 1 " << parent << std::endl;
+                                //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
+                                if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                                    //std::cout << "punch" << std::endl;
+                                    reactToPunch(rivalParent);
+                                    break;
+                                }
+                                if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                                    //std::cout << "punch robot" << std::endl;
+                                    reactToPunchRobot();
+                                    break;
+                                }
                             }
                         }
 
@@ -448,18 +450,17 @@ void PlayerMovement::checkInput(){
             }
             if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
                 for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
-
-                    if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                        //std::cout << "punch" << std::endl;
-                        reactToPunch(rivalParent);
-                        audio->playMusic("res/audio/punch.wav");
-                        break;
-                    }
-                    if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                        //std::cout << "punch robot" << std::endl;
-                        reactToPunchRobot();
-                        audio->playMusic("res/audio/punch.wav");
-                        break;
+                    if (cooldownTimer <= 0.f) {
+                        if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                            //std::cout << "punch" << std::endl;
+                            reactToPunch(rivalParent);
+                            break;
+                        }
+                        if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                            //std::cout << "punch robot" << std::endl;
+                            reactToPunchRobot();
+                            break;
+                        }
                     }
                 }
             }
@@ -475,18 +476,17 @@ void PlayerMovement::checkInput(){
                     if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
                     {
                         for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
-
-                            if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                                //std::cout << "punch" << std::endl;
-                                reactToPunch(rivalParent);
-                                audio->playMusic("res/audio/punch.wav");
-                                break;
-                            }
-                            if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
-                                //std::cout << "punch robot" << std::endl;
-                                reactToPunchRobot();
-                                audio->playMusic("res/audio/punch.wav");
-                                break;
+                            if (cooldownTimer <= 0.f) {
+                                if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                                    //std::cout << "punch" << std::endl;
+                                    reactToPunch(rivalParent);
+                                    break;
+                                }
+                                if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
+                                    //std::cout << "punch robot" << std::endl;
+                                    reactToPunchRobot();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -656,6 +656,8 @@ void PlayerMovement::setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement)
 
 void PlayerMovement::reactToPunch(Entity* punchedParent)
 {
+    cooldownTimer = cooldownForPunch;
+    audio->playMusic("res/audio/punch.wav");
     rivalPunched = true;
     rivalPunchTimer = 0.0f;
 
@@ -694,6 +696,8 @@ void PlayerMovement::updateRobotAfterPunch(glm::vec3 distance) {
 
 void PlayerMovement::reactToPunchRobot()
 {
+    cooldownTimer = cooldownForPunch;
+    audio->playMusic("res/audio/punch.wav");
     robotPunched = true;
     robotPunchTimer = 0.0f;
 

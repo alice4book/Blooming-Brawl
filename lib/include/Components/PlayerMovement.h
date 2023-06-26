@@ -54,6 +54,8 @@ private:
 	float robotPunchTimer = 0.0f;
 	float robotPunchTime = 0.2f;
 	glm::vec3 robotPunchedDistance = glm::vec3(0.1,0,0.1);
+	float cooldownForPunch = 1.0f;
+	float cooldownTimer = -1.f;
 
 	//timers
 	float actionTimer = 0;

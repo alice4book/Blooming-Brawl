@@ -22,6 +22,7 @@ public:
     std::vector<DynamicColliderComponent*> getDynamicColliders();
 
     void reloadLists(Entity* e = nullptr);
+    void clearStaticReloadLists(Entity* e = nullptr);
     void clearReloadLists(Entity* e = nullptr);
 
 private:

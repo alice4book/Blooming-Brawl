@@ -180,6 +180,14 @@ void World::reloadLists(Entity* e){
     }
 }
 
+void World::clearStaticReloadLists(Entity* e)
+{
+    staticColComp.clear();
+    //dynamicColComp.clear();
+    reloadLists(e);
+}
+
+
 void World::clearReloadLists(Entity* e)
 {
     staticColComp.clear();
