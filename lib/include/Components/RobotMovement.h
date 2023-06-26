@@ -12,6 +12,7 @@ class Transform;
 class DynamicColliderComponent;
 class TimeManager;
 class PlayerMovement;
+class Audio;
 
 class RobotMovement : public Component{
 private:
@@ -27,6 +28,7 @@ private:
 	//Tells what kind of movement
 	void (RobotMovement::*moveRob)(float);
     TimeManager* timeManager;
+	Audio* audio;
 
 	float TILE_SIZE;
 	std::queue<glm::vec2> newPositions;

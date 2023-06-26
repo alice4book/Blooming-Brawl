@@ -3,7 +3,7 @@
 0
 xxxxxxxxxxxxxxxxxxxx
 x.....x..........x.x
-x.x...x.........x.xx
+x.x...x......r..x.xx
 x......b...........x
 x.....xxxxxxx......x
 x..xxxx...x...m....x

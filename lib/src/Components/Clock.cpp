@@ -16,10 +16,18 @@ void Clock::update()
 			endBreakClock();
 			return;
 		}
+		hud->changeTimerColor({ 1,1,1});
 		endLevelClock();
 		return;
 	}
 	seconds--;
+	if (seconds <= 3 && seconds > 0) {
+		HUD* hud = dynamic_cast<HUD*>(parent);
+		if (!hud->getShowBanner()){
+			hud->makeBeep();
+			hud->changeTimerColor({1,0,0});
+		}
+	}
 }
 
 void Clock::startClock(int seconds)

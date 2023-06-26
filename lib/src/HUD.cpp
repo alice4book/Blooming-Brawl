@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "Text.h"
 #include "Clock.h"
+#include "Audio.h"
 
 HUD::HUD(Shader* shader, Shader* textShader)
 	: hudShader(shader)
@@ -14,6 +15,8 @@ HUD::HUD(Shader* shader, Shader* textShader)
 	, player1RoundsWon(0)
 	, player2RoundsWon(0)
 {
+	audio = new Audio(this);
+	this->addComponent(audio);
 
 	this->transform->setLocalPosition({ 0,0,-2.4 });
 	this->transform->setLocalRotation({ 90,0,0 });
@@ -99,7 +102,7 @@ void HUD::renderEntity()
     if(hideHUD)
         return;
 	Entity::renderEntity();
-	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, { 1.f,1.f,1.f });
+	timer->RenderText(std::to_string(clock->getSeconds()), resizeX * 600, resizeY * 600, resizeX, timerColor);
 	if (showBanner) {
 		scoreBaner->renderEntity(hudShader);
 		score1->RenderText(std::to_string(player1Tiles) , resizeX * 400, resizeY * 340, resizeX * 1.5, { 0.f,1.f,1.f });
@@ -161,6 +164,16 @@ void HUD::decideWinner()
 	
 }
 
+void HUD::makeBeep()
+{
+	audio->playMusic("res/audio/bleep.wav");
+}
+
+void HUD::changeTimerColor(glm::vec3 newTimerColor)
+{
+	timerColor = newTimerColor;
+}
+
 int HUD::currentMap()
 {
 	return mapNr;
@@ -169,4 +182,5 @@ int HUD::currentMap()
 void HUD::setHideHud(bool newHideHud) {
     hideHUD = newHideHud;
 }
+
 

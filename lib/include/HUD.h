@@ -1,12 +1,14 @@
 #pragma once
 #include "Entity.h"
 #include "Model.h"
+#include "glm/vec3.hpp"
 
 class Shader;
 class Text;
 class TimerManager;
 class Clock;
 class Model;
+class Audio;
 
 class HUD : public Entity{
 
@@ -59,6 +61,10 @@ private:
 
     bool hideHUD;
 
+	Audio* audio;
+
+	glm::vec3 timerColor = { 1,1,1 };
+
 public:
 	Clock* clock;
 
@@ -88,4 +94,8 @@ public:
 	bool getShowBanner();
 
 	void decideWinner();
+
+	void makeBeep();
+
+	void changeTimerColor(glm::vec3 newTimerColor);
 };

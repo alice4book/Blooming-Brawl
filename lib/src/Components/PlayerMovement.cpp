@@ -589,7 +589,7 @@ void PlayerMovement::startAction(TileState* tile)
             }
             else { 
                 rival->cancelAction(tile);
-                action = DestroyingFlower; 
+                action = DestroyingFlower;
             }
             break;
         case Grown2:
@@ -623,6 +623,7 @@ void PlayerMovement::startAction(TileState* tile)
         case DestroyingOvergrown:
             actionTimer = currentDestroyTime;
             isTimerSet = true;
+            audio->playMusic("res/audio/fire.wav");
             break;
         case Harvesting:
             actionTimer = currentHarvestTime;

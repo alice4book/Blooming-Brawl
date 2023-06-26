@@ -9,8 +9,7 @@
 #include <vector>
 #include "Map.h"
 #include "PlayerMovement.h"
-
-#include <iostream> //usuñ
+#include "Audio.h"
 
 #include <TileStateType.h>
 #include <algorithm>
@@ -77,6 +76,9 @@ RobotMovement::RobotMovement(Entity* parent, Transform* transform,
 	startForward = forward;
 	height = transform->getLocalPosition().y;
 
+	audio = new Audio(parent);
+	parent->addComponent(audio);
+
 	colliderFront->setCenterOffset(glm::vec2(forward.x * offset, forward.z * offset));
 
 }
@@ -122,6 +124,8 @@ void RobotMovement::update() {
 			glm::vec2 snappedPos = getSnappedPosition();
 			TileState* tileState = pathFinding.map->allTilesComp[(int)snappedPos.x][(int)snappedPos.y];
 
+			if(tileState->getOwner() != None)
+				audio->playMusic("res/audio/fire.wav");
 			tileState->changeTileState(EPlayerID::RobotDestroyer, EActionType::DestroyingFlower);
 			player1->cancelAction(tileState);
 			player2->cancelAction(tileState);

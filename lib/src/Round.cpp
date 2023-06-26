@@ -15,7 +15,7 @@
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
     Shader* pickupShader, Shader* highlightShader, HUD* hud)
 {
-    roundTime = 50;
+    roundTime = 12;
 
 	auto skybox = World::getInstance();
     
