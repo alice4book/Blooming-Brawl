@@ -16,6 +16,7 @@ class PickUp;
 class Player;
 class RobotMovement;
 class TileState;
+class Audio;
 
 class PlayerMovement : public Component {
 private:
@@ -33,6 +34,7 @@ private:
 	Entity* rivalParent;
 	Entity* robot;
 	PlayerMovement* rival;
+	Audio* audio;
 
 	int axisCount;
 	const float* axes;

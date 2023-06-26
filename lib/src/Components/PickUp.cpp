@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "TileState.h"
+#include "Audio.h"
 
 
 PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* collider, glm::vec3 color, EPickUp type)
@@ -28,6 +29,9 @@ PickUp::PickUp(Entity* parent, Spawner* spawner, DynamicColliderComponent* colli
 	isSpawn = false;
 	isUsed = false;
 	pickupMovement = 0.0f;
+
+	audio = new Audio(parent);
+	parent->addComponent(audio);
 }
 
 void PickUp::update()
@@ -59,6 +63,8 @@ void PickUp::enable(bool value) {
 void PickUp::use(Entity* player)
 {
 	if (player != nullptr) {
+
+		audio->playMusic("res/audio/powerup.wav");
 		isUsed = true;
 		this->player = player;
 		timeManager->attach120FPS(this);

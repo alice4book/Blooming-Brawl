@@ -8,6 +8,7 @@ class DynamicColliderComponent;
 class Spawner;
 class TimeManager;
 class Shader;
+class Audio;
 
 class PickUp : public Component
 {
@@ -25,6 +26,8 @@ private:
 	Entity* player;
 
 	float pickupMovement;
+
+	Audio* audio;
 public:
 	PickUp(Entity* parent, Spawner* spawner,
 		DynamicColliderComponent* collider, glm::vec3 color, EPickUp type = EPickUp::NoPower);

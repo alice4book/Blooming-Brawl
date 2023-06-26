@@ -15,7 +15,7 @@
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
     Shader* pickupShader, Shader* highlightShader, HUD* hud)
 {
-    roundTime =3;
+    roundTime = 50;
 
 	auto skybox = World::getInstance();
     
@@ -79,7 +79,8 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     PlayerMovement* playerMovement2 = new PlayerMovement(window, player2, player1, robot, player2->transform, player2Collider,
         player2ColliderFront, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
     player2->addComponent((Component*)playerMovement2);
-    
+   
+
     playerMovement->setRivalPlayerMovement(playerMovement2);
     playerMovement2->setRivalPlayerMovement(playerMovement);
     robotmovement->setPlayers(playerMovement, playerMovement2);

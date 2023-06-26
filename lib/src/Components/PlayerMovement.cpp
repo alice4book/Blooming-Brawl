@@ -11,9 +11,11 @@
 #include "Tool.h"
 #include "Player.h"
 #include "RobotMovement.h"
+#include "Audio.h"
+#include "World.h"
+#include "Map.h"
 #include <cmath>
 #include <math.h>
-#include <iostream>
 
 PlayerMovement::PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, float speed, EPlayerID ID, glm::vec3 forward)
     : Component(parent)
@@ -32,6 +34,9 @@ PlayerMovement::PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rival
     //parent.getComponentsByType(&player);
     timeManager = TimeManager::getInstance();
     timeManager->attach120FPS(this);
+
+    audio = new Audio(parent);
+    parent->addComponent(audio);
 
     setForward = forward;
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
@@ -391,11 +396,13 @@ void PlayerMovement::checkInput(){
                     if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                         //std::cout << "punch" << std::endl;
                         reactToPunch(rivalParent);
+                        audio->playMusic("res/audio/punch.wav");
                         break;
                     }
                     if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                         //std::cout << "punch robot" << std::endl;
                         reactToPunchRobot();
+                        audio->playMusic("res/audio/punch.wav");
                         break;
                     }
                 }
@@ -419,11 +426,13 @@ void PlayerMovement::checkInput(){
                             if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                                 //std::cout << "punch" << std::endl;
                                 reactToPunch(rivalParent);
+                                audio->playMusic("res/audio/punch.wav");
                                 break;
                             }
                             if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                                 //std::cout << "punch robot" << std::endl;
                                 reactToPunchRobot();
+                                audio->playMusic("res/audio/punch.wav");
                                 break;
                             }
                         }
@@ -443,11 +452,13 @@ void PlayerMovement::checkInput(){
                     if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                         //std::cout << "punch" << std::endl;
                         reactToPunch(rivalParent);
+                        audio->playMusic("res/audio/punch.wav");
                         break;
                     }
                     if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                         //std::cout << "punch robot" << std::endl;
                         reactToPunchRobot();
+                        audio->playMusic("res/audio/punch.wav");
                         break;
                     }
                 }
@@ -468,11 +479,13 @@ void PlayerMovement::checkInput(){
                             if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                                 //std::cout << "punch" << std::endl;
                                 reactToPunch(rivalParent);
+                                audio->playMusic("res/audio/punch.wav");
                                 break;
                             }
                             if (robot == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                                 //std::cout << "punch robot" << std::endl;
                                 reactToPunchRobot();
+                                audio->playMusic("res/audio/punch.wav");
                                 break;
                             }
                         }
@@ -531,7 +544,14 @@ void PlayerMovement::startAction(TileState* tile)
         {
         case Empty:
             if (rival->actionTile == tile) return;
-            action = Planting;
+            {
+                World* world = World::getInstance();
+                Map* map = world->mapComponent;
+                if (map->getSeedCount(ID) == 0)
+                    return;
+                audio->playMusic("res/audio/planting.wav");
+                action = Planting;
+            }
             break;
         case Growing:
             if (ID == Player1)

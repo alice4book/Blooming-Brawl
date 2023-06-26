@@ -13,7 +13,7 @@ Audio::~Audio(){
     gSoloud->deinit();
 }
 
-void Audio::playMusic(const char* filePath, bool isLooped = false) {
+void Audio::playMusic(const char* filePath, bool isLooped) {
     // Load the music file
     SoLoud::Wav* music = new SoLoud::Wav;
     if (music->load(filePath) != 0) {
@@ -24,6 +24,19 @@ void Audio::playMusic(const char* filePath, bool isLooped = false) {
     music->setLooping(isLooped);
     // Play the music
     int handle = gSoloud->play(*music);         // Play the sound
+}
+
+void Audio::playBackgroundMusic(const char* filePath)
+{
+    SoLoud::Wav* music = new SoLoud::Wav;
+    if (music->load(filePath) != 0) {
+        // Failed to load the music file
+        std::cout << "Failed to load the music fil" << std::endl;
+        return;
+    }
+
+    music->setLooping(true);
+    int handle = gSoloud->playBackground(*music);
 }
 
 void Audio::stopMusic() {

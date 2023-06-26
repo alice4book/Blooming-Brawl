@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "Map.h"
 #include "ActionType.h"
+#include "Audio.h"
 
 TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 mapPosition, Map* map)
  : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition), map(map)
@@ -48,18 +49,17 @@ void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
         switch (actionType)
         {
         case Planting:
-            if(map->getSeedCount(playerID) > 0){
-                ownerID = playerID;
-                map->subSeedsForPlanting(playerID);
-                    if (playerID == EPlayerID::Player1) {
-                        setState(EState::Growing);
-                        map->addToPlayer1TilesCount(1);
-                    }
-                    else {
-                        setState(EState::Growing2);
-                        map->addToPlayer2TilesCount(1);
-                    }
+            ownerID = playerID;
+            map->subSeedsForPlanting(playerID);
+                if (playerID == EPlayerID::Player1) {
+                    setState(EState::Growing);
+                    map->addToPlayer1TilesCount(1);
                 }
+                else {
+                    setState(EState::Growing2);
+                    map->addToPlayer2TilesCount(1);
+                }
+            
             break;
         case DestroyingFlower:
             setState(EState::Burned);

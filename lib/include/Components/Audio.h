@@ -11,7 +11,8 @@ public:
 
     ~Audio();
 
-    void playMusic(const char* filePath, bool isLooped);
+    void playMusic(const char* filePath, bool isLooped = false);
+    void playBackgroundMusic(const char* filePath);
 
     void stopMusic();
 

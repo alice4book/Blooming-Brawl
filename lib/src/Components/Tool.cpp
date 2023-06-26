@@ -6,12 +6,15 @@
 bool Tool::isSpawned() {
 	return tool_spawned;
 }
+
 void Tool::resetSpawn() {
 	tool_spawned = false;
 }
+
 void Tool::setSpawn() {
 	tool_spawned = true;
 }
+
 void Tool::PickedUp(EPlayerID p, Transform* t) {
 	if (p == None) {
 		restarting = true;
@@ -63,6 +66,7 @@ bool Tool::isPickedUp() {
 	}
 	return true;
 }
+
 Tool::Tool(Entity* parent, EToolType toolType) : Component(parent), toolType(toolType) {
 	player = None;
 	timermax = 0;

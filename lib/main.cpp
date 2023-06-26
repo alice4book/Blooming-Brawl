@@ -253,8 +253,9 @@ int main()
 #pragma endregion
 
 #pragma region Audio   
-    Audio audioBackground(round.getRobot());
-    audioBackground.playMusic("res/audio/x.wav", true);
+    Audio audioBackground(skybox);
+    skybox->addComponent(&audioBackground);
+    audioBackground.playBackgroundMusic("res/audio/x.wav");
 #pragma endregion
 
 
