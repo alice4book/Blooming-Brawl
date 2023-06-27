@@ -222,8 +222,8 @@ int main()
 #pragma endregion
 
 #pragma region AnimationTest
-    Model animatedModel("res/animated_models/chodzenie.dae");
-    Animation animation("res/animated_models/chodzenie.dae", &animatedModel);
+    Model animatedModel("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx");
+    Animation animation("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx", &animatedModel);
     Animator animator(&animation);
     Shader animationShader("res/shaders/vertexModelAnimation.vert", "res/shaders/directional.frag");
 #pragma endregion

@@ -26,6 +26,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 												  ${imgui_SOURCE_DIR}
 												  soloud
 												  )
+add_compile_definitions(FT_CONFIG_OPTION_SYSTEM_ZLIB)
+target_compile_definitions(freetype PUBLIC FT_CONFIG_OPTION_SYSTEM_ZLIB)
 
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} glad)

@@ -47,6 +47,7 @@ void Animation::ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src)
 
 Animation::Animation(const std::string& animationPath, Model* model)
 {
+    /*
     unsigned int processFlags =
         aiProcess_CalcTangentSpace |
         aiProcess_JoinIdenticalVertices |
@@ -54,9 +55,9 @@ Animation::Animation(const std::string& animationPath, Model* model)
         aiProcess_PreTransformVertices |
         aiProcess_GenSmoothNormals |
         aiProcess_FlipUVs |
-        0;
+        0;*/
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(animationPath, processFlags);//aiProcess_Triangulate);
+    const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);//processFlags);//aiProcess_Triangulate);
     assert(scene && scene->mRootNode);
     auto animation = scene->mAnimations[0];
     m_Duration = animation->mDuration;
