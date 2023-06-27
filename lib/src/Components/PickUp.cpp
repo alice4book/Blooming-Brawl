@@ -74,6 +74,7 @@ void PickUp::use(Entity* player)
 		std::vector<PlayerMovement*> playerMoveCom;
 		std::vector<Player*> playerCom;
 		std::vector<TileState*> tileStateCom;
+		player->setColor(rimColor);
 		switch (type) {
 			case Speed:
 				player->getComponentsByType(&playerMoveCom);
@@ -136,6 +137,7 @@ void PickUp::endUse()
 		}
 		break;
 	}
+	player->setColor({ 1,1,1 });
 	timeManager->detach(this);
 	player = nullptr;
 	isUsed = false;

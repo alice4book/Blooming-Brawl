@@ -20,7 +20,7 @@ public:
     Model* model{};
     bool isModel;
     //for pickup 
-    glm::vec3 color = {0,0,0};
+    glm::vec3 addedColor = {1,1,1};
 
     Entity();
 

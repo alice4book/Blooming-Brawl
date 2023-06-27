@@ -21,6 +21,7 @@ uniform vec3 viewPos;
 uniform DirLight dirLight;
 uniform float gamma;
 uniform vec3 dirLightColor;
+uniform vec3 addedColor;
 
 void main()
 {
@@ -55,15 +56,9 @@ void main()
     vec3 diffuse = vec3(1.0f, 1.0f, 1.0f) * 1.0f * diff * vec3(texture(texture_diffuse1, TexCoord)) * (1.0f - shadow);
     vec3 specular = vec3(0.2f, 0.2f, 0.2f) * 1.0f * spec * (1.0f - shadow);
 
-
-
-	
-
-
-
 	vec3 color = vec3(ambient + diffuse + specular);
 	color = pow(color, vec3(1.0/gamma));
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(color * addedColor, 1.0);
 	
 	
 }

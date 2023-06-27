@@ -120,7 +120,7 @@ void Entity::renderEntity() {
 
     if (isModel) {
         shader->use();
-        shader->setVec3("color", this->color);
+        shader->setVec3("addedColor", this->addedColor);
         shader->setMat4("model", transform->getModelMatrix());
         model->Draw(*shader);
     }
@@ -143,7 +143,7 @@ void Entity::renderEntity(Shader* shader) {
 }
 
 void Entity::setColor(glm::vec3 col) {
-    this->color = col;
+    this->addedColor = col;
 }
 
 const std::vector<Entity *> &Entity::getChildren() const {

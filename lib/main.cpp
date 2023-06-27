@@ -211,12 +211,42 @@ int main()
     Entity background("res/models/background_trawa.obj", &directionalShader);
     Entity house1("res/models/dom.obj", &directionalShader);
     Entity house2("res/models/dom_czerwony.obj", &directionalShader);
+    Entity bush("res/models/drzewo.obj", &directionalShader);
+    Entity bush1("res/models/drzewo.obj", &directionalShader);
+    Entity bush2("res/models/drzewo.obj", &directionalShader);
+    Entity bush3("res/models/drzewo.obj", &directionalShader);
+    Entity bush4("res/models/drzewo.obj", &directionalShader);
+    Entity bush5("res/models/drzewo.obj", &directionalShader);
+    Entity bush6("res/models/drzewo.obj", &directionalShader);
+    //Entity fan("res/models/wiatrak.obj", &directionalShader);
     background.transform->setLocalPosition({2.2f,-0.5f,2.2f});
     house2.transform->setLocalRotation({0.f,180.f,0.f});
     house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
+    bush.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
+    bush1.transform->setLocalPosition({ 2.8f,0.f, 4.0f});
+    bush1.transform->setLocalRotation({ 0.0f, 65.f, 0.f});
+    bush2.transform->setLocalPosition({ 2.8f,0.f, 3.2f});
+    bush2.transform->setLocalRotation({ 0.f, 240.f, 0.f });
+    bush3.transform->setLocalPosition({ 2.8f,0.f, 2.4f});
+    bush3.transform->setLocalRotation({ 0.f, 170.f, 0.f });
+    bush4.transform->setLocalPosition({ 2.8f,0.f, 1.6f});
+    bush4.transform->setLocalRotation({ 0.f, 300.f, 0.f });
+    bush5.transform->setLocalPosition({ 2.8f,0.f, 0.8f});
+    bush5.transform->setLocalRotation({ 0.f, 280.f, 0.f });
+    bush6.transform->setLocalPosition({ 2.8f,0.f, 0.0f});
+    bush6.transform->setLocalRotation({ 0.f, 320.f, 0.f });
     skybox->addChild(&background);
     skybox->addChild(&house1);
     skybox->addChild(&house2);
+    skybox->addChild(&bush);
+    skybox->addChild(&bush1);
+    skybox->addChild(&bush2);
+    skybox->addChild(&bush3);
+    skybox->addChild(&bush4);
+    skybox->addChild(&bush5);
+    skybox->addChild(&bush6);
+    //skybox->addChild(&fan);
+
 #pragma endregion
 
 #pragma region Power Up Setting
@@ -260,7 +290,7 @@ int main()
 #pragma region Audio   
     Audio audioBackground(skybox);
     skybox->addComponent(&audioBackground);
-    //audioBackground.playBackgroundMusic("res/audio/x.wav");
+    audioBackground.playBackgroundMusic("res/audio/x.wav");
 #pragma endregion
 
 
@@ -383,6 +413,12 @@ int main()
                 round.getTools()[i]->renderEntity(&depthShader);
             }
         }
+        bush.renderEntity(&depthShader);
+        bush1.renderEntity(&depthShader);
+        bush2.renderEntity(&depthShader);
+        bush3.renderEntity(&depthShader);
+        bush4.renderEntity(&depthShader);
+        //fan.renderEntity(&depthShader);
         house1.renderEntity(&depthShader);
         house2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
