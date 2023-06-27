@@ -1,4 +1,14 @@
-# Blender 3.5.1 MTL File: 'farma_16.06_piatek.blend'
+# Blender 3.5.1 MTL File: 'None'
 # www.blender.org
 
-map_Kd ../textures/wiatrak/wiatrak.jpg
+newmtl Material.010
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/wiatrak/wiatrak_DefaultMaterial_BaseColor.png
+map_Ns ../textures/wiatrak/wiatrak_DefaultMaterial_Roughness.png
+map_refl ../textures/wiatrak/wiatrak_DefaultMaterial_Metallic.png
+map_Bump -bm 1.000000 ../textures/wiatrak/wiatrak_DefaultMaterial_Normal.png
