@@ -22,6 +22,8 @@
 #include "Menu.h"
 #include "Round.h"
 
+#include "Animator.h"
+
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
 #define GLFW_GAMEPAD_BUTTON_X 2
@@ -219,6 +221,13 @@ int main()
     skybox->addChild(&house2);
 #pragma endregion
 
+#pragma region AnimationTest
+    Model animatedModel("res/animated_models/chodzenie.dae");
+    Animation animation("res/animated_models/chodzenie.dae", &animatedModel);
+    Animator animator(&animation);
+    Shader animationShader("res/shaders/vertexModelAnimation.vert", "res/shaders/directional.frag");
+#pragma endregion
+
 #pragma region Power Up Setting
     float rimLight = 0.6f;
 #pragma endregion
@@ -405,6 +414,24 @@ int main()
             projection = glm::perspective(glm::radians(camera.Zoom), (float)windowData.resolutionX / (float)windowData.resolutionY, 0.1f, 100.0f);
         }
         glm::mat4 view = camera.GetViewMatrix();
+        
+        //ANIMATION TEST
+
+        animationShader.use();
+        animationShader.setMat4("projection", projection);
+        animationShader.setMat4("view", view);
+
+        auto transforms = animator.GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            animationShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f));
+        //model = glm::scale(model, glm::vec3(.5f, .5f, .5f));
+        animationShader.setMat4("model", model);
+        animatedModel.Draw(animationShader);
+
+        //
         
         // activate shader
         modelShader.use();

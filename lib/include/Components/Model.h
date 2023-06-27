@@ -4,6 +4,17 @@
 #include "assimp/scene.h"
 #include "Mesh.h"
 #include "Transform.h"
+#include <map>
+#include <vector>
+#include <string>
+
+struct BoneInfo
+{
+    //index in finalBoneMatrices
+    int id;
+    //offset matrix transforms vertex from model space to bone space
+    glm::mat4 offset;
+};
 
 unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
@@ -16,6 +27,14 @@ public:
     std::string directory;
     std::string pathString;
     bool gammaCorrection;
+
+    std::map<std::string, BoneInfo> m_BoneInfoMap; 
+    int m_BoneCounter = 0;
+
+    std::map<std::string, BoneInfo>& getBoneInfoMap();
+    int& getBoneCount();
+    void setVertexBoneData(Vertex& vertex, int boneID, float weight);
+    void extractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
 
     // constructor, expects a filepath to a 3D model.
     //Model(Entity *parent, std::string const &path, bool gamma = false);
