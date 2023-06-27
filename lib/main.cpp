@@ -218,10 +218,12 @@ int main()
     Entity bush4("res/models/drzewo.obj", &directionalShader);
     Entity bush5("res/models/drzewo.obj", &directionalShader);
     Entity bush6("res/models/drzewo.obj", &directionalShader);
-    //Entity fan("res/models/wiatrak.obj", &directionalShader);
+    Entity fan("res/models/wiatrak.obj", &directionalShader);
+    
     background.transform->setLocalPosition({2.2f,-0.5f,2.2f});
     house2.transform->setLocalRotation({0.f,180.f,0.f});
     house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
+    fan.transform->setLocalPosition({ 2.5f,-0.5f, -0.7f});
     bush.transform->setLocalPosition({ 2.5f,0.f, 4.8f});
     bush1.transform->setLocalPosition({ 2.8f,0.f, 4.0f});
     bush1.transform->setLocalRotation({ 0.0f, 65.f, 0.f});
@@ -245,7 +247,7 @@ int main()
     skybox->addChild(&bush4);
     skybox->addChild(&bush5);
     skybox->addChild(&bush6);
-    //skybox->addChild(&fan);
+    skybox->addChild(&fan);
 
 #pragma endregion
 
@@ -418,7 +420,9 @@ int main()
         bush2.renderEntity(&depthShader);
         bush3.renderEntity(&depthShader);
         bush4.renderEntity(&depthShader);
-        //fan.renderEntity(&depthShader);
+        bush5.renderEntity(&depthShader);
+        bush6.renderEntity(&depthShader);
+        fan.renderEntity(&depthShader);
         house1.renderEntity(&depthShader);
         house2.renderEntity(&depthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
