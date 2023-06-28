@@ -20,11 +20,14 @@ private:
     TimeManager* timeManager;
     float timerGrow = 0;
     float timerBurn = 0;
+    float timerToBush = 0;
     float defaultGrowTime = 8;
     float defaultBurnTime = 6;
+    float defaultToBush = 10;
     float watered = false;
     bool isActionPlayer1 = false; 
     bool isActionPlayer2 = false;
+    bool wasBushOnStart = false;
 
 public:
     EState state = EState::Empty;

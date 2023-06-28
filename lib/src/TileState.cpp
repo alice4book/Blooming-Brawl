@@ -11,6 +11,8 @@ TileState::TileState(Entity* parent, EState state, Model* tileModels, glm::vec2 
  : Component(parent), state(state), tileModels(tileModels), mapPosition(mapPosition), map(map)
 {
     timeManager = TimeManager::getInstance();
+    if (state == EState::Overgrown)
+        wasBushOnStart = true;
 }
 
 void TileState::attachToTimeManager()
@@ -73,6 +75,7 @@ void TileState::changeTileState(EPlayerID playerID, EActionType actionType)
             break;
         case DestroyingOvergrown:
             setState(EState::Empty);
+            timerToBush = defaultToBush;
             map->addSeedsFromPlants(playerID);
             break;
         case Harvesting:
@@ -125,6 +128,14 @@ void TileState::update()
             else setState(EState::Grown2);
             timerGrow = 0;
             watered = false;
+        }
+    }
+    else if (wasBushOnStart && state == EState::Empty && timerToBush > 0) {
+        timerToBush -= timeManager->getDeltaTimeUnlimitedFPS();
+        if (timerToBush <= 0)
+        {
+            setState(EState::Overgrown);
+            timerToBush = 0;
         }
     }
 }
