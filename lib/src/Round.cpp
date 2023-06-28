@@ -78,7 +78,8 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     TimeManager::getInstance()->attachUnlimitedFPS(animator);
     player1->setupAnimator(animator);
 
-    player2 = new Entity("res/models/postacie_zeskalowne/nizej_farmer_czerwony.obj", directionalShader);
+    player2 = new Entity("res/anim/red/stand.fbx", animationShader);
+    player2->transform->scaleEntity({ .01, .01, .01 });
 
     Player* playerP1 = new Player(player1, Player1);
     player1->addComponent((Component*)playerP1);
@@ -89,7 +90,10 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     PlayerMovement* playerMovement = new PlayerMovement(window, player1, player2, robot, player1->transform, player1Collider,
         player1ColliderFront, animator, playerP1->getSpeed(), playerP1->getID(), { 1,0,0 });
     player1->addComponent((Component*)playerMovement);
-    //playerMovement->setAnimator(animator);
+
+    std::shared_ptr<Animator> animator2 = std::make_shared<Animator>(player2->model);
+    TimeManager::getInstance()->attachUnlimitedFPS(animator2);
+    player2->setupAnimator(animator2);
 
     Player* playerP2 = new Player(player2, Player2);
     player2->addComponent((Component*)playerP2);
@@ -98,7 +102,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     DynamicColliderComponent* player2ColliderFront = new DynamicColliderComponent(player2, 0.2f, true, { 0.15f,0 });
     player2->addComponent((Component*)player2ColliderFront);
     PlayerMovement* playerMovement2 = new PlayerMovement(window, player2, player1, robot, player2->transform, player2Collider,
-        player2ColliderFront, animator, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
+        player2ColliderFront, animator2, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
     player2->addComponent((Component*)playerMovement2);
 
 

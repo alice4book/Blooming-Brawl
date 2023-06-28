@@ -65,13 +65,16 @@ void Animator::update()
 Animator::Animator(Model* playerModel)
     :Component(parent)
 {
-    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/farmer_blue_test/farmer_blue.fbx", playerModel);
-    std::shared_ptr <Animation> animation2 = std::make_shared<Animation>("res/animated_models/farmer_test/farmer.fbx", playerModel);
+    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/anim/red/stand.fbx", playerModel);
+    std::shared_ptr <Animation> animation2 = std::make_shared<Animation>("res/anim/red/go.fbx", playerModel);
+    std::shared_ptr <Animation> animation3 = std::make_shared<Animation>("res/anim/red/action.fbx", playerModel);
+    std::shared_ptr <Animation> animation4 = std::make_shared<Animation>("res/anim/red/hit.fbx", playerModel);
+    std::shared_ptr <Animation> animation5 = std::make_shared<Animation>("res/anim/red/ishit.fbx", playerModel);
     animations.push_back(animation);
-    animations.push_back(animation);
     animations.push_back(animation2);
-    animations.push_back(animation2);
-    animations.push_back(animation2);
+    animations.push_back(animation3);
+    animations.push_back(animation4);
+    animations.push_back(animation5);
 
     m_CurrentTime = 0.0;
     m_CurrentAnimation = animations[0];
