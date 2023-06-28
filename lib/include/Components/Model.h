@@ -35,7 +35,6 @@ public:
     std::map<std::string, BoneInfo>& getBoneInfoMap();
     int& getBoneCount();
     void setVertexBoneData(Vertex& vertex, int boneID, float weight);
-    void extractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
 
     // constructor, expects a filepath to a 3D model.
     //Model(Entity *parent, std::string const &path, bool gamma = false);
@@ -59,41 +58,8 @@ private:
 
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 
-    void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
-    {
-        auto& boneInfoMap = m_BoneInfoMap;
-        int& boneCount = m_BoneCounter;
-
-        for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
-        {
-            int boneID = -1;
-            std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
-            if (boneInfoMap.find(boneName) == boneInfoMap.end())
-            {
-                BoneInfo newBoneInfo;
-                newBoneInfo.id = boneCount;
-                newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
-                boneInfoMap[boneName] = newBoneInfo;
-                boneID = boneCount;
-                boneCount++;
-            }
-            else
-            {
-                boneID = boneInfoMap[boneName].id;
-            }
-            assert(boneID != -1);
-            auto weights = mesh->mBones[boneIndex]->mWeights;
-            int numWeights = mesh->mBones[boneIndex]->mNumWeights;
-
-            for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
-            {
-                int vertexId = weights[weightIndex].mVertexId;
-                float weight = weights[weightIndex].mWeight;
-                assert(vertexId <= vertices.size());
-                SetVertexBoneData(vertices[vertexId], boneID, weight);
-            }
-        }
-    }
+    void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
+    
 
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
     // the required info is returned as a Texture struct.

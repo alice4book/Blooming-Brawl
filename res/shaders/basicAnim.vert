@@ -26,7 +26,7 @@ void main()
 
     vec4 posSkinned = vec4(0.0f);
     vec4 normSkinned = vec4(0.0f);
-    
+
     for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
     {
         if(aBoneIds[i] >= 0)
@@ -44,7 +44,8 @@ void main()
 
     vec4 worldPos = model * posSkinned;
 
-    Normal = vec3(normSkinned);//mat3(transpose(inverse(model))) * vec3(normSkinned);
+    //Normal = vec3(normSkinned);//mat3(transpose(inverse(model))) * vec3(normSkinned);
+    Normal = mat3(transpose(inverse(model))) * vec3(normSkinned);
     FragPos = vec3(worldPos);
     TexCoord = aTexCoords;
 	fragPosLight = lightProjection * vec4(FragPos, 1.0f);

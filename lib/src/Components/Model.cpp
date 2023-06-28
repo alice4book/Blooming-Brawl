@@ -46,9 +46,9 @@ void Model::setVertexBoneData(Vertex& vertex, int boneID, float weight)
 }
 
 
-void Model::extractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+void Model::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 {
-    for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+    /*for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
     {
         int boneID = -1;
         std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
@@ -75,6 +75,40 @@ void Model::extractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* 
             float weight = weights[weightIndex].mWeight;
             assert(vertexId <= vertices.size());
             setVertexBoneData(vertices[vertexId], boneID, weight);
+        }
+    }*/
+    auto& boneInfoMap = m_BoneInfoMap;
+    int& boneCount = m_BoneCounter;
+
+    for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+    {
+        int boneID = -1;
+        std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+        if (boneInfoMap.find(boneName) == boneInfoMap.end())
+        {
+            BoneInfo newBoneInfo;
+            newBoneInfo.id = boneCount;
+            newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+            boneInfoMap[boneName] = newBoneInfo;
+            boneID = boneCount;
+            boneCount++;
+        }
+        else
+        {
+            boneID = boneInfoMap[boneName].id;
+        }
+        assert(boneID != -1);
+        auto weights = mesh->mBones[boneIndex]->mWeights;
+        int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+        
+        for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+        {
+            int vertexId = weights[weightIndex].mVertexId;
+            float weight = weights[weightIndex].mWeight;
+            
+            assert(vertexId <= vertices.size());
+            SetVertexBoneData(vertices[vertexId], boneID, weight);
         }
     }
 }
@@ -235,7 +269,6 @@ void Model::SetVertexBoneDataToDefault(Vertex& vertex)
 
 void Model::SetVertexBoneData(Vertex& vertex, int boneID, float weight)
 {
-
     for (int i = 0; i < MAX_BONE_WEIGHTS; ++i)
     {
         if (vertex.m_BoneIDs[i] < 0)
@@ -245,7 +278,6 @@ void Model::SetVertexBoneData(Vertex& vertex, int boneID, float weight)
             break;
         }
     }
-
 }
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
