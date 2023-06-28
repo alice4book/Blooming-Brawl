@@ -7,6 +7,8 @@ class Model;
 class Shader;
 class Transform;
 class Component;
+class Animator;
+class TimeManager;
 class Entity
 {
 public:
@@ -19,6 +21,7 @@ public:
     Transform* parentTransform = nullptr;
     Model* model{};
     bool isModel;
+    Animator* animator = nullptr;
     //for pickup 
     glm::vec3 color = {0,0,0};
 
@@ -66,6 +69,8 @@ public:
     void clearChildren();
 
     void clearComponents();
+
+    void setupAnimator();
 };
 
 template<typename T>

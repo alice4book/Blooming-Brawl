@@ -1,4 +1,5 @@
 #include "Animator.h"
+#include "TimeManager.h"
 
 void Animator::UpdateAnimation(float dt)
 {
@@ -49,8 +50,16 @@ std::vector<glm::mat4> Animator::GetFinalBoneMatrices()
     return m_FinalBoneMatrices;
 }
 
-Animator::Animator(Animation* animation)
+void Animator::update()
 {
+    float dt = timeManager->getDeltaTimeUnlimitedFPS();
+    UpdateAnimation(dt);
+}
+
+Animator::Animator(Animation* animation)
+    :Component(parent)
+{
+    timeManager = TimeManager::getInstance();
     m_CurrentTime = 0.0;
     m_CurrentAnimation = animation;
 

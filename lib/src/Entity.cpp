@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "Entity.h"
+#include "Animator.h"
 
 Entity::Entity() 
     : isModel(false)
@@ -29,7 +30,6 @@ Entity::Entity(const std::string& path, Shader* s, Shader* altShader)
     transform = new Transform(this);
     model = new Model(path);//this, path);
     isModel = true;
-
 }
 
 Entity::~Entity()
@@ -122,6 +122,12 @@ void Entity::renderEntity() {
         shader->use();
         shader->setVec3("color", this->color);
         shader->setMat4("model", transform->getModelMatrix());
+        if (animator != nullptr)
+        {
+            auto transforms = animator->GetFinalBoneMatrices();
+            for (int i = 0; i < transforms.size(); ++i)
+                shader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        }
         model->Draw(*shader);
     }
     for (auto & i : children) {
@@ -163,4 +169,13 @@ void Entity::clearChildren() {
 void Entity::clearComponents(){
     if(!components.empty())
         components.clear();
+}
+
+void Entity::setupAnimator()
+{
+    std::vector<Animator*> animators;
+    if (getComponentsByType(&animators))
+    {
+        animator = animators[0];
+    }
 }

@@ -222,10 +222,21 @@ int main()
 #pragma endregion
 
 #pragma region AnimationTest
-    Model animatedModel("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx");
-    Animation animation("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx", &animatedModel);
+    //Model animatedModel("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx");
+    //Animation animation("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx", &animatedModel);
+    //Model animatedModel("res/animated_models/ball.fbx");
+    
+    //Shader animationShader("res/shaders/vertexModel.vert", "res/shaders/directional.frag");
+    Shader animationShader("res/shaders/basicAnim.vert", "res/shaders/directional.frag");
+    Entity animEntity("res/animated_models/ball.fbx", &animationShader);
+    Animation animation("res/animated_models/ball.fbx", animEntity.model);
     Animator animator(&animation);
-    Shader animationShader("res/shaders/vertexModelAnimation.vert", "res/shaders/directional.frag");
+    //timeManager->attachUnlimitedFPS(&animator);
+    //animEntity.addComponent(&animator);
+    //animEntity.setupAnimator();
+    animEntity.transform->scaleEntity({ 0.0012f, .0012f, .0012f });
+    skybox->addChild(&animEntity);
+
 #pragma endregion
 
 #pragma region Power Up Setting
@@ -415,23 +426,7 @@ int main()
         }
         glm::mat4 view = camera.GetViewMatrix();
         
-        //ANIMATION TEST
-
-        animationShader.use();
-        animationShader.setMat4("projection", projection);
-        animationShader.setMat4("view", view);
-
-        auto transforms = animator.GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            animationShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-
-        glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f));
-        //model = glm::scale(model, glm::vec3(.5f, .5f, .5f));
-        animationShader.setMat4("model", model);
-        animatedModel.Draw(animationShader);
-
-        //
+        
         
         // activate shader
         modelShader.use();
@@ -478,7 +473,27 @@ int main()
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projection);
         skybox->renderEntity();
+        
+        //ANIMATION TEST
+        /*
+        animationShader.use();
+        animationShader.setMat4("projection", projection);
+        animationShader.setMat4("view", view);
+
+        auto transforms = animator.GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            animationShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f));
+        model = glm::scale(model, glm::vec3(.0012f, .0012f, .0012f));
+        animationShader.setMat4("model", model);
+        animatedModel.Draw(animationShader);
+        */
+        //
         glDepthFunc(GL_LESS);
+
+        
 
         glfwSwapBuffers(window);
     }
