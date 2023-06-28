@@ -52,14 +52,13 @@ std::vector<glm::mat4> Animator::GetFinalBoneMatrices()
 
 void Animator::update()
 {
-    float dt = timeManager->getDeltaTimeUnlimitedFPS();
+    float dt = TimeManager::getInstance()->getDeltaTimeUnlimitedFPS();
     UpdateAnimation(dt);
 }
 
 Animator::Animator(std::shared_ptr<Animation> animation)
     :Component(parent)
 {
-    timeManager = TimeManager::getInstance();
     m_CurrentTime = 0.0;
     m_CurrentAnimation = animation;
 

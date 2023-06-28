@@ -202,7 +202,7 @@ int main()
     menu->setResize(resizeX, resizeY);
     int menuActiveButton;
 
-    Shader animationShader("res/shaders/basicAnim.vert", "res/shaders/directional.frag");
+    Shader animationShader("res/shaders/basicAnim.vert", "res/shaders/fragment.frag");
 
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud, &animationShader);
 

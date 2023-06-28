@@ -141,6 +141,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex{};
+        SetVertexBoneDataToDefault(vertex);
         glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
         // positions
         vector.x = mesh->mVertices[i].x;
@@ -224,7 +225,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 void Model::SetVertexBoneDataToDefault(Vertex& vertex)
 {
 
-    for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+    for (int i = 0; i < MAX_BONE_WEIGHTS; i++)
     {
         vertex.m_BoneIDs[i] = -1;
         vertex.m_Weights[i] = 0.0f;
@@ -235,9 +236,9 @@ void Model::SetVertexBoneDataToDefault(Vertex& vertex)
 void Model::SetVertexBoneData(Vertex& vertex, int boneID, float weight)
 {
 
-    for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+    for (int i = 0; i < MAX_BONE_WEIGHTS; ++i)
     {
-        if (vertex.m_BoneIDs[i] <= 0) //??
+        if (vertex.m_BoneIDs[i] < 0)
         {
             vertex.m_Weights[i] = weight;
             vertex.m_BoneIDs[i] = boneID;

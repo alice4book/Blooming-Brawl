@@ -61,10 +61,10 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
 
-    player1 = new Entity("res/animated_models/ball.fbx", animationShader);
-    player1->transform->scaleEntity({ .001, .001, .001 });
-
-    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/ball.fbx", player1->model);
+    player1 = new Entity("res/animated_models/farmer_test/farmer.fbx", animationShader);
+    player1->transform->scaleEntity({ .01, .01, .01 });
+    
+    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/farmer_test/farmer.fbx", player1->model);
     std::shared_ptr<Animator> animator = std::make_shared<Animator>(animation);
     TimeManager::getInstance()->attachUnlimitedFPS(animator);
     player1->setupAnimator(animator);
