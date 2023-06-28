@@ -18,7 +18,7 @@
 #include <cmath>
 #include <math.h>
 
-PlayerMovement::PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, float speed, EPlayerID ID, glm::vec3 forward)
+PlayerMovement::PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* frontCollider, std::shared_ptr<Animator> animator, float speed, EPlayerID ID, glm::vec3 forward)
     : Component(parent)
     , window(window)
     , rivalParent(rivalParent)
@@ -26,6 +26,7 @@ PlayerMovement::PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rival
     , transform(transform)
     , collider(collider)
     , frontCollider(frontCollider)
+    , animator(animator)
     , speed(speed)
     , ID(ID)
     , forward(forward)

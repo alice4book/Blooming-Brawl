@@ -94,7 +94,7 @@ private:
 	void handleActionTimer();
 
 public:
-	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
+	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, std::shared_ptr<Animator> animator, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
     void update() override;
 	void enable(bool value) override;
 	void setSpeed(float newSpeed);

@@ -87,8 +87,9 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     DynamicColliderComponent* player1ColliderFront = new DynamicColliderComponent(player1, 0.2f, true, { 0.15f,0 });
     player1->addComponent((Component*)player1Collider);
     PlayerMovement* playerMovement = new PlayerMovement(window, player1, player2, robot, player1->transform, player1Collider,
-        player1ColliderFront, playerP1->getSpeed(), playerP1->getID(), { 1,0,0 });
+        player1ColliderFront, animator, playerP1->getSpeed(), playerP1->getID(), { 1,0,0 });
     player1->addComponent((Component*)playerMovement);
+    //playerMovement->setAnimator(animator);
 
     Player* playerP2 = new Player(player2, Player2);
     player2->addComponent((Component*)playerP2);
@@ -97,7 +98,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     DynamicColliderComponent* player2ColliderFront = new DynamicColliderComponent(player2, 0.2f, true, { 0.15f,0 });
     player2->addComponent((Component*)player2ColliderFront);
     PlayerMovement* playerMovement2 = new PlayerMovement(window, player2, player1, robot, player2->transform, player2Collider,
-        player2ColliderFront, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
+        player2ColliderFront, animator, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
     player2->addComponent((Component*)playerMovement2);
 
 
