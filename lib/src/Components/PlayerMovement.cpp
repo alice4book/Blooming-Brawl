@@ -106,11 +106,13 @@ void PlayerMovement::move()
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
                     //std::cout << "W" << std::endl;
                     forward.x = 1;
+                    isMoving = true;
                     //transform->addToLocalPosition(forward * (speed*timeManager->getDeltaTime120FPS()));
                 }
                 else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
                     //std::cout << "S" << std::endl;
                     forward.x = -1;
+                    isMoving = true;
                     //transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 }
                 else {
@@ -119,11 +121,13 @@ void PlayerMovement::move()
                 if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
                     //std::cout << "A" << std::endl;
                     forward.z = -1;
+                    isMoving = true;
                     //transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 }
                 else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
                     //std::cout << "D" << std::endl;
                     forward.z = 1;
+                    isMoving = true;
                     //transform->addToLocalPosition(forward * (speed * timeManager->getDeltaTime120FPS()));
                 }
                 else {
@@ -155,6 +159,7 @@ void PlayerMovement::move()
                 if (abs(axes[0]) > 0 && abs(axes[0]) < 0.1 && abs(axes[1]) > 0 && abs(axes[1]) < 0.1) {
                     forward = glm::vec3{ 0,0,0 };
                 }else {
+                    isMoving = true;
                     forward.x = -axes[1];
                     forward.z = axes[0];
 
@@ -245,18 +250,22 @@ void PlayerMovement::move()
             
             if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
                 forward.x = 1;
+                isMoving = true;
             }
             else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
                 forward.x = -1;
+                isMoving = true;
             }
             else {
                 forward.x = 0;
             }
             if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 forward.z = -1;
+                isMoving = true;
             }
             else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 forward.z = 1;
+                isMoving = true;
             }
             else {
                 forward.z = 0;
@@ -286,6 +295,7 @@ void PlayerMovement::move()
                 //std::cout << forward.x << " " << forward.z << std::endl;
             }
             else {
+                isMoving = true;
                 forward.x = -axes2[1];
                 forward.z = axes2[0];
 
@@ -331,8 +341,15 @@ void PlayerMovement::move()
 }
 
 void PlayerMovement::update() {
+    isMoving = false;
     move();
     checkInput();
+
+    if (isMoving)   
+        animator->PlayAnimation(PlayerAnimType::Running);
+    else if (!isTimerSet)
+        animator->PlayAnimation(PlayerAnimType::Standing);
+
     handleSeenTile();
     handleActionTimer();
     if(rivalPunched && rivalPunchTimer < rivalPunchTime) {

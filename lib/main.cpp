@@ -429,8 +429,8 @@ int main()
             round.getRobot()->renderEntity(&depthShader);
         }
 
-        round.getPlayer1()->renderEntity(&depthShader);
-        round.getPlayer2()->renderEntity(&depthShader);
+        //round.getPlayer1()->renderEntity(&depthShader);
+        //round.getPlayer2()->renderEntity(&depthShader);
         for (int i = 0; i < round.getMap()->getShadowTiles().size(); i++) {
             round.getMap()->getShadowTiles()[i]->renderEntity(&depthShader);
         }

@@ -66,6 +66,7 @@ private:
 	TileState* actionTile;
 	EActionType currentAction = Idle;
 
+	bool isMoving = false;
 	
 	float currentPlantTime = 0.4;
 	float currentDestroyTime = 0.4;

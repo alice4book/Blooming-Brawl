@@ -20,8 +20,11 @@ void Animator::PlayAnimation(std::shared_ptr<Animation> pAnimation)
 
 void Animator::PlayAnimation(PlayerAnimType animType)
 {
-    m_CurrentAnimation = animations[animType];
-    m_CurrentTime = 0.0f;
+    if (m_CurrentAnimation != animations[animType])
+    {
+        m_CurrentAnimation = animations[animType];
+        m_CurrentTime = 0.0f;
+    }
 }
 
 void Animator::CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
