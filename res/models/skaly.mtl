@@ -11,6 +11,7 @@ illum 2
 map_Kd ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_BaseColor.png
 map_Ns ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_Roughness.png
 map_refl ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_Metalic.png
+map_Bump -bm 1.000000 ../textures/duzy_kwiatek/DUZY_KWIATEK_podstawa_Normal.png
 
 newmtl skaly
 	Kd 0.5000 0.5000 0.5000
