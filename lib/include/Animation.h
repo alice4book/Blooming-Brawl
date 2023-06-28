@@ -1,7 +1,10 @@
 #pragma once
 #include "Bone.h"
-#include "Model.h"
 #include <map>
+
+class Model;
+
+
 
 struct AssimpNodeData
 {

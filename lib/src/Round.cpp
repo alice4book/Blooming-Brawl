@@ -61,11 +61,20 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
 
-    player1 = new Entity("res/animated_models/farmer_test/farmer.fbx", animationShader);
+    player1 = new Entity("res/animated_models/farmer_blue_test/farmer_blue.fbx", animationShader);
     player1->transform->scaleEntity({ .01, .01, .01 });
     
-    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/farmer_test/farmer.fbx", player1->model);
-    std::shared_ptr<Animator> animator = std::make_shared<Animator>(animation);
+    /*
+    std::vector<std::shared_ptr <Animation>> player1Animations;
+    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/farmer_blue_test/farmer_blue.fbx", player1->model);
+    std::shared_ptr <Animation> animation2 = std::make_shared<Animation>("res/animated_models/farmer_test/farmer.fbx", player1->model);
+    player1Animations.push_back(animation);
+    player1Animations.push_back(animation);
+    player1Animations.push_back(animation2);
+    player1Animations.push_back(animation2);
+    player1Animations.push_back(animation2);*/
+
+    std::shared_ptr<Animator> animator = std::make_shared<Animator>(player1->model);
     TimeManager::getInstance()->attachUnlimitedFPS(animator);
     player1->setupAnimator(animator);
 

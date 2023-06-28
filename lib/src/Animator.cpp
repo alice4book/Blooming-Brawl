@@ -18,6 +18,12 @@ void Animator::PlayAnimation(std::shared_ptr<Animation> pAnimation)
     m_CurrentTime = 0.0f;
 }
 
+void Animator::PlayAnimation(PlayerAnimType animType)
+{
+    m_CurrentAnimation = animations[animType];
+    m_CurrentTime = 0.0f;
+}
+
 void Animator::CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
 {
     std::string nodeName = node->name;
@@ -56,11 +62,19 @@ void Animator::update()
     UpdateAnimation(dt);
 }
 
-Animator::Animator(std::shared_ptr<Animation> animation)
+Animator::Animator(Model* playerModel)
     :Component(parent)
 {
+    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/farmer_blue_test/farmer_blue.fbx", playerModel);
+    std::shared_ptr <Animation> animation2 = std::make_shared<Animation>("res/animated_models/farmer_test/farmer.fbx", playerModel);
+    animations.push_back(animation);
+    animations.push_back(animation);
+    animations.push_back(animation2);
+    animations.push_back(animation2);
+    animations.push_back(animation2);
+
     m_CurrentTime = 0.0;
-    m_CurrentAnimation = animation;
+    m_CurrentAnimation = animations[0];
 
     m_FinalBoneMatrices.reserve(100);
 

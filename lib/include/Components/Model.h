@@ -4,18 +4,12 @@
 #include "assimp/scene.h"
 #include "Mesh.h"
 #include "Transform.h"
+#include "Bone.h"
 #include <map>
 #include <vector>
 #include <string>
 #include <AssimpGLMHelpers.h>
 
-struct BoneInfo
-{
-    //index in finalBoneMatrices
-    int id;
-    //offset matrix transforms vertex from model space to bone space
-    glm::mat4 offset;
-};
 
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
 

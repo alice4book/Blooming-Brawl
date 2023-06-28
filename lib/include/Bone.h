@@ -5,6 +5,14 @@
 #include <vector>
 #include <string>
 
+struct BoneInfo
+{
+    //index in finalBoneMatrices
+    int id;
+    //offset matrix transforms vertex from model space to bone space
+    glm::mat4 offset;
+};
+
 struct KeyPosition
 {
     glm::vec3 position = glm::vec3(0);

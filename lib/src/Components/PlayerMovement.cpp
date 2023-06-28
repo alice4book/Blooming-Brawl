@@ -14,6 +14,7 @@
 #include "Audio.h"
 #include "World.h"
 #include "Map.h"
+#include "Animator.h"
 #include <cmath>
 #include <math.h>
 
@@ -394,6 +395,7 @@ void PlayerMovement::checkInput(){
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
                 for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
                     if(cooldownTimer <= 0.f ){
+                        startAction(nullptr, false);
                         //std::cout << "parent 1 " << parent << std::endl;
                         //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
                         if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
@@ -424,6 +426,7 @@ void PlayerMovement::checkInput(){
                         for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
 
                             if (cooldownTimer <= 0.f) {
+                                startAction(nullptr, false);
                                 //std::cout << "parent 1 " << parent << std::endl;
                                 //std::cout << "at " << frontCollider->getTouchingDynamicComponents().at(i)->getParent() << std::endl;
                                 if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
@@ -451,6 +454,7 @@ void PlayerMovement::checkInput(){
             if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
                 for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
                     if (cooldownTimer <= 0.f) {
+                        startAction(nullptr, false);
                         if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                             //std::cout << "punch" << std::endl;
                             reactToPunch(rivalParent);
@@ -477,6 +481,8 @@ void PlayerMovement::checkInput(){
                     {
                         for (int i = 0; i < frontCollider->getTouchingDynamicComponents().size(); i++) {
                             if (cooldownTimer <= 0.f) {
+                                startAction(nullptr, false);
+                                
                                 if (rivalParent == frontCollider->getTouchingDynamicComponents().at(i)->getParent()) {
                                     //std::cout << "punch" << std::endl;
                                     reactToPunch(rivalParent);
@@ -533,85 +539,117 @@ void PlayerMovement::resetSeenTile(){
         lastSeenTile->getParent()->switchShader();
 }
 
-void PlayerMovement::startAction(TileState* tile)
+
+
+void PlayerMovement::startAction(TileState* tile, bool isHit)
 {
-    if (tile == nullptr) return;
     if (currentAction == EActionType::Idle || currentAction == EActionType::Moving)
     {
         EActionType action;
-        EState state = tile->state;
-        switch (state)
+        if (tile != nullptr)
         {
-        case Empty:
-            if (rival->actionTile == tile) return;
+            EState state = tile->state;
+            switch (state)
             {
-                World* world = World::getInstance();
-                Map* map = world->mapComponent;
-                if (map->getSeedCount(ID) == 0)
-                    return;
-                audio->playMusic("res/audio/planting.wav");
-                action = Planting;
-            }
-            break;
-        case Growing:
-            if (ID == Player1)
-            {
+            case Empty:
                 if (rival->actionTile == tile) return;
-                if (tool != nullptr && tool->getType() == WateringCan)
-                    action = Watering;
-                else return;
-            }
-            else
-            {
-                rival->cancelAction(tile);
-                action = DestroyingFlower;
-            }
-            break;
-        case Growing2:
-            if (ID == Player2)
-            {
+                {
+                    World* world = World::getInstance();
+                    Map* map = world->mapComponent;
+                    if (map->getSeedCount(ID) == 0)
+                        return;
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    audio->playMusic("res/audio/planting.wav");
+                    action = Planting;
+                }
+                break;
+            case Growing:
+                if (ID == Player1)
+                {
+                    if (rival->actionTile == tile) return;
+                    if (tool != nullptr && tool->getType() == WateringCan)
+                    {
+                        animator->PlayAnimation(PlayerAnimType::TileAction);
+                        action = Watering;
+                    }
+                    else return;
+                }
+                else
+                {
+                    rival->cancelAction(tile);
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    action = DestroyingFlower;
+                }
+                break;
+            case Growing2:
+                if (ID == Player2)
+                {
+                    if (rival->actionTile == tile) return;
+                    if (tool != nullptr && tool->getType() == WateringCan)
+                    {
+                        animator->PlayAnimation(PlayerAnimType::TileAction);
+                        action = Watering;
+                    }
+                    else return;
+                }
+                else
+                {
+                    rival->cancelAction(tile);
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    action = DestroyingFlower;
+                }
+                break;
+            case Grown:
+                if (ID == Player1)
+                {
+                    if (rival->actionTile == tile) return;
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    action = Harvesting;
+                }
+                else {
+                    rival->cancelAction(tile);
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    action = DestroyingFlower;
+                }
+                break;
+            case Grown2:
+                if (ID == Player2)
+                {
+                    if (rival->actionTile == tile) return;
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    action = Harvesting;
+                }
+                else {
+                    rival->cancelAction(tile);
+                    animator->PlayAnimation(PlayerAnimType::TileAction);
+                    action = DestroyingFlower;
+                }
+                break;
+            case Overgrown:
                 if (rival->actionTile == tile) return;
-                if (tool != nullptr && tool->getType() == WateringCan)
-                    action = Watering;
-                else return;
+                animator->PlayAnimation(PlayerAnimType::TileAction);
+                action = DestroyingOvergrown;
+                break;
+            case Burned:
+                return;
             }
-            else
+            currentAction = action;
+            actionTile = tile;
+        }
+        else
+        {
+            if (isHit)
             {
-                rival->cancelAction(tile);
-                action = DestroyingFlower;
-            }
-            break;
-        case Grown:
-            if (ID == Player1)
-            {
-                if (rival->actionTile == tile) return;
-                action = Harvesting;
-            }
-            else { 
-                rival->cancelAction(tile);
-                action = DestroyingFlower;
-            }
-            break;
-        case Grown2:
-            if (ID == Player2)
-            {
-                if (rival->actionTile == tile) return;
-                action = Harvesting;
+                animator->PlayAnimation(PlayerAnimType::Punched);
+                action = BeingHit;
             }
             else {
-                rival->cancelAction(tile);
-                action = DestroyingFlower;
+                animator->PlayAnimation(PlayerAnimType::Punching);
+                action = Hitting;
             }
-            break;
-        case Overgrown:
-            if (rival->actionTile == tile) return;
-            action = DestroyingOvergrown;
-            break;
-        case Burned:
-            return;
+            
         }
-        currentAction = action;
-        actionTile = tile;
+        
 
         switch (action)
         {
@@ -633,12 +671,20 @@ void PlayerMovement::startAction(TileState* tile)
             actionTimer = currentWaterTime;
             isTimerSet = true;
             break;
+        case Hitting:
+            actionTimer = currentHitTime;
+            isTimerSet = true;
+            break;
+        case BeingHit:
+            actionTimer = currentBeingHitTime;
+            isTimerSet = true;
         }
     }
 }
 
 void PlayerMovement::cancelAction(TileState* tile)
 {
+    animator->PlayAnimation(PlayerAnimType::Standing);
     if (tile == nullptr) tile = actionTile;
     if (tile == actionTile)
     {
@@ -654,6 +700,11 @@ void PlayerMovement::setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement)
     this->rival = rivalPlayerMovement;
 }
 
+void PlayerMovement::setAnimator(std::shared_ptr<Animator> animator)
+{
+    this->animator = animator;
+}
+
 void PlayerMovement::reactToPunch(Entity* punchedParent)
 {
     cooldownTimer = cooldownForPunch;
@@ -667,7 +718,7 @@ void PlayerMovement::reactToPunch(Entity* punchedParent)
 
     //float prevSpeed = playerMovement[0]->getSpeed();
     playerMovement[0]->setSpeed(0);
-
+    playerMovement[0]->startAction(nullptr, true);
     glm::vec3 rivalPosition = rivalParent->transform->getGlobalPosition();
     glm::vec3 myPosition = parent->transform->getGlobalPosition();
     glm::vec3 difference = rivalPosition - myPosition;
