@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "glm/glm.hpp"
+#include <memory>
 
 class Model;
 class Shader;
@@ -21,9 +22,9 @@ public:
     Transform* parentTransform = nullptr;
     Model* model{};
     bool isModel;
-    Animator* animator = nullptr;
+    std::shared_ptr<Animator> animator = nullptr;
     //for pickup 
-    glm::vec3 color = {0,0,0};
+    glm::vec3 color = { 0,0,0 };
 
     Entity();
 
@@ -44,6 +45,9 @@ public:
     template<typename T>
     bool getComponentsByType(std::vector<T*>* compType = nullptr);
 
+    template<typename T>
+    bool getComponent(T* componentType);
+
     //update all components
     void updateComponents();
 
@@ -62,7 +66,7 @@ public:
     //For pickup
     void setColor(glm::vec3 col);
 
-    [[nodiscard]] const std::vector<Entity *> &getChildren() const;
+    [[nodiscard]] const std::vector<Entity*>& getChildren() const;
 
     void switchShader();
 
@@ -70,7 +74,7 @@ public:
 
     void clearComponents();
 
-    void setupAnimator();
+    void setupAnimator(std::shared_ptr<Animator> nanimator);
 };
 
 template<typename T>
@@ -82,7 +86,22 @@ bool Entity::getComponentsByType(std::vector<T*>* compType) {
         if (dynamic_cast<T*>(comp) != nullptr) {
             isEmpty = true;
 
-            compType->push_back((T*) comp);
+            compType->push_back((T*)comp);
+        }
+    }
+    return isEmpty;
+}
+
+template<typename T>
+bool Entity::getComponent(T* componentType) {
+    bool isEmpty = false;
+    if (componentType == nullptr)
+        return false;
+    for (Component* comp : components) {
+        if (dynamic_cast<T*>(comp) != nullptr) {
+            isEmpty = true;
+
+            componentType = (T*)comp;
         }
     }
     return isEmpty;

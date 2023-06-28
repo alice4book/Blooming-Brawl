@@ -88,7 +88,7 @@ Model::Model(std::string const& path, bool gamma) : gammaCorrection(gamma)
 // draws the model, and thus all its meshes
 void Model::Draw(Shader& shader)
 {
-    for (auto & mesh : meshes)
+    for (auto& mesh : meshes)
         mesh.Draw(shader);
 }
 
@@ -210,8 +210,41 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
+    if (mesh->HasBones())
+    {
+        ExtractBoneWeightForVertices(vertices, mesh, scene);
+
+        //std::cout << mesh->mNumBones << " " << vertices[0].m_BoneIDs[0] << "\n";
+    }
+
     // return a mesh object created from the extracted mesh data
-    return {vertices, indices, textures};
+    return { vertices, indices, textures };
+}
+
+void Model::SetVertexBoneDataToDefault(Vertex& vertex)
+{
+
+    for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+    {
+        vertex.m_BoneIDs[i] = -1;
+        vertex.m_Weights[i] = 0.0f;
+    }
+
+}
+
+void Model::SetVertexBoneData(Vertex& vertex, int boneID, float weight)
+{
+
+    for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+    {
+        if (vertex.m_BoneIDs[i] <= 0) //??
+        {
+            vertex.m_Weights[i] = weight;
+            vertex.m_BoneIDs[i] = boneID;
+            break;
+        }
+    }
+
 }
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -225,7 +258,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType 
         mat->GetTexture(type, i, &str);
         // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
         bool skip = false;
-        for (auto & j : textures_loaded)
+        for (auto& j : textures_loaded)
         {
             if (std::strcmp(j.path.data(), str.C_Str()) == 0)
             {

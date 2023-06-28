@@ -12,7 +12,7 @@ void Animator::UpdateAnimation(float dt)
     }
 }
 
-void Animator::PlayAnimation(Animation* pAnimation)
+void Animator::PlayAnimation(std::shared_ptr<Animation> pAnimation)
 {
     m_CurrentAnimation = pAnimation;
     m_CurrentTime = 0.0f;
@@ -56,7 +56,7 @@ void Animator::update()
     UpdateAnimation(dt);
 }
 
-Animator::Animator(Animation* animation)
+Animator::Animator(std::shared_ptr<Animation> animation)
     :Component(parent)
 {
     timeManager = TimeManager::getInstance();

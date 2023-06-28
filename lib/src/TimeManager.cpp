@@ -17,18 +17,24 @@ TimeManager* TimeManager::getInstance() {
     return(inst_);
 }
 
-void TimeManager::updateTime(){
+void TimeManager::updateTime() {
     auto currentFrame = static_cast<float>(glfwGetTime());
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
     // skip first frame because of lag on load
-    if(deltaTime >= 0.1f) {
+    if (deltaTime >= 0.1f) {
         deltaTime = 0.f;
         return;
     }
 
     notify(listObserverUnlimited);
+
+    if (!sharedPointers.empty()) {
+        for (auto component : sharedPointers) {
+            component->update();
+        }
+    }
 
     deltaTime120FPS += deltaTime;
     deltaTime60FPS += deltaTime;
@@ -39,25 +45,25 @@ void TimeManager::updateTime(){
     time2FPS += deltaTime;
     time1FPS += deltaTime;
 
-    if(time120FPS >= DELTA_TIME_120FPS){
+    if (time120FPS >= DELTA_TIME_120FPS) {
         notify(listObserver120FPS);
         deltaTime120FPS = 0.f;
-        time120FPS =- DELTA_TIME_120FPS;
+        time120FPS = -DELTA_TIME_120FPS;
     }
 
-    if(time60FPS >= DELTA_TIME_60FPS){
+    if (time60FPS >= DELTA_TIME_60FPS) {
         notify(listObserver60FPS);
         deltaTime60FPS = 0.f;
         time60FPS -= DELTA_TIME_60FPS;
     }
 
-    if(time2FPS >= DELTA_TIME_2FPS){
+    if (time2FPS >= DELTA_TIME_2FPS) {
         notify(listObserver2FPS);;
         deltaTime2FPS = 0.f;
         time2FPS -= DELTA_TIME_2FPS;
     }
 
-    if(time1FPS >= DELTA_TIME_1FPS){
+    if (time1FPS >= DELTA_TIME_1FPS) {
         notify(listObserver1FPS);;
         deltaTime1FPS = 0.f;
         time1FPS -= DELTA_TIME_1FPS;
@@ -68,13 +74,17 @@ void TimeManager::notify(std::vector<Component*> listObserver) {
     if (listObserver.empty() || dynamic_cast<Component*>(listObserver.front()) == nullptr)
         return;
 
-    for(auto component : listObserver){
+    for (auto component : listObserver) {
         component->update();
     }
 }
 
 void TimeManager::attachUnlimitedFPS(Component* observer) {
     listObserverUnlimited.push_back(observer);
+}
+
+void TimeManager::attachUnlimitedFPS(std::shared_ptr<Component> observer) {
+    sharedPointers.push_back(observer);
 }
 
 void TimeManager::attach120FPS(Component* observer) {
@@ -93,27 +103,27 @@ void TimeManager::attach1FPS(Component* observer) {
     listObserver1FPS.push_back(observer);
 }
 
-void TimeManager::detach(Component *observer) {
+void TimeManager::detach(Component* observer) {
     listObserverUnlimited.erase(
-            std::remove_if(listObserverUnlimited.begin(), listObserverUnlimited.end(),
-                           [&observer](const Component* o) { return o == observer; }),
-            listObserverUnlimited.end());
+        std::remove_if(listObserverUnlimited.begin(), listObserverUnlimited.end(),
+            [&observer](const Component* o) { return o == observer; }),
+        listObserverUnlimited.end());
     listObserver120FPS.erase(
-            std::remove_if(listObserver120FPS.begin(), listObserver120FPS.end(),
-                           [&observer](const Component* o) { return o == observer; }),
-            listObserver120FPS.end());
+        std::remove_if(listObserver120FPS.begin(), listObserver120FPS.end(),
+            [&observer](const Component* o) { return o == observer; }),
+        listObserver120FPS.end());
     listObserver60FPS.erase(
-            std::remove_if(listObserver60FPS.begin(), listObserver60FPS.end(),
-                           [&observer](const Component* o) { return o == observer; }),
-            listObserver60FPS.end());
+        std::remove_if(listObserver60FPS.begin(), listObserver60FPS.end(),
+            [&observer](const Component* o) { return o == observer; }),
+        listObserver60FPS.end());
     listObserver2FPS.erase(
-            std::remove_if(listObserver2FPS.begin(), listObserver2FPS.end(),
-                           [&observer](const Component* o) { return o == observer; }),
-            listObserver2FPS.end());
+        std::remove_if(listObserver2FPS.begin(), listObserver2FPS.end(),
+            [&observer](const Component* o) { return o == observer; }),
+        listObserver2FPS.end());
     listObserver1FPS.erase(
-            std::remove_if(listObserver1FPS.begin(), listObserver1FPS.end(),
-                           [&observer](const Component* o) { return o == observer; }),
-            listObserver1FPS.end());
+        std::remove_if(listObserver1FPS.begin(), listObserver1FPS.end(),
+            [&observer](const Component* o) { return o == observer; }),
+        listObserver1FPS.end());
 }
 
 float TimeManager::getDeltaTimeUnlimitedFPS() const {

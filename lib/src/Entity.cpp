@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "Animator.h"
 
-Entity::Entity() 
+Entity::Entity()
     : isModel(false)
     , parentTransform(nullptr)
 {
@@ -17,7 +17,7 @@ Entity::Entity(Model* model, Shader* s, Shader* altShader)
     isModel = true;
 }
 
-Entity::Entity(Shader* s,Shader* altShader)
+Entity::Entity(Shader* s, Shader* altShader)
     : shader(s), altShader(altShader)
 {
     transform = new Transform(this);
@@ -35,7 +35,7 @@ Entity::Entity(const std::string& path, Shader* s, Shader* altShader)
 Entity::~Entity()
 {
     delete transform;
-    
+
     /*
     for (auto component : components) {
        /delete component;
@@ -104,7 +104,7 @@ void Entity::forceUpdateSelfAndChild()
 {
     if (parentTransform)
         transform->computeModelMatrix(parentTransform->getModelMatrix());
-        
+
     else
         transform->computeModelMatrix();
 
@@ -122,6 +122,7 @@ void Entity::renderEntity() {
         shader->use();
         shader->setVec3("color", this->color);
         shader->setMat4("model", transform->getModelMatrix());
+
         if (animator != nullptr)
         {
             auto transforms = animator->GetFinalBoneMatrices();
@@ -130,7 +131,7 @@ void Entity::renderEntity() {
         }
         model->Draw(*shader);
     }
-    for (auto & i : children) {
+    for (auto& i : children) {
         i->renderEntity();
     }
 }
@@ -152,12 +153,12 @@ void Entity::setColor(glm::vec3 col) {
     this->color = col;
 }
 
-const std::vector<Entity *> &Entity::getChildren() const {
+const std::vector<Entity*>& Entity::getChildren() const {
     return children;
 }
 
-void Entity::switchShader(){
-    if(altShader != nullptr)
+void Entity::switchShader() {
+    if (altShader != nullptr)
         std::swap(shader, altShader);
 }
 
@@ -166,16 +167,12 @@ void Entity::clearChildren() {
         children.clear();
 }
 
-void Entity::clearComponents(){
-    if(!components.empty())
+void Entity::clearComponents() {
+    if (!components.empty())
         components.clear();
 }
 
-void Entity::setupAnimator()
+void Entity::setupAnimator(std::shared_ptr<Animator> nanimator)
 {
-    std::vector<Animator*> animators;
-    if (getComponentsByType(&animators))
-    {
-        animator = animators[0];
-    }
+    animator = nanimator;
 }

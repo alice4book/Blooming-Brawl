@@ -11,15 +11,18 @@
 #include "HUD.h"
 #include "Clock.h"
 #include <iostream>
+#include "Animation.h"
+#include "Animator.h"
+#include <memory>
 
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
-    Shader* pickupShader, Shader* highlightShader, HUD* hud)
+    Shader* pickupShader, Shader* highlightShader, HUD* hud, Shader* animationShader)
 {
 
     roundTime = 20;
 
-	auto skybox = World::getInstance();
-    
+    auto skybox = World::getInstance();
+
     round = new Entity();
     skybox->addChild(round);
 
@@ -47,21 +50,28 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
 
     robot = new Entity("res/models/robot.obj", directionalShader);
     robot->transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
-    
+
     DynamicColliderComponent* robotCollider = new DynamicColliderComponent(robot, 0.1f, false, { 0,0 });
     robot->addComponent((Component*)robotCollider);
     DynamicColliderComponent* robotColliderFront = new DynamicColliderComponent(robot, 0.1f, true, { 0.01f, 0.0f });
     robot->addComponent((Component*)robotColliderFront);
     PathFinding pathFinding((Map*)currentMap);
-    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.2f, 
+    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider, robotColliderFront, 0.2f,
         pathFinding, this->TILE_SIZE, { 0,0,1 });
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
-    
-    player1 = new Entity ("res/models/postacie_zeskalowne/nizej_farmer.obj", directionalShader);
+
+    player1 = new Entity("res/animated_models/ball.fbx", animationShader);
+    player1->transform->scaleEntity({ .001, .001, .001 });
+
+    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/ball.fbx", player1->model);
+    std::shared_ptr<Animator> animator = std::make_shared<Animator>(animation);
+    TimeManager::getInstance()->attachUnlimitedFPS(animator);
+    player1->setupAnimator(animator);
+
     player2 = new Entity("res/models/postacie_zeskalowne/nizej_farmer_czerwony.obj", directionalShader);
-    
-    Player* playerP1 =  new Player(player1, Player1);
+
+    Player* playerP1 = new Player(player1, Player1);
     player1->addComponent((Component*)playerP1);
     DynamicColliderComponent* player1Collider = new DynamicColliderComponent(player1, 0.05f, false);
     player1->addComponent((Component*)player1Collider);
@@ -80,7 +90,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     PlayerMovement* playerMovement2 = new PlayerMovement(window, player2, player1, robot, player2->transform, player2Collider,
         player2ColliderFront, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
     player2->addComponent((Component*)playerMovement2);
-   
+
 
     playerMovement->setRivalPlayerMovement(playerMovement2);
     playerMovement2->setRivalPlayerMovement(playerMovement);
@@ -101,7 +111,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     allTools[1]->addComponent((Component*)tool2_collision);
     allTools[1]->addComponent(new Tool(allTools[1], EToolType::Hoe));
     allTools[1]->enableAllComponents(false);
-    
+
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
@@ -195,7 +205,7 @@ void Round::changeRound(int mapNr)
         robot->enableAllComponents(true);
     }
     else
-    robot->enableAllComponents(false);
+        robot->enableAllComponents(false);
 
     currentToolSize = toolscord.size();
     for (int i = 0; i < toolscord.size(); i++) {
@@ -215,8 +225,8 @@ void Round::regenerateMaps(Model* tileModels, std::string* mapFiles, Shader* dir
         mapManagers[i]->addComponent(maps[i]);
         maps[i]->GenerateMap(i);
     }
-    allTools[0]->transform->setLocalPosition(glm::vec3(0.f,0.f,0.f));
-    allTools[1]->transform->setLocalPosition(glm::vec3(0.f,0.f,0.f));
+    allTools[0]->transform->setLocalPosition(glm::vec3(0.f, 0.f, 0.f));
+    allTools[1]->transform->setLocalPosition(glm::vec3(0.f, 0.f, 0.f));
     changeRound(0);
 }
 

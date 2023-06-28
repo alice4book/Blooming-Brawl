@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include <vector>
+#include <memory>
 
 class TimeManager {
 public:
@@ -17,6 +18,7 @@ public:
 
     virtual ~TimeManager() = default;
     void attachUnlimitedFPS(Component* observer);
+    void attachUnlimitedFPS(std::shared_ptr<Component> observer);
     void attach120FPS(Component* observer);
     void attach60FPS(Component* observer);
     void attach2FPS(Component* observer);
@@ -41,6 +43,7 @@ private:
     std::vector<Component*> listObserver60FPS;
     std::vector<Component*> listObserver2FPS;
     std::vector<Component*> listObserver1FPS;
+    std::vector<std::shared_ptr<Component>> sharedPointers;
 
     static TimeManager* inst_;   // The one, single instance
     TimeManager() = default; // private constructor
