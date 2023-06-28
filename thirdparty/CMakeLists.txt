@@ -22,11 +22,17 @@ target_include_directories(soloud PUBLIC ${soloud_SOURCE_DIR}/include)
 
 # other
 CPMAddPackage("gh:assimp/assimp@5.2.5")
+set(ZLIB_INCLUDE_DIR ${PROJECT_BINARY_DIR}/_deps/assimp-src/contrib/zlib)
+set(ZLIB_LIBRARY ${PROJECT_BINARY_DIR}/_deps/assimp-build/contrib/zlib/Debug/zlibstaticd.lib)
+message(${ZLIB_INCLUDE_DIR})
+message(${ZLIB_LIBRARY})
 CPMAddPackage("gh:glfw/glfw#3.3.8")
 CPMAddPackage("gh:g-truc/glm#0.9.9.8")
 CPMAddPackage("gh:ocornut/imgui@1.88")
 CPMAddPackage("gh:gabime/spdlog@1.10.0")
 CPMAddPackage("gh:freetype/freetype#VER-2-13-0")
+
+target_include_directories(freetype PRIVATE ${PROJECT_BINARY_DIR}/_deps/assimp-build/contrib/zlib/)
 
 set(imgui_SOURCE_DIR ${imgui_SOURCE_DIR} CACHE INTERNAL "")
 add_library(imgui STATIC ${imgui_SOURCE_DIR}/imgui.cpp
@@ -47,4 +53,11 @@ set_target_properties(glad
 
 if (TARGET zlibstatic)
     set_target_properties(zlibstatic PROPERTIES FOLDER "thirdparty")
+endif()
+
+#set(ZLIB_LIBRARY )
+if(ZLIB_FOUND)
+	message(xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)
+else()
+	message(sssssssssssssssssssssssssssssssssssssssss)
 endif()

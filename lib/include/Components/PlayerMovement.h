@@ -5,6 +5,7 @@
 #include "ActionType.h"
 #include "GLFW/glfw3.h"
 #include "glm/vec3.hpp"
+#include <memory>
 
 class Tool;
 class Entity;
@@ -17,6 +18,7 @@ class Player;
 class RobotMovement;
 class TileState;
 class Audio;
+class Animator;
 
 class PlayerMovement : public Component {
 private:
@@ -35,6 +37,7 @@ private:
 	Entity* robot;
 	PlayerMovement* rival;
 	Audio* audio;
+	std::shared_ptr<Animator> animator;
 
 	int axisCount;
 	const float* axes;
@@ -63,9 +66,11 @@ private:
 	TileState* actionTile;
 	EActionType currentAction = Idle;
 
+	
 	float currentPlantTime = 0.4;
 	float currentDestroyTime = 0.4;
 	float currentHitTime = 0.4;
+	float currentBeingHitTime = 0.4;
 	float currentWaterTime = 0.4;
 	float currentHarvestTime = 0.4;
 
@@ -89,14 +94,15 @@ private:
 	void handleActionTimer();
 
 public:
-	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
+	PlayerMovement(GLFWwindow* window, Entity* parent, Entity* rivalParent, Entity* robot, Transform* transform, DynamicColliderComponent* collider, DynamicColliderComponent* forntCollider, std::shared_ptr<Animator> animator, float speed, EPlayerID ID, glm::vec3 forward = { 1, 0, 0 });
     void update() override;
 	void enable(bool value) override;
 	void setSpeed(float newSpeed);
 	float getSpeed();
 	void dropTool();
 	void resetSeenTile();
-	void startAction(TileState* tile);
+	void startAction(TileState* tile, bool isHit = false);
 	void cancelAction(TileState* tile = nullptr);
 	void setRivalPlayerMovement(PlayerMovement* rivalPlayerMovement);
+	void setAnimator(std::shared_ptr<Animator> animator);
 };

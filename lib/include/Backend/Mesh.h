@@ -2,6 +2,7 @@
 #define MESH_H
 
 #include <vector>
+#include "Shader.h"
 
 #define MAX_BONE_INFLUENCE 4
 

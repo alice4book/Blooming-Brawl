@@ -11,15 +11,18 @@
 #include "HUD.h"
 #include "Clock.h"
 #include <iostream>
+#include "Animation.h"
+#include "Animator.h"
+#include <memory>
 
 Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shader* directionalShader,
-    Shader* pickupShader, Shader* highlightShader, HUD* hud)
+    Shader* pickupShader, Shader* highlightShader, HUD* hud, Shader* animationShader)
 {
 
     roundTime = 120;
 
-	auto skybox = World::getInstance();
-    
+    auto skybox = World::getInstance();
+
     round = new Entity();
     skybox->addChild(round);
 
@@ -47,29 +50,46 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
 
     robot = new Entity("res/models/robot.obj", directionalShader);
     robot->transform->rotateLocal(glm::vec3(0.0f, 90.0f, 0.0f));
-    
+
     DynamicColliderComponent* robotCollider = new DynamicColliderComponent(robot, 0.1f, false, { 0,0 });
     robot->addComponent((Component*)robotCollider);
     DynamicColliderComponent* robotColliderFront = new DynamicColliderComponent(robot, 0.1f, true, { 0.01f, 0.0f });
     robot->addComponent((Component*)robotColliderFront);
     PathFinding pathFinding((Map*)currentMap);
-    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider,robotColliderFront, 0.2f, 
+    RobotMovement* robotmovement = new RobotMovement(robot, robot->transform, robotCollider, robotColliderFront, 0.2f,
         pathFinding, this->TILE_SIZE, { 0,0,1 });
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
+
+    player1 = new Entity("res/animated_models/farmer_blue_test/farmer_blue.fbx", animationShader);
+    player1->transform->scaleEntity({ .01, .01, .01 });
     
-    player1 = new Entity ("res/models/postacie_zeskalowne/nizej_farmer.obj", directionalShader);
+    /*
+    std::vector<std::shared_ptr <Animation>> player1Animations;
+    std::shared_ptr <Animation> animation = std::make_shared<Animation>("res/animated_models/farmer_blue_test/farmer_blue.fbx", player1->model);
+    std::shared_ptr <Animation> animation2 = std::make_shared<Animation>("res/animated_models/farmer_test/farmer.fbx", player1->model);
+    player1Animations.push_back(animation);
+    player1Animations.push_back(animation);
+    player1Animations.push_back(animation2);
+    player1Animations.push_back(animation2);
+    player1Animations.push_back(animation2);*/
+
+    std::shared_ptr<Animator> animator = std::make_shared<Animator>(player1->model);
+    TimeManager::getInstance()->attachUnlimitedFPS(animator);
+    player1->setupAnimator(animator);
+
     player2 = new Entity("res/models/postacie_zeskalowne/nizej_farmer_czerwony.obj", directionalShader);
-    
-    Player* playerP1 =  new Player(player1, Player1);
+
+    Player* playerP1 = new Player(player1, Player1);
     player1->addComponent((Component*)playerP1);
     DynamicColliderComponent* player1Collider = new DynamicColliderComponent(player1, 0.05f, false);
     player1->addComponent((Component*)player1Collider);
     DynamicColliderComponent* player1ColliderFront = new DynamicColliderComponent(player1, 0.2f, true, { 0.15f,0 });
     player1->addComponent((Component*)player1Collider);
     PlayerMovement* playerMovement = new PlayerMovement(window, player1, player2, robot, player1->transform, player1Collider,
-        player1ColliderFront, playerP1->getSpeed(), playerP1->getID(), { 1,0,0 });
+        player1ColliderFront, animator, playerP1->getSpeed(), playerP1->getID(), { 1,0,0 });
     player1->addComponent((Component*)playerMovement);
+    //playerMovement->setAnimator(animator);
 
     Player* playerP2 = new Player(player2, Player2);
     player2->addComponent((Component*)playerP2);
@@ -78,9 +98,9 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     DynamicColliderComponent* player2ColliderFront = new DynamicColliderComponent(player2, 0.2f, true, { 0.15f,0 });
     player2->addComponent((Component*)player2ColliderFront);
     PlayerMovement* playerMovement2 = new PlayerMovement(window, player2, player1, robot, player2->transform, player2Collider,
-        player2ColliderFront, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
+        player2ColliderFront, animator, playerP2->getSpeed(), playerP2->getID(), { 1,0,0 });
     player2->addComponent((Component*)playerMovement2);
-   
+
 
     playerMovement->setRivalPlayerMovement(playerMovement2);
     playerMovement2->setRivalPlayerMovement(playerMovement);
@@ -101,7 +121,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     allTools[1]->addComponent((Component*)tool2_collision);
     allTools[1]->addComponent(new Tool(allTools[1], EToolType::Hoe));
     allTools[1]->enableAllComponents(false);
-    
+
     int toolNr = 0;
     std::vector<Entity*> toolstab;
     toolstab.push_back(allTools[0]);
@@ -195,7 +215,7 @@ void Round::changeRound(int mapNr)
         robot->enableAllComponents(true);
     }
     else
-    robot->enableAllComponents(false);
+        robot->enableAllComponents(false);
 
     currentToolSize = toolscord.size();
     for (int i = 0; i < toolscord.size(); i++) {
@@ -215,8 +235,8 @@ void Round::regenerateMaps(Model* tileModels, std::string* mapFiles, Shader* dir
         mapManagers[i]->addComponent(maps[i]);
         maps[i]->GenerateMap(i);
     }
-    allTools[0]->transform->setLocalPosition(glm::vec3(0.f,0.f,0.f));
-    allTools[1]->transform->setLocalPosition(glm::vec3(0.f,0.f,0.f));
+    allTools[0]->transform->setLocalPosition(glm::vec3(0.f, 0.f, 0.f));
+    allTools[1]->transform->setLocalPosition(glm::vec3(0.f, 0.f, 0.f));
     changeRound(0);
 }
 

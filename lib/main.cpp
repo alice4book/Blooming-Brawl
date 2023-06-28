@@ -22,6 +22,8 @@
 #include "Menu.h"
 #include "Round.h"
 
+#include "Animator.h"
+
 #define GLFW_GAMEPAD_BUTTON_A 0
 #define GLFW_GAMEPAD_BUTTON_B 1
 #define GLFW_GAMEPAD_BUTTON_X 2
@@ -37,7 +39,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void set_window_size_callback(GLFWwindow* window, int x, int y);
 
 // camera
-Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0,1,0), 0, 0);
+Camera camera(glm::vec3(0.0f, 3.f, 0.0f), glm::vec3(0, 1, 0), 0, 0);
 float lastX;
 float lastY;
 bool firstMouse = true;
@@ -104,13 +106,13 @@ int main()
     lastX = (float)mode->width / 2;
     lastY = (float)mode->height / 2;
 
-//    Fullscreen
-//    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
+    //    Fullscreen
+    //    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
 
-//    Windowed mode
+    //    Windowed mode
     GLFWwindow* window = glfwCreateWindow(windowData.resolutionX, windowData.resolutionY, "Farm Engine", nullptr, nullptr);
 
-    glfwSetWindowUserPointer(window, (void* ) &windowData);
+    glfwSetWindowUserPointer(window, (void*)&windowData);
     glfwSetWindowSizeCallback(window, set_window_size_callback);
 
     if (window == nullptr)
@@ -159,11 +161,11 @@ int main()
     Shader highlightShader("res/shaders/vertexModel.vert", "res/shaders/highlightLight.frag");
     Shader directionalShader("res/shaders/vertexModel.vert", "res/shaders/directional.frag");
     Shader depthShader("res/shaders/depthShader.vert", "res/shaders/depthShader.frag");
-//    Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
-//    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
-//    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
-//    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
-//    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
+    //    Shader blurShader("res/shaders/vertexModel.vert", "res/shaders/blur.frag");
+    //    Shader ambientShader("res/shaders/vertexModel.vert", "res/shaders/ambientLight.frag");
+    //    Shader reflectShader("res/shaders/vertexModel.vert", "res/shaders/reflect.frag");
+    //    Shader phongBlinnShader("res/shaders/vertexModel.vert", "res/shaders/phongblinn.frag");
+    //    Shader glassShader("res/shaders/glassShader.vert", "res/shaders/glassShader.frag");
 
     glm::vec3 dirLightColor(1.0f, 1.0f, 0.5f);
 
@@ -200,7 +202,9 @@ int main()
     menu->setResize(resizeX, resizeY);
     int menuActiveButton;
 
-    Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud);
+    Shader animationShader("res/shaders/basicAnim.vert", "res/shaders/fragment.frag");
+
+    Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud, &animationShader);
 
     camera.setCameraPosition(TILE_SIZE, 4.2f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
 
@@ -237,6 +241,10 @@ int main()
     bush5.transform->setLocalRotation({ 0.f, 280.f, 0.f });
     bush6.transform->setLocalPosition({ 2.8f,0.f, 0.0f});
     bush6.transform->setLocalRotation({ 0.f, 320.f, 0.f });
+    background.transform->setLocalPosition({ 2.2f,-0.5f,2.2f });
+    house2.transform->setLocalRotation({ 0.f,180.f,0.f });
+    house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f });
+
     skybox->addChild(&background);
     skybox->addChild(&house1);
     skybox->addChild(&house2);
@@ -248,6 +256,25 @@ int main()
     skybox->addChild(&bush5);
     skybox->addChild(&bush6);
     skybox->addChild(&fan);
+
+#pragma endregion
+
+#pragma region AnimationTest
+    //Model animatedModel("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx");
+    //Animation animation("res/animations/animacje_farmera/czerwony_farmer/farmer_czerwony_bieg.fbx", &animatedModel);
+    //Model animatedModel("res/animated_models/ball.fbx");
+
+    //Shader animationShader("res/shaders/vertexModel.vert", "res/shaders/directional.frag");
+    //Entity animEntity("res/animated_models/ball.fbx", &animationShader);
+    /*
+    Animation animation("res/animated_models/ball.fbx", animEntity.model);
+    Animator animator(&animation);
+    timeManager->attachUnlimitedFPS(&animator);
+    animEntity.addComponent(&animator);
+    animEntity.setupAnimator();
+    */
+    //animEntity.transform->scaleEntity({ 0.0012f, .0012f, .0012f });
+    //skybox->addChild(&animEntity);
 
 #pragma endregion
 
@@ -271,7 +298,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
-    
+
     glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
     glDrawBuffer(GL_NONE);
@@ -281,8 +308,8 @@ int main()
     float near_plane = 1.0f, far_plane = 100.0f;
     glm::mat4 orthogonalProjection = glm::ortho(-7.0f, 7.0f, -7.0f, 7.0f, near_plane, far_plane);
     glm::mat4 lightView = glm::lookAt(glm::vec3(1.0f, 2.0f, 0.0f), //eye
-                                    glm::vec3(2.0f, 0.0f, 3.0f), //center
-                                       glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
+        glm::vec3(2.0f, 0.0f, 3.0f), //center
+        glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
     glm::mat4 lightProjection = orthogonalProjection * lightView;
 
     //glEnable(GL_FRAMEBUFFER_SRGB);
@@ -304,7 +331,7 @@ int main()
     // render loop
     while (!glfwWindowShouldClose(window))
     {
-        if(windowSizeChanged){
+        if (windowSizeChanged) {
             windowSizeChanged = false;
             hud.setResize(resizeX, resizeY);
             menu->setResize(resizeX, resizeY);
@@ -333,33 +360,33 @@ int main()
         menuActiveButton = menu->getActiveButton();
 
         // You are in menu and you pressed Enter
-        if(executeMenu) {
+        if (executeMenu) {
             executeMenu = false;
 
             switch (menuActiveButton) {
-                case 1:
-                    // start the game
-                    menu->setActiveButton(0);
-                    hud.setHideHud(false);
-                    camera.setCameraRotation(0,-60.f);
-                    glfwSetKeyCallback(window, nullptr);
-                    break;
-                case 2:
-                    // end the game
-                    glfwDestroyWindow(window);
-                    glfwTerminate();
-                    exit(EXIT_SUCCESS);
-                default:
-                    break;
+            case 1:
+                // start the game
+                menu->setActiveButton(0);
+                hud.setHideHud(false);
+                camera.setCameraRotation(0, -60.f);
+                glfwSetKeyCallback(window, nullptr);
+                break;
+            case 2:
+                // end the game
+                glfwDestroyWindow(window);
+                glfwTerminate();
+                exit(EXIT_SUCCESS);
+            default:
+                break;
             }
         }
 
         // Menu has no button chosen, so it's inactive
-        if(menuActiveButton == 0) {
+        if (menuActiveButton == 0) {
             processInput(window);
             timeManager->updateTime();
         }
-        else{
+        else {
             double x, y;
             glfwGetCursorPos(window, &x, &y);
             menu->setCursorPos(x, y);
@@ -378,11 +405,11 @@ int main()
                 glm::vec3(2.0f, 0.0f, 3.0f), //center
                 glm::vec3(0.0f, 1.0f, 0.0f)); //up (y)
             lightProjection = orthogonalProjection * lightView;
-            dirLightColor.r -= 1.0f/roundTime;
+            dirLightColor.r -= 1.0f / roundTime;
             dirLightColor.g -= 1.0f / roundTime;
             std::cout << dirLightColor.r << std::endl;
         }
-        
+
 
 
         // input
@@ -445,13 +472,15 @@ int main()
             projection = glm::perspective(glm::radians(camera.Zoom), (float)windowData.resolutionX / (float)windowData.resolutionY, 0.1f, 100.0f);
         }
         glm::mat4 view = camera.GetViewMatrix();
-        
+
+
+
         // activate shader
         modelShader.use();
         modelShader.setMat4("projection", projection);
         modelShader.setMat4("view", view);
         modelShader.setVec3("viewPos", camera.Position);
-        
+
         pickupShader.use();
         pickupShader.setMat4("projection", projection);
         pickupShader.setMat4("view", view);
@@ -462,11 +491,15 @@ int main()
         highlightShader.setMat4("projection", projection);
         highlightShader.setMat4("view", view);
         highlightShader.setVec3("viewPos", camera.Position);
-        highlightShader.setVec3("hlcolor", {0.01,0.02,0.01});
+        highlightShader.setVec3("hlcolor", { 0.01,0.02,0.01 });
+
+        animationShader.use();
+        animationShader.setMat4("projection", projection);
+        animationShader.setMat4("view", view);
 
         directionalShader.use();
         glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);
-        directionalShader.setMat4("lightProjection",lightProjection);
+        directionalShader.setMat4("lightProjection", lightProjection);
         glActiveTexture(GL_TEXTURE0 + 2);
         glBindTexture(GL_TEXTURE_2D, depthMap);
         directionalShader.setInt("texture_diffuse1", 0);
@@ -491,7 +524,25 @@ int main()
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projection);
         skybox->renderEntity();
+
+        //ANIMATION TEST
+
+
+        /*
+        auto transforms = animator.GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            animationShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
+        glm::mat4 model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f));
+        model = glm::scale(model, glm::vec3(.0012f, .0012f, .0012f));
+        animationShader.setMat4("model", model);
+        animatedModel.Draw(directionalShader);
+        */
+        //
         glDepthFunc(GL_LESS);
+
+
 
         glfwSwapBuffers(window);
     }
@@ -501,15 +552,15 @@ int main()
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+    if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
         menu->arrowInput(1);
         return;
     }
-    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
+    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
         menu->arrowInput(-1);
         return;
     }
-    if (key == GLFW_KEY_ENTER && action == GLFW_PRESS){
+    if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
         executeMenu = true;
     }
 }
@@ -567,7 +618,7 @@ void processInput(GLFWwindow* window)
                 std::cout << "2" << std::endl;
             }
         }
-        
+
     }
     */
 
@@ -610,7 +661,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
-        if(menu->getActiveButton() != 0 && menu->isCursorOnButtons())
+        if (menu->getActiveButton() != 0 && menu->isCursorOnButtons())
             executeMenu = true;
     }
 }

@@ -8,7 +8,7 @@ enum EActionType {
     DestroyingOvergrown,
     Harvesting,
     Watering,
-    HittingPlayer,
-    HittingRobot
+    Hitting,
+    BeingHit
 };
 
