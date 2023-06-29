@@ -9,11 +9,13 @@ out vec2 TexCoord;
 out vec3 Normal; 
 out vec3 FragPos;
 out vec4 fragPosLight;
+out vec4 ourColor;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 lightProjection;
+uniform vec4 aColor;
 
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
@@ -48,6 +50,7 @@ void main()
     Normal = mat3(transpose(inverse(model))) * vec3(normSkinned);
     FragPos = vec3(worldPos);
     TexCoord = aTexCoords;
+	ourColor = aColor;
 	fragPosLight = lightProjection * vec4(FragPos, 1.0f);
     gl_Position =  projection * view * worldPos;
 }

@@ -202,7 +202,7 @@ int main()
     menu->setResize(resizeX, resizeY);
     int menuActiveButton;
 
-    Shader animationShader("res/shaders/basicAnim.vert", "res/shaders/fragment.frag");
+    Shader animationShader("res/shaders/basicAnim.vert", "res/shaders/directional.frag");
 
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud, &animationShader);
 
@@ -496,7 +496,19 @@ int main()
         animationShader.use();
         animationShader.setMat4("projection", projection);
         animationShader.setMat4("view", view);
+
+        animationShader.setVec4("aColor", glm::vec4(dirLightColor, 0.0f));
         animationShader.setMat4("lightProjection", lightProjection);
+        glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);
+        animationShader.setMat4("lightProjection", lightProjection);
+        glActiveTexture(GL_TEXTURE0 + 2);
+        glBindTexture(GL_TEXTURE_2D, depthMap);
+        animationShader.setInt("texture_diffuse1", 0);
+        glUniform1i(glGetUniformLocation(animationShader.ID, "depthMap"), 2);
+        animationShader.setFloat("gamma", gamma);
+        animationShader.setVec3("dirLightColor", (dirLightColor));
+        animationShader.setVec3("viewPos", camera.Position);
+
 
         directionalShader.use();
         glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);
