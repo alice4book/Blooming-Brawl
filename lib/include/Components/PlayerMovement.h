@@ -70,8 +70,8 @@ private:
 	
 	float currentPlantTime = 0.4;
 	float currentDestroyTime = 0.4;
-	float currentHitTime = 0.4;
-	float currentBeingHitTime = 0.4;
+	float currentHitTime = 1.0;
+	float currentBeingHitTime = 2.0;
 	float currentWaterTime = 0.4;
 	float currentHarvestTime = 0.4;
 

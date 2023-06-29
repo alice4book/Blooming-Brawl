@@ -587,10 +587,6 @@ void processInput(GLFWwindow* window)
         gamma = gamma + 0.1;
         std::cout << gamma << std::endl;
     }
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS && roundNr != 3) {
-        roundNr = 2;
-    }
-
     /*
     if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
         //std::cout << "Joystick" << std::endl;

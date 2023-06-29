@@ -561,7 +561,7 @@ void PlayerMovement::resetSeenTile(){
 
 void PlayerMovement::startAction(TileState* tile, bool isHit)
 {
-    if (currentAction == EActionType::Idle || currentAction == EActionType::Moving)
+    if (currentAction == EActionType::Idle )//|| currentAction == EActionType::Moving
     {
         EActionType action;
         if (tile != nullptr)
