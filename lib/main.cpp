@@ -60,10 +60,10 @@ int axisCount;
 
 struct WindowData {
     int resolutionX, resolutionY;
-} windowData{1280, 720};
+} windowData{1920, 1080};
 
-float resizeX = 1.f;
-float resizeY = 1.f;
+float resizeX = 1.5f;
+float resizeY = 1.5f;
 
 
 float gamma = 1;
@@ -107,10 +107,10 @@ int main()
     lastY = (float)mode->height / 2;
 
     //    Fullscreen
-    //    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Farm Engine", monitor, nullptr);
 
     //    Windowed mode
-    GLFWwindow* window = glfwCreateWindow(windowData.resolutionX, windowData.resolutionY, "Farm Engine", nullptr, nullptr);
+//    GLFWwindow* window = glfwCreateWindow(windowData.resolutionX, windowData.resolutionY, "Farm Engine", nullptr, nullptr);
 
     glfwSetWindowUserPointer(window, (void*)&windowData);
     glfwSetWindowSizeCallback(window, set_window_size_callback);
@@ -126,7 +126,6 @@ int main()
 #pragma region various_settings
     glfwMakeContextCurrent(window);
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -196,6 +195,7 @@ int main()
 
     HUD hud(&hudShader, &textShader);
     hud.setHideHud(true);
+    hud.setResize(resizeX, resizeY);
 
     menu = new Menu(&hudShader);
     skybox->addChild(menu);
@@ -206,7 +206,7 @@ int main()
 
     Round round(window, tileModels, mapFiles, &directionalShader, &pickupShader, &highlightShader, &hud, &animationShader);
 
-    camera.setCameraPosition(TILE_SIZE, 4.2f, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
+    camera.setCameraPosition(TILE_SIZE, 4, round.getMap()->MAX_COLUMNS, round.getMap()->MAX_ROWS);
 
     glfwSetKeyCallback(window, key_callback);
 #pragma endregion
@@ -241,7 +241,6 @@ int main()
     bush5.transform->setLocalRotation({ 0.f, 280.f, 0.f });
     bush6.transform->setLocalPosition({ 2.8f,0.f, 0.0f});
     bush6.transform->setLocalRotation({ 0.f, 320.f, 0.f });
-    background.transform->setLocalPosition({ 2.2f,-0.5f,2.2f });
     house2.transform->setLocalRotation({ 0.f,180.f,0.f });
     house2.transform->setLocalPosition({ 2.5f,0.f, 4.8f });
 
@@ -582,55 +581,6 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, timeManager->getDeltaTimeUnlimitedFPS());
-    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, timeManager->getDeltaTimeUnlimitedFPS());
-    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, timeManager->getDeltaTimeUnlimitedFPS());
-    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, timeManager->getDeltaTimeUnlimitedFPS());
-    if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-        gamma = gamma - 0.1;
-        std::cout << gamma << std::endl;
-    }
-    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
-        gamma = gamma + 0.1;
-        std::cout << gamma << std::endl;
-    }
-    /*
-    if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
-        //std::cout << "Joystick" << std::endl;
-        const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axisCount);
-        //std::cout << "Left Stick X: " << axes[0]  <<" Y: " << axes[1]<< std::endl;
-        //std::cout << "Right Stick X: " << axes[2] << " Y: " << axes[3] << std::endl;
-
-        GLFWgamepadstate state;
-
-        if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
-        {
-            if (state.buttons[GLFW_GAMEPAD_BUTTON_A])
-            {
-                std::cout << "3" << std::endl;
-            }
-            if (state.buttons[GLFW_GAMEPAD_BUTTON_B])
-            {
-                std::cout << "4" << std::endl;
-            }
-            if (state.buttons[GLFW_GAMEPAD_BUTTON_X])
-            {
-                std::cout << "1" << std::endl;
-            }
-            if (state.buttons[GLFW_GAMEPAD_BUTTON_Y])
-            {
-                std::cout << "2" << std::endl;
-            }
-        }
-
-    }
-    */
-
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -647,14 +597,8 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
             firstMouse = false;
         }
 
-        float xoffset = xpos - lastX;
-        float yoffset = lastY - ypos;
-
         lastX = xpos;
         lastY = ypos;
-
-        camera.ProcessMouseMovement(xoffset, yoffset);
-
     }
 }
 
@@ -662,11 +606,9 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
         click = true;
         firstMouse = true;
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
         click = false;
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
@@ -675,10 +617,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     }
 }
 
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    camera.ProcessMouseScroll(static_cast<float>(yoffset));
-}
 
 void set_window_size_callback(GLFWwindow* window, int x, int y)
 {
