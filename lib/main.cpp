@@ -429,8 +429,8 @@ int main()
             round.getRobot()->renderEntity(&depthShader);
         }
 
-        //round.getPlayer1()->renderEntity(&depthShader);
-        //round.getPlayer2()->renderEntity(&depthShader);
+        round.getPlayer1()->renderEntity(&depthShader);
+        round.getPlayer2()->renderEntity(&depthShader);
         for (int i = 0; i < round.getMap()->getShadowTiles().size(); i++) {
             round.getMap()->getShadowTiles()[i]->renderEntity(&depthShader);
         }
@@ -496,6 +496,7 @@ int main()
         animationShader.use();
         animationShader.setMat4("projection", projection);
         animationShader.setMat4("view", view);
+        animationShader.setMat4("lightProjection", lightProjection);
 
         directionalShader.use();
         glUniform1i(glGetUniformLocation(depthShader.ID, "depthMap"), 1);

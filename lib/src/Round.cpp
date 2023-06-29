@@ -61,7 +61,7 @@ Round::Round(GLFWwindow* window, Model* tileModels, std::string* mapFiles, Shade
     robot->addComponent((Component*)robotmovement);
     robotmovement->findClosestNode();
 
-    player1 = new Entity("res/animated_models/farmer_blue_test/farmer_blue.fbx", animationShader);
+    player1 = new Entity("res/anim/blue/stand.fbx", animationShader);
     player1->transform->scaleEntity({ .01, .01, .01 });
     
     /*
